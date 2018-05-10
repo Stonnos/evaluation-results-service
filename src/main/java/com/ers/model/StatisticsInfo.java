@@ -1,0 +1,61 @@
+package com.ers.model;
+
+import lombok.Data;
+
+import javax.persistence.Embeddable;
+import java.math.BigDecimal;
+
+/**
+ * Evaluation statistics info model.
+ *
+ * @author Roman Batygin
+ */
+@Data
+@Embeddable
+public class StatisticsInfo {
+
+    /**
+     * Correctly classified instances number
+     */
+    private Integer numCorrect;
+
+    /**
+     * Incorrectly classified instances number
+     */
+    private Integer numIncorrect;
+
+    /**
+     * Correctly classified instances percent
+     */
+    private BigDecimal pctCorrect;
+
+    /**
+     * Incorrectly classified instances percent
+     */
+    private BigDecimal pctIncorrect;
+
+    /**
+     * Classification mean absolute error
+     */
+    private BigDecimal meanAbsoluteError;
+
+    /**
+     * Classification root mean squared error
+     */
+    private BigDecimal rootMeanSquaredError;
+
+    /**
+     * Classifier variance error
+     */
+    private BigDecimal varianceError;
+
+    /**
+     * Classifier error Student confidence interval lower bound
+     */
+    private BigDecimal confidenceIntervalLowerBound;
+
+    /**
+     * Classifier error Student confidence interval upper bound
+     */
+    private BigDecimal confidenceIntervalUpperBound;
+}
