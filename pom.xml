@@ -215,8 +215,6 @@
                         <source>src/main/resources/evaluation-results.xsd</source>
                     </sources>
                     <packageName>com.ers.dto</packageName>
-                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                    <clearOutputDir>false</clearOutputDir>
                 </configuration>
             </plugin>
 
