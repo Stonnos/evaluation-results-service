@@ -13,7 +13,7 @@ spring:
 webServiceConfig:
   wsdlConfig:
     portTypeName: EvaluationResultsPort
-    locationUri: /ws
+    locationUri: /
     targetNamespace: http://schemas.xmlsoap.org/soap/envelope/
   xsdSchema: evaluation-results.xsd
 
