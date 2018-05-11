@@ -1,6 +1,6 @@
 package com.ers.util;
 
-import com.ers.dto.EvaluationResultsReport;
+import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -29,10 +29,10 @@ public class Utils {
     /**
      * Checks existing of request id.
      *
-     * @param evaluationResultsReport - evaluation results report
+     * @param evaluationResultsRequest - evaluation results request
      * @return {@code true} if request id is not empty
      */
-    public static boolean hasRequestId(EvaluationResultsReport evaluationResultsReport) {
-        return evaluationResultsReport != null && !StringUtils.isEmpty(evaluationResultsReport.getRequestId());
+    public static boolean hasRequestId(EvaluationResultsRequest evaluationResultsRequest) {
+        return evaluationResultsRequest != null && !StringUtils.isEmpty(evaluationResultsRequest.getRequestId());
     }
 }

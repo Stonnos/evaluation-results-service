@@ -3,7 +3,7 @@ package com.ers.mapping;
 import com.ers.dto.ClassifierReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
-import com.ers.dto.EvaluationResultsReport;
+import com.ers.dto.EvaluationResultsRequest;
 import com.ers.model.EvaluationOption;
 import com.ers.model.EvaluationResultsInfo;
 import org.mapstruct.AfterMapping;
@@ -18,30 +18,30 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Implements mapping evaluation results report to evaluation results database model.
+ * Implements mapping evaluation results request to evaluation results database model.
  *
  * @author Roman Batygin
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class, StatisticsReportMapper.class,
         EvaluationMethodMapper.class, InstancesMapper.class})
-public abstract class EvaluationResultsReportMapper {
+public abstract class EvaluationResultsRequestMapper {
 
     /**
-     * Maps evaluation results report to evaluation results entity.
+     * Maps evaluation results request to evaluation results entity.
      *
-     * @param evaluationResultsReport - evaluation results report
+     * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results entity
      */
     @Mappings(
             @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod")
     )
-    public abstract EvaluationResultsInfo map(EvaluationResultsReport evaluationResultsReport);
+    public abstract EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
 
     @AfterMapping
-    protected void mapClassifierReport(EvaluationResultsReport evaluationResultsReport,
+    protected void mapClassifierReport(EvaluationResultsRequest evaluationResultsRequest,
                                        @MappingTarget EvaluationResultsInfo evaluationResultsInfo) {
-        if (Optional.ofNullable(evaluationResultsReport.getClassifierReport()).isPresent()) {
-            ClassifierReport classifierReport = evaluationResultsReport.getClassifierReport();
+        if (Optional.ofNullable(evaluationResultsRequest.getClassifierReport()).isPresent()) {
+            ClassifierReport classifierReport = evaluationResultsRequest.getClassifierReport();
             evaluationResultsInfo.setClassifierName(classifierReport.getClassifierName());
             if (Optional.ofNullable(classifierReport.getInputOptionsMap()).map(
                     ClassifierReport.InputOptionsMap::getEntry).isPresent()) {
@@ -54,10 +54,10 @@ public abstract class EvaluationResultsReportMapper {
     }
 
     @AfterMapping
-    protected void mapEvaluationMethodReport(EvaluationResultsReport evaluationResultsReport,
+    protected void mapEvaluationMethodReport(EvaluationResultsRequest evaluationResultsRequest,
                                              @MappingTarget EvaluationResultsInfo evaluationResultsInfo) {
-        if (Optional.ofNullable(evaluationResultsReport.getEvaluationMethodReport()).isPresent()) {
-            EvaluationMethodReport evaluationMethodReport = evaluationResultsReport.getEvaluationMethodReport();
+        if (Optional.ofNullable(evaluationResultsRequest.getEvaluationMethodReport()).isPresent()) {
+            EvaluationMethodReport evaluationMethodReport = evaluationResultsRequest.getEvaluationMethodReport();
             if (EvaluationMethod.CROSS_VALIDATION.equals(evaluationMethodReport.getEvaluationMethod())) {
                 Map<EvaluationOption, String> evaluationOptionsMap = new EnumMap<>(EvaluationOption.class);
                 if (evaluationMethodReport.getNumFolds() != null) {

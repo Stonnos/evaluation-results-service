@@ -1,6 +1,6 @@
 package com.ers.controller;
 
-import com.ers.dto.EvaluationResultsReport;
+import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.service.EvaluationResultsService;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class EvaluationResultsEndpoint {
 
     private static final String NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
-    private static final String LOCAL_PART = "evaluationResultsReport";
+    private static final String LOCAL_PART = "evaluationResultsRequest";
 
     private final EvaluationResultsService evaluationResultsService;
 
@@ -36,12 +36,12 @@ public class EvaluationResultsEndpoint {
     /**
      * Saves evaluation results report to database.
      *
-     * @param evaluationResultsReport - evaluation result report
+     * @param evaluationResultsRequest - evaluation result request
      * @return evaluation results response
      */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART)
     @ResponsePayload
-    public EvaluationResultsResponse save(@RequestPayload EvaluationResultsReport evaluationResultsReport) {
-        return evaluationResultsService.saveEvaluationResults(evaluationResultsReport);
+    public EvaluationResultsResponse save(@RequestPayload EvaluationResultsRequest evaluationResultsRequest) {
+        return evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
     }
 }

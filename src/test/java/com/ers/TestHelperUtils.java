@@ -5,7 +5,7 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.ConfusionMatrixReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
-import com.ers.dto.EvaluationResultsReport;
+import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.StatisticsReport;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,18 +30,18 @@ public class TestHelperUtils {
      * @param requestId - request id
      * @return evaluation results report
      */
-    public static EvaluationResultsReport buildEvaluationResultsReport(String requestId) {
-        EvaluationResultsReport report = new EvaluationResultsReport();
-        report.setRequestId(requestId);
-        report.setInstances(buildInstancesReport());
-        report.setEvaluationMethodReport(buildEvaluationMethodReport());
-        report.setClassifierReport(buildClassifierReport());
-        report.setStatistics(buildStatisticsReport());
+    public static EvaluationResultsRequest buildEvaluationResultsReport(String requestId) {
+        EvaluationResultsRequest resultsRequest = new EvaluationResultsRequest();
+        resultsRequest.setRequestId(requestId);
+        resultsRequest.setInstances(buildInstancesReport());
+        resultsRequest.setEvaluationMethodReport(buildEvaluationMethodReport());
+        resultsRequest.setClassifierReport(buildClassifierReport());
+        resultsRequest.setStatistics(buildStatisticsReport());
         for (int i = 0; i < OPTIONS_SIZE; i++) {
-            report.getConfusionMatrix().add(buildConfusionMatrix());
-            report.getClassificationCosts().add(buildClassificationCostsReport());
+            resultsRequest.getConfusionMatrix().add(buildConfusionMatrix());
+            resultsRequest.getClassificationCosts().add(buildClassificationCostsReport());
         }
-        return report;
+        return resultsRequest;
     }
 
     /**
