@@ -11,7 +11,7 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import javax.inject.Inject;
 
 /**
- * Evaluation results storage endpoint.
+ * Evaluation results service endpoint.
  *
  * @author Roman Batygin
  */
@@ -44,20 +44,4 @@ public class EvaluationResultsEndpoint {
     public EvaluationResultsResponse save(@RequestPayload EvaluationResultsReport evaluationResultsReport) {
         return evaluationResultsService.saveEvaluationResults(evaluationResultsReport);
     }
-
-    /**
-     * Saves evaluation results report to database.
-     *
-     * @param evaluationRequest - evaluation result report
-     * @return evaluation results response
-     */
-    /*@PayloadRoot(namespace = NAMESPACE_URI, localPart = LOCAL_PART)
-    @ResponsePayload
-    public EvaluationResultsResponse saveReport(@RequestPayload EvaluationRequest evaluationRequest) {
-        log.info("Received evaluation results report with uuid = {}.", evaluationRequest.getUuid());
-        EvaluationResultsResponse evaluationResultsResponse = new EvaluationResultsResponse();
-        evaluationResultsResponse.setUuid(evaluationRequest.getUuid());
-        evaluationResultsResponse.setStatus(ResponseStatus.SUCCESS);
-        return evaluationResultsResponse;
-    }*/
 }

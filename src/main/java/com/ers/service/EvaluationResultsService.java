@@ -48,29 +48,35 @@ public class EvaluationResultsService {
      * @return evaluation results response
      */
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsReport evaluationResultsReport) {
-        log.info("Received evaluation results report with request id = {}.", evaluationResultsReport.getRequestId());
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        cachedIds.putIfAbsent(evaluationResultsReport.getRequestId(), new Object());
-        synchronized (cachedIds.get(evaluationResultsReport.getRequestId())) {
-            if (evaluationResultsInfoRepository.existsByRequestId(evaluationResultsReport.getRequestId())) {
-                log.warn("Evaluation results with request id = {} is already exists!",
-                        evaluationResultsReport.getRequestId());
-                responseStatus = ResponseStatus.DUPLICATE_REQUEST_ID;
-            } else {
-                try {
-                    EvaluationResultsInfo evaluationResultsInfo =
-                            evaluationResultsReportMapper.map(evaluationResultsReport);
-                    evaluationResultsInfo.setSaveDate(LocalDateTime.now());
-                    evaluationResultsInfoRepository.save(evaluationResultsInfo);
-                    log.info("Evaluation results report with request id = {} has been successfully saved.",
+        if (!Utils.hasRequestId(evaluationResultsReport)) {
+            log.error("Request id isn't specified!");
+            responseStatus = ResponseStatus.INVALID_REQUEST_ID;
+        } else {
+            log.info("Starting to save evaluation results report with request id = {}.",
+                    evaluationResultsReport.getRequestId());
+            cachedIds.putIfAbsent(evaluationResultsReport.getRequestId(), new Object());
+            synchronized (cachedIds.get(evaluationResultsReport.getRequestId())) {
+                if (evaluationResultsInfoRepository.existsByRequestId(evaluationResultsReport.getRequestId())) {
+                    log.warn("Evaluation results with request id = {} is already exists!",
                             evaluationResultsReport.getRequestId());
-                } catch (Exception ex) {
-                    log.error(ex.getMessage());
-                    responseStatus = ResponseStatus.ERROR;
+                    responseStatus = ResponseStatus.DUPLICATE_REQUEST_ID;
+                } else {
+                    try {
+                        EvaluationResultsInfo evaluationResultsInfo =
+                                evaluationResultsReportMapper.map(evaluationResultsReport);
+                        evaluationResultsInfo.setSaveDate(LocalDateTime.now());
+                        evaluationResultsInfoRepository.save(evaluationResultsInfo);
+                        log.info("Evaluation results report with request id = {} has been successfully saved.",
+                                evaluationResultsReport.getRequestId());
+                    } catch (Exception ex) {
+                        log.error(ex.getMessage());
+                        responseStatus = ResponseStatus.ERROR;
+                    }
                 }
             }
+            cachedIds.remove(evaluationResultsReport.getRequestId());
         }
-        cachedIds.remove(evaluationResultsReport.getRequestId());
         return Utils.buildResponse(evaluationResultsReport.getRequestId(), responseStatus);
     }
 }

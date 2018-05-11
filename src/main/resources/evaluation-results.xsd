@@ -6,18 +6,19 @@
             elementFormDefault="qualified">
 
     <xsd:simpleType name="evaluationMethod">
-            <xsd:restriction base="xsd:string">
-                <xsd:enumeration value="TRAINING_DATA"/>
-                <xsd:enumeration value="CROSS_VALIDATION"/>
-            </xsd:restriction>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="TRAINING_DATA"/>
+            <xsd:enumeration value="CROSS_VALIDATION"/>
+        </xsd:restriction>
     </xsd:simpleType>
 
     <xsd:simpleType name="responseStatus">
-           <xsd:restriction base="xsd:string">
-               <xsd:enumeration value="SUCCESS"/>
-               <xsd:enumeration value="DUPLICATE_REQUEST_ID"/>
-               <xsd:enumeration value="ERROR"/>
-           </xsd:restriction>
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="SUCCESS"/>
+            <xsd:enumeration value="INVALID_REQUEST_ID"/>
+            <xsd:enumeration value="DUPLICATE_REQUEST_ID"/>
+            <xsd:enumeration value="ERROR"/>
+        </xsd:restriction>
     </xsd:simpleType>
 
     <xsd:complexType name="classifierReport">
@@ -43,8 +44,8 @@
     <xsd:complexType name="evaluationMethodReport">
         <xsd:sequence>
             <xsd:element name="evaluationMethod" type="evaluation:evaluationMethod"/>
-            <xsd:element name="numFolds" nillable="true" type="xsd:integer"/>
-            <xsd:element name="numTests" nillable="true" type="xsd:integer"/>
+            <xsd:element name="numFolds" type="xsd:integer"/>
+            <xsd:element name="numTests" type="xsd:integer"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -67,9 +68,9 @@
             <xsd:element name="pctIncorrect" type="xsd:decimal"/>
             <xsd:element name="meanAbsoluteError" type="xsd:decimal"/>
             <xsd:element name="rootMeanSquaredError" type="xsd:decimal"/>
-            <xsd:element name="varianceError" nillable="true" type="xsd:decimal"/>
-            <xsd:element name="confidenceIntervalLowerBound" nillable="true" type="xsd:decimal"/>
-            <xsd:element name="confidenceIntervalUpperBound" nillable="true" type="xsd:decimal"/>
+            <xsd:element name="varianceError" type="xsd:decimal"/>
+            <xsd:element name="confidenceIntervalLowerBound" type="xsd:decimal"/>
+            <xsd:element name="confidenceIntervalUpperBound" type="xsd:decimal"/>
         </xsd:sequence>
     </xsd:complexType>
 
@@ -102,7 +103,8 @@
                 <xsd:element name="statistics" type="evaluation:statisticsReport"/>
                 <xsd:element maxOccurs="unbounded" minOccurs="0" name="classificationCosts"
                              type="evaluation:classificationCostsReport"/>
-                <xsd:element maxOccurs="unbounded" minOccurs="0" name="confusionMatrix" type="evaluation:confusionMatrixReport"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="confusionMatrix"
+                             type="evaluation:confusionMatrixReport"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
@@ -112,15 +114,6 @@
             <xsd:sequence>
                 <xsd:element name="requestId" type="xsd:string"/>
                 <xsd:element name="status" type="evaluation:responseStatus"/>
-            </xsd:sequence>
-        </xsd:complexType>
-    </xsd:element>
-
-    <xsd:element name="evaluationRequest">
-        <xsd:complexType>
-            <xsd:sequence>
-                <xsd:element name="uuid" type="xsd:string"/>
-                <xsd:element name="name" type="xsd:string"/>
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>

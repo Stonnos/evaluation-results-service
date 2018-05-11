@@ -64,4 +64,13 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.DUPLICATE_REQUEST_ID);
     }
+
+    @Test
+    public void testInvalidRequestId() {
+        EvaluationResultsReport report = new EvaluationResultsReport();
+        evaluationResultsService.saveEvaluationResults(report);
+        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(report);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
+    }
 }
