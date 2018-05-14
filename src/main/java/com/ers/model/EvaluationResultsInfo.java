@@ -94,7 +94,7 @@ public class EvaluationResultsInfo {
      * Evaluation statistics info
      */
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "numCorrect", column = @Column(name = "num_correct")),
             @AttributeOverride(name = "numIncorrect", column = @Column(name = "num_incorrect")),
             @AttributeOverride(name = "pctCorrect",

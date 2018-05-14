@@ -3,6 +3,7 @@ package com.ers.mapping;
 import com.ers.TestHelperUtils;
 import com.ers.dto.ClassificationCostsReport;
 import com.ers.model.ClassificationCostsInfo;
+import com.ers.model.RocCurveInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,12 @@ public class ClassificationCostsReportMapperTest {
         ClassificationCostsReport costsReport = TestHelperUtils.buildClassificationCostsReport();
         ClassificationCostsInfo classificationCostsInfo = costsReportMapper.map(costsReport);
         Assertions.assertThat(classificationCostsInfo.getClassValue()).isEqualTo(costsReport.getClassValue());
-        Assertions.assertThat(classificationCostsInfo.getAucValue()).isEqualTo(costsReport.getAucValue());
+        RocCurveInfo rocCurveInfo = classificationCostsInfo.getRocCurveInfo();
+        Assertions.assertThat(rocCurveInfo.getAucValue()).isEqualTo(costsReport.getRocCurve().getAucValue());
+        Assertions.assertThat(rocCurveInfo.getSpecificity()).isEqualTo(costsReport.getRocCurve().getSpecificity());
+        Assertions.assertThat(rocCurveInfo.getSensitivity()).isEqualTo(costsReport.getRocCurve().getSensitivity());
+        Assertions.assertThat(rocCurveInfo.getThresholdValue()).isEqualTo(
+                costsReport.getRocCurve().getThresholdValue());
         Assertions.assertThat(classificationCostsInfo.getFalseNegativeRate()).isEqualTo(
                 costsReport.getFalseNegativeRate());
         Assertions.assertThat(classificationCostsInfo.getFalsePositiveRate()).isEqualTo(

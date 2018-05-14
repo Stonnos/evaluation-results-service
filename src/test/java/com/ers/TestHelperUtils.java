@@ -7,6 +7,7 @@ import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.InstancesReport;
+import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -85,8 +86,22 @@ public class TestHelperUtils {
         classificationCostsReport.setTrueNegativeRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setTruePositiveRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setFalsePositiveRate(BigDecimal.valueOf(Math.random()));
-        classificationCostsReport.setAucValue(BigDecimal.valueOf(Math.random()));
+        classificationCostsReport.setRocCurve(buildRocCurveReport());
         return classificationCostsReport;
+    }
+
+    /**
+     * Creates roc - curve report.
+     *
+     * @return roc - curve report
+     */
+    public static RocCurveReport buildRocCurveReport() {
+        RocCurveReport rocCurveReport = new RocCurveReport();
+        rocCurveReport.setAucValue(BigDecimal.valueOf(Math.random()));
+        rocCurveReport.setSpecificity(BigDecimal.valueOf(Math.random()));
+        rocCurveReport.setSensitivity(BigDecimal.valueOf(Math.random()));
+        rocCurveReport.setThresholdValue(BigDecimal.valueOf(Math.random()));
+        return rocCurveReport;
     }
 
     /**

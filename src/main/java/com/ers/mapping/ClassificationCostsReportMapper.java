@@ -2,11 +2,9 @@ package com.ers.mapping;
 
 import com.ers.dto.ClassificationCostsReport;
 import com.ers.model.ClassificationCostsInfo;
-import com.ers.model.EvaluationResultsInfo;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.util.List;
 
@@ -15,7 +13,7 @@ import java.util.List;
  *
  * @author Roman Batygin
  */
-@Mapper
+@Mapper(uses = RocCurveReportMapper.class)
 public interface ClassificationCostsReportMapper {
 
     /**
@@ -24,6 +22,9 @@ public interface ClassificationCostsReportMapper {
      * @param classificationCostsReport -  classification costs report
      * @return classification costs info entity
      */
+    @Mappings({
+            @Mapping(source = "classificationCostsReport.rocCurve", target = "rocCurveInfo")
+    })
     ClassificationCostsInfo map(ClassificationCostsReport classificationCostsReport);
 
     /**

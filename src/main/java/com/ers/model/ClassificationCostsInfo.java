@@ -3,7 +3,11 @@ package com.ers.model;
 import com.ers.util.FieldSize;
 import lombok.Data;
 
+import javax.persistence.AssociationOverrides;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -57,8 +61,19 @@ public class ClassificationCostsInfo {
     private BigDecimal falseNegativeRate;
 
     /**
-     * AUC value
+     * Roc - curve info
      */
-    @Column(name = "auc_value", precision = FieldSize.PRECISION, scale = FieldSize.SCALE)
-    private BigDecimal aucValue;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "aucValue",
+                    column = @Column(name = "auc_value", precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
+            @AttributeOverride(name = "specificity",
+                    column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
+            @AttributeOverride(name = "sensitivity",
+                    column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
+            @AttributeOverride(name = "thresholdValue",
+                    column = @Column(name = "threshold_value", precision = FieldSize.PRECISION,
+                            scale = FieldSize.SCALE))}
+    )
+    private RocCurveInfo rocCurveInfo;
 }
