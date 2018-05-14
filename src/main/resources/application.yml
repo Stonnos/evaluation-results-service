@@ -17,3 +17,7 @@ webServiceConfig:
     targetNamespace: http://schemas.xmlsoap.org/soap/envelope/
   xsdSchema: evaluation-results.xsd
 
+serviceConfig:
+  dataStoragePath: /home/roman/evaluationResultsStorage
+  fileFormat: data%d.xml
+

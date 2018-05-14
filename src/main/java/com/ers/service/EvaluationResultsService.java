@@ -1,17 +1,22 @@
 package com.ers.service;
 
+import com.ers.config.ServiceConfig;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
+import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsRequestMapper;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
+import com.ers.util.FileUtils;
 import com.ers.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -23,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class EvaluationResultsService {
 
+    private final ServiceConfig serviceConfig;
     private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
 
@@ -31,12 +37,15 @@ public class EvaluationResultsService {
     /**
      * Constructor with spring dependency injection.
      *
-     * @param evaluationResultsRequestMapper   - evaluation results request mapper bean
+     * @param serviceConfig                   - service config bean
+     * @param evaluationResultsRequestMapper  - evaluation results request mapper bean
      * @param evaluationResultsInfoRepository - evaluation results info repository bean
      */
     @Inject
-    public EvaluationResultsService(EvaluationResultsRequestMapper evaluationResultsRequestMapper,
+    public EvaluationResultsService(ServiceConfig serviceConfig,
+                                    EvaluationResultsRequestMapper evaluationResultsRequestMapper,
                                     EvaluationResultsInfoRepository evaluationResultsInfoRepository) {
+        this.serviceConfig = serviceConfig;
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
     }
@@ -65,6 +74,7 @@ public class EvaluationResultsService {
                     try {
                         EvaluationResultsInfo evaluationResultsInfo =
                                 evaluationResultsRequestMapper.map(evaluationResultsRequest);
+                        saveXmlData(evaluationResultsRequest, evaluationResultsInfo);
                         evaluationResultsInfo.setSaveDate(LocalDateTime.now());
                         evaluationResultsInfoRepository.save(evaluationResultsInfo);
                         log.info("Evaluation results report with request id = {} has been successfully saved.",
@@ -78,5 +88,15 @@ public class EvaluationResultsService {
             cachedIds.remove(evaluationResultsRequest.getRequestId());
         }
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
+    }
+
+    private void saveXmlData(EvaluationResultsRequest evaluationResultsRequest,
+                             EvaluationResultsInfo evaluationResultsInfo) {
+        if (Optional.ofNullable(evaluationResultsRequest.getInstances()).map(InstancesReport::getXmlData).isPresent()) {
+            File xmlDataFile = new File(serviceConfig.getDataStoragePath(),
+                    String.format(serviceConfig.getFileFormat(), System.currentTimeMillis()));
+            FileUtils.saveXmlToFile(evaluationResultsRequest.getInstances().getXmlData(), xmlDataFile);
+            evaluationResultsInfo.getInstances().setDataPath(xmlDataFile.getAbsolutePath());
+        }
     }
 }

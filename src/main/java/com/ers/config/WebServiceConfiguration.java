@@ -24,6 +24,16 @@ public class WebServiceConfiguration extends WsConfigurerAdapter {
     private static final String WS_URL_MAPPINGS = "/ws/*";
 
     /**
+     * Creates service config bean.
+     *
+     * @return service config bean
+     */
+    @Bean
+    public ServiceConfig serviceConfig() {
+        return new ServiceConfig();
+    }
+
+    /**
      * Creates web service config bean.
      *
      * @return web service config bean
