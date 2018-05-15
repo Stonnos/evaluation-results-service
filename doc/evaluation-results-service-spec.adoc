@@ -1,0 +1,425 @@
+= Модуль ERS (Evaluation results service)
+:toc: macro
+
+== 1. Описание модуля
+
+Evaluation results service представляет собой SOAP веб - сервис, который предназначен для хранения и анализа результатов классификации разнотипных данных с использованием различных алгоритмов классификации, как одиночных так и ансамблевых.
+
+== 2. Описание формата отправки результатов классификации
+
+=== 2.1. Структура SOAP - запроса отправки результатов классификации
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:evaluation="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <evaluation:evaluationResultsRequest>
+            <evaluation:requestId>611bab87-d40e-44e4-8843-2c5e4faaaceb</evaluation:requestId>
+            <evaluation:instances>
+                <evaluation:relationName>iris</evaluation:relationName>
+                <evaluation:numInstances>150</evaluation:numInstances>
+                <evaluation:numAttributes>5</evaluation:numAttributes>
+                <evaluation:numClasses>3</evaluation:numClasses>
+                <evaluation:className>Class</evaluation:className>
+            </evaluation:instances>
+            <evaluation:classifierReport>
+                <evaluation:classifierName>CART</evaluation:classifierName>
+                <evaluation:inputOptionsMap>
+                    <evaluation:entry>
+                        <evaluation:key>minObj</evaluation:key>
+                        <evaluation:value>2</evaluation:value>
+                    </evaluation:entry>
+                    <evaluation:entry>
+                        <evaluation:key>maxDepth</evaluation:key>
+                        <evaluation:value>5</evaluation:value>
+                    </evaluation:entry>
+                </evaluation:inputOptionsMap>
+            </evaluation:classifierReport>
+            <evaluation:evaluationMethodReport>
+                <evaluation:evaluationMethod>CROSS_VALIDATION</evaluation:evaluationMethod>
+                <evaluation:numFolds>10</evaluation:numFolds>
+                <evaluation:numTests>10</evaluation:numTests>
+            </evaluation:evaluationMethodReport>
+            <evaluation:statistics>
+                <evaluation:numCorrect>135</evaluation:numCorrect>
+                <evaluation:numIncorrect>15</evaluation:numIncorrect>
+                <evaluation:pctCorrect>98.0</evaluation:pctCorrect>
+                <evaluation:pctIncorrect>2.0</evaluation:pctIncorrect>
+            </evaluation:statistics>
+            <evaluation:classificationCosts>
+                <evaluation:className>Iris-setosa</evaluation:className>
+                <evaluation:truePositiveRate>0.7843</evaluation:truePositiveRate>
+                <evaluation:trueNegativeRate>0.4183</evaluation:trueNegativeRate>
+                <evaluation:falsePositiveRate>0.8901</evaluation:falsePositiveRate>
+                <evaluation:falseNegativeRate>0.3454</evaluation:falseNegativeRate>
+                <evaluation:rocCurve>
+                    <evaluation:aucValue>0.9046</evaluation:aucValue>
+                    <evaluation:specificity>0.9343</evaluation:specificity>
+                    <evaluation:sensitivity>0.7586</evaluation:sensitivity>
+                    <evaluation:thresholdValue>0.6268</evaluation:thresholdValue>
+                </evaluation:rocCurve>
+            </evaluation:classificationCosts>
+            <evaluation:confusionMatrix>
+                <evaluation:actualClass>Iris-setosa</evaluation:actualClass>
+                <evaluation:predictedClass>Iris-versicolor</evaluation:predictedClass>
+                <evaluation:numInstances>5</evaluation:numInstances>
+            </evaluation:confusionMatrix>
+            <evaluation:confusionMatrix>
+                <evaluation:actualClass>Iris-setosa</evaluation:actualClass>
+                <evaluation:predictedClass>Iris-setosa</evaluation:predictedClass>
+                <evaluation:numInstances>56</evaluation:numInstances>
+            </evaluation:confusionMatrix>
+        </evaluation:evaluationResultsRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
+
+=== 2.2. Описание полей SOAP - запроса отправки результатов классификации
+
+==== 2.2.1. Описание полей блока EvaluationResultsRequest
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|requestId
+|string
+|+
+|Уникальный идентификатор запроса
+|Данное поле заполняется клиентским приложением
+|2
+|instances
+|InstancesReport
+|-
+|Блок содержит информацию об обучающей выборке, на основе которой были получены результаты классификации
+|
+|3
+|classifierReport
+|ClassifierReport
+|-
+|Информация о классификаторе
+|
+|4
+|evaluationMethodReport
+|EvaluationMethodReport
+|-
+|Блок содержит информацию о методе оценки точности классификатора
+|
+|5
+|statistics
+|StatisticsReport
+|-
+|Блок с основными показателями точности классификатора
+|
+|6
+|classificationCosts
+|ClassificationCostsReport sequence
+|-
+|Результаты классификации с учетом издержек
+|
+|7
+|confusionMatrix
+|ConfusionMatrixReport sequence
+|-
+|Структура матрицы классификации
+|
+|===
+
+==== 2.2.2. Описание полей блока InstancesReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|xmlData
+|string
+|-
+|Обучающая выборка в xml - формате
+|ВАЖНО! Структура обучающей выборки должна быть в xml - формате
+|2
+|relationName
+|string
+|-
+|Наименовавние данных
+|
+|3
+|numInstances
+|integer
+|-
+|Число объектов обучающей выборки
+|
+|4
+|numAttributes
+|integer
+|-
+|Число атрибутов
+|
+|5
+|numClasses
+|integer
+|-
+|Число классов
+|
+|6
+|className
+|string
+|-
+|Имя атрибута класса
+|
+|===
+
+==== 2.2.3. Описание полей блока ClassifierReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|classifierName
+|string
+|-
+|Наименование классификатора
+|В качестве имени можно использовать название алгоритма классификации
+|2
+|inputOptionsMap
+|ClassifierReport.InputOptionsMap
+|-
+|Входные параметры классификатора в формате ключ/значение
+|
+|===
+
+
+==== 2.2.4. Описание полей блока EvaluationMethodReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|evaluationMethod
+|EvaluationMethod
+|-
+|Метод оценки точности классификатора
+|Может принимать значения - TRAINING_DATA (использование обучающей выбоки), CROSS_VALIDATION (k * V - блочная кросс проверка на тестовой выборке) либо NULL
+|2
+|numFolds
+|integer
+|-
+|Число блоков для k * V - блочной кросс проверка на тестовойй выборке
+|
+|3
+|numTests
+|integer
+|-
+|Число тестов для k * V - блочной кросс проверка на тестовойй выборке
+|
+|===
+
+==== 2.2.5. Описание полей блока StatisticsReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|numCorrect
+|integer
+|-
+|Число верно классифицированных объектов
+|
+|2
+|numIncorrect
+|integer
+|-
+|Число неверно классифицированных объектов
+|
+|3
+|pctCorrect
+|decimal
+|-
+|Точность классификатора
+|Доля верно классифицированных объектов
+|4
+|pctIncorrect
+|decimal
+|-
+|Ошибка классификатора
+|Доля неверно классифицированных объектов
+|5
+|meanAbsoluteError
+|decimal
+|-
+|Средняя абсолютная ошибка классификации
+|
+|6
+|rootMeanSquaredError
+|decimal
+|-
+|Среднеквадратическая ошибка классификации
+|
+|7
+|varianceError
+|decimal
+|-
+|Дисперсия ошибки классификатора
+|
+|8
+|confidenceIntervalLowerBound
+|decimal
+|-
+|Нижняя граница 95% доверительного интервала ошибки классификатора
+|
+|9
+|confidenceIntervalUpperBound
+|decimal
+|-
+|Верхняя граница 95% доверительного интервала ошибки классификатора
+|
+|===
+
+==== 2.2.6. Описание полей блока ClassificationCostsReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|className
+|string
+|-
+|Наименование класса
+|
+|2
+|truePositiveRate
+|decimal
+|-
+|Доля верно классифицированных положительных примеров для данного класса
+|
+|3
+|falsePositiveRate
+|decimal
+|-
+|Доля отрицательных примеров, классифицированных как положительные
+|
+|4
+|trueNegativeRate
+|decimal
+|-
+|Доля верно классифицированных отрицательных примеров
+|
+|5
+|falseNegativeRate
+|decimal
+|-
+|Доля положительных примеров, классифицированных как отрицательные
+|
+|6
+|rocCurve
+|RocCurveReport
+|-
+|Данные о ROC - кривой
+|
+|===
+
+==== 2.2.7. Описание полей блока RocCurveReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|aucValue
+|decimal
+|-
+|Значение площади под ROC - кривой для соответствующего класса
+|
+|2
+|specificity
+|decimal
+|-
+|Значение специфичности оптимальной точки ROC - кривой для соответствующего класса
+|
+|3
+|sensitivity
+|decimal
+|-
+|Значение чувствительности оптимальной точки ROC - кривой для соответствующего класса
+|
+|4
+|thresholdValue
+|decimal
+|-
+|Значения оптимальный порога для определения класса
+|
+|===
+
+==== 2.2.8. Описание полей блока ConfusionMatrixReport
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|actualClass
+|string
+|-
+|Реальное значение класса
+|
+|2
+|predictedClass
+|string
+|-
+|Прогнозное значение класса
+|
+|3
+|numInstances
+|decimal
+|-
+|Число объектов
+|
+|===
+
+== 3. Описание формата ответа на запрос о сохранении результатво классификации
+
+=== 3.1. Структура SOAP - ответа на запрос о сохранении результатво классификации
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <SOAP-ENV:evaluationResultsResponse>
+            <SOAP-ENV:requestId>611bab87-d40e-44e4-8843-2c5e4faaaceb</SOAP-ENV:requestId>
+            <SOAP-ENV:status>SUCCESS</SOAP-ENV:status>
+        </SOAP-ENV:evaluationResultsResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+=== 3.2. Описание полей ответа на запрос о сохранении результатво классификации
+
+[options="header"]
+|===
+|№|Название поля|Тип|Обязательное|Описание|Комментарий
+|1
+|requestId
+|string
+|+
+|Уникальный идентификатор запроса
+|Совпадает со значением requestId из запроса
+|2
+|status
+|string
+|-
+|Статус ответа
+|Заполняется по по справочнику <<Справочник кодов ответа>>
+|===
+
+== Справочник кодов ответа
+
+[options="header"]
+|===
+|№|Код ответа|Описание
+|1
+|SUCCESS
+|Данные были успешно сохранены
+|2
+|INVALID_REQUEST_ID
+|Не заполнено обязательное поле requestId
+|3
+|DUPLICATE_REQUEST_ID
+|Данные с таким requestId уже существуют в базе
+|4
+|ERROR
+|Произошла какая то ошибка при сохранении данных
+|===
