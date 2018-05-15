@@ -22,6 +22,9 @@ public class WebServiceConfig {
      */
     private String xsdSchema;
 
+    /**
+     * Wsdl config.
+     */
     @Data
     public static class WsdlConfig {
 
