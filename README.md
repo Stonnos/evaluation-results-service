@@ -40,6 +40,7 @@ Evaluation results service v1.0
 
    mvn clean install
    
-4. Развернуть target/evaluation-results-service-1.0.war на одном из контейнеров сервлетов (например, Tomcat).
+4. Развернуть target/evaluation-results-service-1.0.war на одном из контейнеров сервлетов (например, Tomcat)
+   с префиксом /evaluation-results-service.
 
    
