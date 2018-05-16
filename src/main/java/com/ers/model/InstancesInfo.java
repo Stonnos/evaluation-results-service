@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +16,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "instances_info")
+@Table(name = "instances_info", indexes = @Index(columnList = "data_md5_hash", name = "data_md5_hash_index"))
 public class InstancesInfo {
 
     @Id
@@ -23,10 +24,16 @@ public class InstancesInfo {
     private Long id;
 
     /**
-     * Instances xml representation
+     * Instances file path
      */
     @Column(name = "data_path")
     private String dataPath;
+
+    /**
+     * Data MD5 hash
+     */
+    @Column(name = "data_md5_hash")
+    private String dataMd5Hash;
 
     /**
      * Instances name

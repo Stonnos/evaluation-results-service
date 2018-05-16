@@ -7,11 +7,14 @@ import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsRequestMapper;
 import com.ers.model.EvaluationResultsInfo;
+import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
+import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.FileUtils;
 import com.ers.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -31,6 +34,7 @@ public class EvaluationResultsService {
     private final ServiceConfig serviceConfig;
     private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
+    private final InstancesInfoRepository instancesInfoRepository;
 
     private ConcurrentHashMap<String, Object> cachedIds = new ConcurrentHashMap<>();
 
@@ -40,14 +44,17 @@ public class EvaluationResultsService {
      * @param serviceConfig                   - service config bean
      * @param evaluationResultsRequestMapper  - evaluation results request mapper bean
      * @param evaluationResultsInfoRepository - evaluation results info repository bean
+     * @param instancesInfoRepository         - instances info repository bean
      */
     @Inject
     public EvaluationResultsService(ServiceConfig serviceConfig,
                                     EvaluationResultsRequestMapper evaluationResultsRequestMapper,
-                                    EvaluationResultsInfoRepository evaluationResultsInfoRepository) {
+                                    EvaluationResultsInfoRepository evaluationResultsInfoRepository,
+                                    InstancesInfoRepository instancesInfoRepository) {
         this.serviceConfig = serviceConfig;
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
+        this.instancesInfoRepository = instancesInfoRepository;
     }
 
     /**
@@ -74,7 +81,7 @@ public class EvaluationResultsService {
                     try {
                         EvaluationResultsInfo evaluationResultsInfo =
                                 evaluationResultsRequestMapper.map(evaluationResultsRequest);
-                        saveXmlData(evaluationResultsRequest, evaluationResultsInfo);
+                        populateAndSaveInstancesInfo(evaluationResultsRequest, evaluationResultsInfo);
                         evaluationResultsInfo.setSaveDate(LocalDateTime.now());
                         evaluationResultsInfoRepository.save(evaluationResultsInfo);
                         log.info("Evaluation results report with request id = {} has been successfully saved.",
@@ -90,13 +97,26 @@ public class EvaluationResultsService {
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
     }
 
-    private void saveXmlData(EvaluationResultsRequest evaluationResultsRequest,
-                             EvaluationResultsInfo evaluationResultsInfo) {
+    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
+                                       EvaluationResultsInfo evaluationResultsInfo) {
         if (Optional.ofNullable(evaluationResultsRequest.getInstances()).map(InstancesReport::getXmlData).isPresent()) {
-            File xmlDataFile = new File(serviceConfig.getDataStoragePath(),
-                    String.format(serviceConfig.getFileFormat(), System.currentTimeMillis()));
-            FileUtils.saveXmlToFile(evaluationResultsRequest.getInstances().getXmlData(), xmlDataFile);
-            evaluationResultsInfo.getInstances().setDataPath(xmlDataFile.getAbsolutePath());
+            String xmlData = evaluationResultsRequest.getInstances().getXmlData();
+            String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
+            InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
+            if (instancesInfo != null) {
+                evaluationResultsInfo.setInstances(instancesInfo);
+            } else {
+                saveXmlData(evaluationResultsInfo, xmlData);
+                evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
+                instancesInfoRepository.save(evaluationResultsInfo.getInstances());
+            }
         }
+    }
+
+    private void saveXmlData(EvaluationResultsInfo evaluationResultsInfo, String xmlData) {
+        File xmlDataFile = new File(serviceConfig.getDataStoragePath(),
+                String.format(serviceConfig.getFileFormat(), System.currentTimeMillis()));
+        FileUtils.saveXmlToFile(xmlData, xmlDataFile);
+        evaluationResultsInfo.getInstances().setDataPath(xmlDataFile.getAbsolutePath());
     }
 }
