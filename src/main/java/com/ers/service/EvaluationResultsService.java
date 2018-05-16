@@ -97,7 +97,7 @@ public class EvaluationResultsService {
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
     }
 
-    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
+    private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                        EvaluationResultsInfo evaluationResultsInfo) {
         if (Optional.ofNullable(evaluationResultsRequest.getInstances()).map(InstancesReport::getXmlData).isPresent()) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlData();
