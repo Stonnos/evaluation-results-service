@@ -15,6 +15,7 @@ import com.ers.mapping.StatisticsReportMapperImpl;
 import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
+import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.FileUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -58,10 +59,13 @@ public class EvaluationResultsServiceTest {
     private EvaluationResultsService evaluationResultsService;
     @Inject
     private EvaluationResultsInfoRepository evaluationResultsInfoRepository;
+    @Inject
+    private InstancesInfoRepository instancesInfoRepository;
 
     @Before
     public void init() {
         evaluationResultsInfoRepository.deleteAll();
+        instancesInfoRepository.deleteAll();
         PowerMockito.mockStatic(FileUtils.class);
     }
 
@@ -101,5 +105,16 @@ public class EvaluationResultsServiceTest {
         EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
+    }
+
+    @Test
+    public void testDataCache() {
+        EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsService.saveEvaluationResults(request);
+        request.setRequestId(UUID.randomUUID().toString());
+        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
+        Assertions.assertThat(instancesInfoRepository.count()).isEqualTo(1);
     }
 }
