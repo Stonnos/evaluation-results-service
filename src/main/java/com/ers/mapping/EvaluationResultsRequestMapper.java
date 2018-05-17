@@ -1,6 +1,5 @@
 package com.ers.mapping;
 
-import com.ers.dto.ClassifierReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
@@ -13,7 +12,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,7 +21,7 @@ import java.util.Optional;
  * @author Roman Batygin
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class, StatisticsReportMapper.class,
-        EvaluationMethodMapper.class, InstancesMapper.class})
+        EvaluationMethodMapper.class, InstancesMapper.class, ClassifierReportMapper.class})
 public abstract class EvaluationResultsRequestMapper {
 
     /**
@@ -32,26 +30,11 @@ public abstract class EvaluationResultsRequestMapper {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results entity
      */
-    @Mappings(
-            @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod")
-    )
+    @Mappings({
+            @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod"),
+            @Mapping(source = "classifierReport", target = "classifierOptionsInfo")
+    })
     public abstract EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
-
-    @AfterMapping
-    protected void mapClassifierReport(EvaluationResultsRequest evaluationResultsRequest,
-                                       @MappingTarget EvaluationResultsInfo evaluationResultsInfo) {
-        if (Optional.ofNullable(evaluationResultsRequest.getClassifierReport()).isPresent()) {
-            ClassifierReport classifierReport = evaluationResultsRequest.getClassifierReport();
-            evaluationResultsInfo.setClassifierName(classifierReport.getClassifierName());
-            if (Optional.ofNullable(classifierReport.getInputOptionsMap()).map(
-                    ClassifierReport.InputOptionsMap::getEntry).isPresent()) {
-                Map<String, String> inputOptionsMap = new HashMap<>();
-                classifierReport.getInputOptionsMap().getEntry().forEach(
-                        entry -> inputOptionsMap.put(entry.getKey(), entry.getValue()));
-                evaluationResultsInfo.setInputOptionsMap(inputOptionsMap);
-            }
-        }
-    }
 
     @AfterMapping
     protected void mapEvaluationMethodReport(EvaluationResultsRequest evaluationResultsRequest,

@@ -3,9 +3,11 @@ package com.ers;
 import com.ers.dto.ClassificationCostsReport;
 import com.ers.dto.ClassifierReport;
 import com.ers.dto.ConfusionMatrixReport;
+import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
+import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
@@ -144,13 +146,33 @@ public class TestHelperUtils {
     public static ClassifierReport buildClassifierReport() {
         ClassifierReport classifierReport = new ClassifierReport();
         classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        classifierReport.setInputOptionsMap(new ClassifierReport.InputOptionsMap());
+        classifierReport.setInputOptionsMap(new InputOptionsMap());
+        populateInputOptionsMap(classifierReport.getInputOptionsMap());
+        return classifierReport;
+    }
+
+    /**
+     * Creates ensemble classifier report.
+     *
+     * @return ensemble classifier report
+     */
+    public static EnsembleClassifierReport buildEnsembleClassifierReport() {
+        EnsembleClassifierReport classifierReport = new EnsembleClassifierReport();
+        classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierReport.setInputOptionsMap(new InputOptionsMap());
+        populateInputOptionsMap(classifierReport.getInputOptionsMap());
         for (int i = 0; i < OPTIONS_SIZE; i++) {
-            ClassifierReport.InputOptionsMap.Entry entry = new ClassifierReport.InputOptionsMap.Entry();
-            entry.setKey(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-            entry.setValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-            classifierReport.getInputOptionsMap().getEntry().add(entry);
+            classifierReport.getIndividualClassifiers().add(buildClassifierReport());
         }
         return classifierReport;
+    }
+
+    private static void populateInputOptionsMap(InputOptionsMap inputOptionsMap) {
+        for (int i = 0; i < OPTIONS_SIZE; i++) {
+            InputOptionsMap.Entry entry = new InputOptionsMap.Entry();
+            entry.setKey(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+            entry.setValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+            inputOptionsMap.getEntry().add(entry);
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.ClassificationCostsReportMapperImpl;
+import com.ers.mapping.ClassifierReportMapperImpl;
 import com.ers.mapping.ConfusionMatrixMapperImpl;
 import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.mapping.EvaluationResultsRequestMapperImpl;
@@ -52,7 +53,7 @@ import java.util.UUID;
 @Import({ServiceConfig.class, EvaluationResultsRequestMapperImpl.class,
         ClassificationCostsReportMapperImpl.class, ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
-        EvaluationResultsService.class})
+        EvaluationResultsService.class, ClassifierReportMapperImpl.class})
 public class EvaluationResultsServiceTest {
 
     @Inject
@@ -80,13 +81,13 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(evaluationResultsInfo).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getSaveDate()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(request.getRequestId());
-        Assertions.assertThat(evaluationResultsInfo.getClassifierName()).isEqualTo(
-                request.getClassifierReport().getClassifierName());
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
         Assertions.assertThat(evaluationResultsInfo.getEvaluationOptionsMap()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
     }
 
     @Test

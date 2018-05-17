@@ -32,10 +32,7 @@ public class EvaluationResultsRequestMapperTest {
         EvaluationResultsInfo evaluationResultsInfo = evaluationResultsRequestMapper.map(resultsRequest);
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(resultsRequest.getRequestId());
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
-        Assertions.assertThat(evaluationResultsInfo.getClassifierName()).isEqualTo(
-                resultsRequest.getClassifierReport().getClassifierName());
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getInputOptionsMap()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts().size()).isEqualTo(
@@ -43,8 +40,6 @@ public class EvaluationResultsRequestMapperTest {
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix().size()).isEqualTo(
                 resultsRequest.getConfusionMatrix().size());
-        Assertions.assertThat(evaluationResultsInfo.getInputOptionsMap()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getInputOptionsMap().size()).isEqualTo(
-                resultsRequest.getClassifierReport().getInputOptionsMap().getEntry().size());
+        Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
     }
 }

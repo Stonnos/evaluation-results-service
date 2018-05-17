@@ -61,9 +61,11 @@ public class EvaluationResultsInfo {
     private InstancesInfo instances;
 
     /**
-     * Classifier name.
+     * Classifier options info
      */
-    private String classifierName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "classifier_options_info_id")
+    private ClassifierOptionsInfo classifierOptionsInfo;
 
     /**
      * Evaluation method
@@ -81,15 +83,6 @@ public class EvaluationResultsInfo {
     @MapKeyColumn(name = "evaluation_option_name")
     @Column(name = "evaluation_option_value")
     private Map<EvaluationOption, String> evaluationOptionsMap;
-
-    /**
-     * Classifier input options map
-     */
-    @ElementCollection
-    @CollectionTable(name = "input_options")
-    @MapKeyColumn(name = "option_name")
-    @Column(name = "option_value")
-    private Map<String, String> inputOptionsMap;
 
     /**
      * Evaluation statistics info
