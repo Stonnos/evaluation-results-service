@@ -15,6 +15,11 @@ import java.math.BigDecimal;
 public class StatisticsInfo {
 
     /**
+     * Number of test instances
+     */
+    private Integer numTestInstances;
+
+    /**
      * Correctly classified instances number
      */
     private Integer numCorrect;

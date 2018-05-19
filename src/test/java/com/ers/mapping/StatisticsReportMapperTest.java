@@ -27,6 +27,7 @@ public class StatisticsReportMapperTest {
     public void testStatisticsReportMap() {
         StatisticsReport report = TestHelperUtils.buildStatisticsReport();
         StatisticsInfo statisticsInfo = statisticsReportMapper.map(report);
+        Assertions.assertThat(statisticsInfo.getNumTestInstances()).isEqualTo(report.getNumTestInstances().intValue());
         Assertions.assertThat(statisticsInfo.getNumCorrect()).isEqualTo(report.getNumCorrect().intValue());
         Assertions.assertThat(statisticsInfo.getNumIncorrect()).isEqualTo(report.getNumIncorrect().intValue());
         Assertions.assertThat(statisticsInfo.getPctCorrect()).isEqualTo(report.getPctCorrect());

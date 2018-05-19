@@ -53,6 +53,7 @@ Evaluation results service представляет собой SOAP веб - с�
                 <evaluation:numTests>10</evaluation:numTests>
             </evaluation:evaluationMethodReport>
             <evaluation:statistics>
+                <evaluation:numTestInstances>150</evaluation:numTestInstances>
                 <evaluation:numCorrect>135</evaluation:numCorrect>
                 <evaluation:numIncorrect>15</evaluation:numIncorrect>
                 <evaluation:pctCorrect>98.0</evaluation:pctCorrect>
@@ -249,54 +250,60 @@ Evaluation results service представляет собой SOAP веб - с�
 |===
 |№|Название поля|Тип|Обязательное|Описание|Комментарий
 |1
+|numTestInstances
+|integer
+|-
+|Число объектов тестовых данных
+|
+|2
 |numCorrect
 |integer
 |-
 |Число верно классифицированных объектов
 |
-|2
+|3
 |numIncorrect
 |integer
 |-
 |Число неверно классифицированных объектов
 |
-|3
+|4
 |pctCorrect
 |decimal
 |-
 |Точность классификатора
 |Доля верно классифицированных объектов
-|4
+|5
 |pctIncorrect
 |decimal
 |-
 |Ошибка классификатора
 |Доля неверно классифицированных объектов
-|5
+|6
 |meanAbsoluteError
 |decimal
 |-
 |Средняя абсолютная ошибка классификации
 |
-|6
+|7
 |rootMeanSquaredError
 |decimal
 |-
 |Среднеквадратическая ошибка классификации
 |
-|7
+|8
 |varianceError
 |decimal
 |-
 |Дисперсия ошибки классификатора
 |
-|8
+|9
 |confidenceIntervalLowerBound
 |decimal
 |-
 |Нижняя граница 95% доверительного интервала ошибки классификатора
 |
-|9
+|10
 |confidenceIntervalUpperBound
 |decimal
 |-

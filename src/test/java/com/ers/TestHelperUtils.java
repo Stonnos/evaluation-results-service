@@ -115,6 +115,7 @@ public class TestHelperUtils {
         StatisticsReport statisticsReport = new StatisticsReport();
         statisticsReport.setPctCorrect(BigDecimal.valueOf(Math.random()));
         statisticsReport.setPctIncorrect(BigDecimal.valueOf(Math.random()));
+        statisticsReport.setNumTestInstances(BigInteger.TEN);
         statisticsReport.setNumCorrect(BigInteger.ZERO);
         statisticsReport.setNumIncorrect(BigInteger.TEN);
         statisticsReport.setMeanAbsoluteError(BigDecimal.valueOf(Math.random()));

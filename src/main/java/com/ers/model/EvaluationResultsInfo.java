@@ -89,6 +89,7 @@ public class EvaluationResultsInfo {
      */
     @Embedded
     @AttributeOverrides({
+            @AttributeOverride(name = "numTestInstances", column = @Column(name = "num_test_instances")),
             @AttributeOverride(name = "numCorrect", column = @Column(name = "num_correct")),
             @AttributeOverride(name = "numIncorrect", column = @Column(name = "num_incorrect")),
             @AttributeOverride(name = "pctCorrect",
