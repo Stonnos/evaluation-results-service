@@ -146,6 +146,7 @@ public class TestHelperUtils {
     public static ClassifierReport buildClassifierReport() {
         ClassifierReport classifierReport = new ClassifierReport();
         classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierReport.setClassifierDescription(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         classifierReport.setInputOptionsMap(new InputOptionsMap());
         populateInputOptionsMap(classifierReport.getInputOptionsMap());
         return classifierReport;

@@ -37,6 +37,12 @@ public class ClassifierOptionsInfo {
     private String classifierName;
 
     /**
+     * Classifier description (additional information).
+     */
+    @Column(name = "classifier_description")
+    private String classifierDescription;
+
+    /**
      * Classifier input options map
      */
     @ElementCollection
