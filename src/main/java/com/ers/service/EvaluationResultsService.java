@@ -108,9 +108,11 @@ public class EvaluationResultsService {
                 } else {
                     saveXmlData(evaluationResultsInfo, xmlData);
                     evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
+                    instancesInfoRepository.save(evaluationResultsInfo.getInstances());
                 }
+            } else {
+                instancesInfoRepository.save(evaluationResultsInfo.getInstances());
             }
-            instancesInfoRepository.save(evaluationResultsInfo.getInstances());
         }
     }
 
