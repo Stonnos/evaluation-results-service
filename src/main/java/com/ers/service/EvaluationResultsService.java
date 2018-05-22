@@ -3,7 +3,6 @@ package com.ers.service;
 import com.ers.config.ServiceConfig;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
-import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsRequestMapper;
 import com.ers.model.EvaluationResultsInfo;
@@ -13,13 +12,13 @@ import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.FileUtils;
 import com.ers.util.Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -99,17 +98,19 @@ public class EvaluationResultsService {
 
     private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                        EvaluationResultsInfo evaluationResultsInfo) {
-        if (Optional.ofNullable(evaluationResultsRequest.getInstances()).map(InstancesReport::getXmlData).isPresent()) {
+        if (evaluationResultsRequest.getInstances() != null) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlData();
-            String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
-            InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
-            if (instancesInfo != null) {
-                evaluationResultsInfo.setInstances(instancesInfo);
-            } else {
-                saveXmlData(evaluationResultsInfo, xmlData);
-                evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
-                instancesInfoRepository.save(evaluationResultsInfo.getInstances());
+            if (!StringUtils.isEmpty(xmlData)) {
+                String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
+                InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
+                if (instancesInfo != null) {
+                    evaluationResultsInfo.setInstances(instancesInfo);
+                } else {
+                    saveXmlData(evaluationResultsInfo, xmlData);
+                    evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
+                }
             }
+            instancesInfoRepository.save(evaluationResultsInfo.getInstances());
         }
     }
 
