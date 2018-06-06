@@ -28,9 +28,10 @@ public abstract class ClassifierReportMapper {
      * @param classifierReport - classifier report
      * @return classifier options info entity
      */
-    @Mappings({
+    @Mappings( {
             @Mapping(target = "inputOptionsMap", ignore = true),
-            @Mapping(source = "classifierDescription", target = "classifierDescription", qualifiedByName = "truncateClassifierDescription")
+            @Mapping(source = "classifierDescription", target = "classifierDescription",
+                    qualifiedByName = "truncateClassifierDescription")
     })
     public abstract ClassifierOptionsInfo map(ClassifierReport classifierReport);
 
@@ -54,7 +55,9 @@ public abstract class ClassifierReportMapper {
      */
     @Named("truncateClassifierDescription")
     protected String truncateClassifierDescription(String classifierDescription) {
-        return !StringUtils.isEmpty(classifierDescription) && classifierDescription.length() > FieldSize.CLASSIFIER_DESCRIPTION_LENGTH ? classifierDescription.substring(0, FieldSize.CLASSIFIER_DESCRIPTION_LENGTH) : classifierDescription;
+        return !StringUtils.isEmpty(classifierDescription) &&
+                classifierDescription.length() > FieldSize.CLASSIFIER_DESCRIPTION_LENGTH ?
+                classifierDescription.substring(0, FieldSize.CLASSIFIER_DESCRIPTION_LENGTH) : classifierDescription;
     }
 
     /**
