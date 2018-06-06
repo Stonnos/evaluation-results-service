@@ -38,7 +38,7 @@ public class ClassifierOptionsInfo {
     private String classifierName;
 
     /**
-     * Classifier options
+     * Classifier options (input options config)
      */
     @Lob
     private String options;
