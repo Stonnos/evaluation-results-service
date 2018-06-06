@@ -30,7 +30,7 @@ public abstract class EvaluationResultsRequestMapper {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results entity
      */
-    @Mappings( {
+    @Mappings({
             @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod"),
             @Mapping(source = "classifierReport", target = "classifierOptionsInfo")
     })
