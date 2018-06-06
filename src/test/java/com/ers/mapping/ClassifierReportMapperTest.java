@@ -32,6 +32,8 @@ public class ClassifierReportMapperTest {
         ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
         Assertions.assertThat(classifierOptionsInfo.getClassifierName()).isEqualTo(
                 classifierReport.getClassifierName());
+        Assertions.assertThat(classifierOptionsInfo.getOptions()).isEqualTo(
+                classifierReport.getOptions());
         Assertions.assertThat(classifierOptionsInfo.getClassifierDescription()).isEqualTo(
                 classifierReport.getClassifierDescription());
         Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();

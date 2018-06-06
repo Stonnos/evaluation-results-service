@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -35,6 +36,12 @@ public class ClassifierOptionsInfo {
      */
     @Column(name = "classifier_name")
     private String classifierName;
+
+    /**
+     * Classifier options
+     */
+    @Lob
+    private String options;
 
     /**
      * Classifier description (additional information).

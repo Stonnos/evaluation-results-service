@@ -30,7 +30,7 @@ public abstract class EvaluationResultsRequestMapper {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results entity
      */
-    @Mappings({
+    @Mappings( {
             @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod"),
             @Mapping(source = "classifierReport", target = "classifierOptionsInfo")
     })
@@ -43,16 +43,21 @@ public abstract class EvaluationResultsRequestMapper {
             EvaluationMethodReport evaluationMethodReport = evaluationResultsRequest.getEvaluationMethodReport();
             if (EvaluationMethod.CROSS_VALIDATION.equals(evaluationMethodReport.getEvaluationMethod())) {
                 Map<EvaluationOption, String> evaluationOptionsMap = new EnumMap<>(EvaluationOption.class);
-                if (evaluationMethodReport.getNumFolds() != null) {
-                    evaluationOptionsMap.put(EvaluationOption.NUM_FOLDS,
-                            String.valueOf(evaluationMethodReport.getNumFolds()));
-                }
-                if (evaluationMethodReport.getNumTests() != null) {
-                    evaluationOptionsMap.put(EvaluationOption.NUM_TESTS,
-                            String.valueOf(evaluationMethodReport.getNumTests()));
-                }
+                putEvaluationOptionIfExists(EvaluationOption.NUM_FOLDS, evaluationMethodReport.getNumFolds(),
+                        evaluationOptionsMap);
+                putEvaluationOptionIfExists(EvaluationOption.NUM_TESTS, evaluationMethodReport.getNumTests(),
+                        evaluationOptionsMap);
+                putEvaluationOptionIfExists(EvaluationOption.SEED, evaluationMethodReport.getSeed(),
+                        evaluationOptionsMap);
                 evaluationResultsInfo.setEvaluationOptionsMap(evaluationOptionsMap);
             }
+        }
+    }
+
+    private void putEvaluationOptionIfExists(EvaluationOption evaluationOption, Object option,
+                                             Map<EvaluationOption, String> evaluationOptionsMap) {
+        if (option != null) {
+            evaluationOptionsMap.put(evaluationOption, String.valueOf(option));
         }
     }
 }

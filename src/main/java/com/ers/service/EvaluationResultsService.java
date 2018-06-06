@@ -99,7 +99,7 @@ public class EvaluationResultsService {
     private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                        EvaluationResultsInfo evaluationResultsInfo) {
         if (evaluationResultsRequest.getInstances() != null) {
-            String xmlData = evaluationResultsRequest.getInstances().getXmlData();
+            String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
             if (!StringUtils.isEmpty(xmlData)) {
                 String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
                 InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);

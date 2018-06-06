@@ -54,7 +54,7 @@ public class TestHelperUtils {
      */
     public static InstancesReport buildInstancesReport() {
         InstancesReport instancesReport = new InstancesReport();
-        instancesReport.setXmlData(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesReport.setXmlInstances(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         instancesReport.setRelationName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         instancesReport.setNumInstances(BigInteger.TEN);
         instancesReport.setNumAttributes(BigInteger.TEN);
@@ -136,6 +136,7 @@ public class TestHelperUtils {
         evaluationMethodReport.setEvaluationMethod(EvaluationMethod.CROSS_VALIDATION);
         evaluationMethodReport.setNumFolds(BigInteger.TEN);
         evaluationMethodReport.setNumTests(BigInteger.TEN);
+        evaluationMethodReport.setSeed(BigInteger.ONE);
         return evaluationMethodReport;
     }
 
@@ -148,6 +149,7 @@ public class TestHelperUtils {
         ClassifierReport classifierReport = new ClassifierReport();
         classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         classifierReport.setClassifierDescription(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierReport.setOptions(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         classifierReport.setInputOptionsMap(new InputOptionsMap());
         populateInputOptionsMap(classifierReport.getInputOptionsMap());
         return classifierReport;
