@@ -516,7 +516,54 @@ Evaluation results service представляет собой SOAP веб - с�
     <SOAP-ENV:Header/>
     <SOAP-ENV:Body>
         <SOAP-ENV:classifierOptionsResponse>
-            <SOAP-ENV:requestId>ddf38b9e-63c5-44cb-82c3-aed24e411e6c</SOAP-ENV:requestId>
+            <SOAP-ENV:requestId>83ea36b3-39be-4593-a736-f2470b2c4542</SOAP-ENV:requestId>
+            <SOAP-ENV:classifierReports>
+                <SOAP-ENV:classifierName>Logistic</SOAP-ENV:classifierName>
+                <SOAP-ENV:options>{"type":"logistic","maxIts":200,"useConjugateGradientDescent":false}
+                </SOAP-ENV:options>
+                <SOAP-ENV:inputOptionsMap>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Метод поиска минимума:</SOAP-ENV:key>
+                        <SOAP-ENV:value>Квазиньютоновский метод</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Максимальное число итераций:</SOAP-ENV:key>
+                        <SOAP-ENV:value>200</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                </SOAP-ENV:inputOptionsMap>
+            </SOAP-ENV:classifierReports>
+            <SOAP-ENV:classifierReports>
+                <SOAP-ENV:classifierName>C45</SOAP-ENV:classifierName>
+                <SOAP-ENV:options>
+                    {"type":"decision_tree","decisionTreeType":"C45","minObj":2,"maxDepth":0,"randomTree":false,"numRandomAttr":0,"useBinarySplits":false,"useRandomSplits":false,"numRandomSplits":1,"seed":1,"additionalOptions":null}
+                </SOAP-ENV:options>
+                <SOAP-ENV:inputOptionsMap>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Случайное дерево:</SOAP-ENV:key>
+                        <SOAP-ENV:value>false</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Использование случайных расщеплений атрибута:</SOAP-ENV:key>
+                        <SOAP-ENV:value>false</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Бинарное дерево:</SOAP-ENV:key>
+                        <SOAP-ENV:value>false</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Максиальная глубина дерева:</SOAP-ENV:key>
+                        <SOAP-ENV:value>0</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Минимальное число объектов в листе:</SOAP-ENV:key>
+                        <SOAP-ENV:value>2</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                    <SOAP-ENV:entry>
+                        <SOAP-ENV:key>Начальное значение (Seed)</SOAP-ENV:key>
+                        <SOAP-ENV:value>1</SOAP-ENV:value>
+                    </SOAP-ENV:entry>
+                </SOAP-ENV:inputOptionsMap>
+            </SOAP-ENV:classifierReports>
             <SOAP-ENV:status>SUCCESS</SOAP-ENV:status>
         </SOAP-ENV:classifierOptionsResponse>
     </SOAP-ENV:Body>
