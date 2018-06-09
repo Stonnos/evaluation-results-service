@@ -21,4 +21,9 @@ public class ServiceConfig {
      * Training data file format
      */
     private String fileFormat;
+
+    /**
+     * The best results size
+     */
+    private Integer resultSize;
 }

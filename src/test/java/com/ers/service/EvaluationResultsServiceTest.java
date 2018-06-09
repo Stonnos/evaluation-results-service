@@ -82,7 +82,12 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(evaluationResultsInfo.getSaveDate()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(request.getRequestId());
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
-        Assertions.assertThat(evaluationResultsInfo.getEvaluationOptionsMap()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getNumFolds().intValue()).isEqualTo(
+                request.getEvaluationMethodReport().getNumFolds().intValue());
+        Assertions.assertThat(evaluationResultsInfo.getNumTests().intValue()).isEqualTo(
+                request.getEvaluationMethodReport().getNumTests().intValue());
+        Assertions.assertThat(evaluationResultsInfo.getSeed().intValue()).isEqualTo(
+                request.getEvaluationMethodReport().getSeed().intValue());
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();

@@ -288,6 +288,7 @@
                     <excludes>
                         <exclude>**/model/**/*</exclude>
                         <exclude>**/config/**/*</exclude>
+                        <exclude>**/dto/**/*</exclude>
                         <exclude>**/exception/**/*</exclude>
                         <exclude>**/util/**/*</exclude>
                     </excludes>

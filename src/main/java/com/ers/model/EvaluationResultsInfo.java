@@ -6,9 +6,7 @@ import lombok.Data;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,14 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
-import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Evaluation results info persistence entity.
@@ -75,14 +70,21 @@ public class EvaluationResultsInfo {
     private EvaluationMethod evaluationMethod;
 
     /**
-     * Evaluation options map
+     * Folds number for k * V cross - validation method
      */
-    @ElementCollection
-    @CollectionTable(name = "evaluation_options")
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "evaluation_option_name")
-    @Column(name = "evaluation_option_value")
-    private Map<EvaluationOption, String> evaluationOptionsMap;
+    @Column(name = "num_folds")
+    private Integer numFolds;
+
+    /**
+     * Tests number for k * V cross - validation method
+     */
+    @Column(name = "num_tests")
+    private Integer numTests;
+
+    /**
+     * Seed value using by k * V cross - validation method
+     */
+    private Integer seed;
 
     /**
      * Evaluation statistics info

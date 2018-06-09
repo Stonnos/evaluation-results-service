@@ -7,6 +7,7 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -52,7 +53,7 @@ public class ClassifierOptionsInfo {
     /**
      * Classifier input options map
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "input_options")
     @MapKeyColumn(name = "option_name")
     @Column(name = "option_value")
@@ -61,7 +62,7 @@ public class ClassifierOptionsInfo {
     /**
      * Individual classifiers options for ensemble algorithms
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private List<ClassifierOptionsInfo> individualClassifiers;
 }

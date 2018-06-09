@@ -5,7 +5,9 @@ Evaluation results service v1.1
 ----------------------------------------
    Evaluation results service представляет собой SOAP веб - сервис, который предназначен для хранения
 и анализа результатов классификации разнотипных данных с использованием различных алгоритмов классификации,
-как одиночных так и ансамблевых.
+как одиночных так и ансамблевых. Сервис также предоставляет API для нахождения оптимальных параметров
+классификаторов для конкретной обучающей выборки на основе накопленной истории результатов классификации.
+Наилучшие конфигурации классификаторов выбираются по критерию максимизации точности классификатора.
 
 
 Необходимый софт
@@ -19,14 +21,14 @@ Evaluation results service v1.1
 Настройки для проекта находятся в файле application.yml. Ниже приведены основные параметры:
 1) spring.datasource - настройки БД для хранения информации
 2) webServiceConfig - настройки конфигурации веб - сервиса
-    webServiceConfig.wsdlConfig.portTypeName - список операций, которые могут быть выполнены с сообщениями
-    webServiceConfig.wsdlConfig.locationUri - url веб - сервиса
-    webServiceConfig.wsdlConfig.targetNamespace - целевое пространство имен схемы
-    webServiceConfig.wsdlConfig.xsdSchema: путь к xsd схеме
+    * webServiceConfig.wsdlConfig.portTypeName - список операций, которые могут быть выполнены с сообщениями
+    * webServiceConfig.wsdlConfig.locationUri - url веб - сервиса
+    * webServiceConfig.wsdlConfig.targetNamespace - целевое пространство имен схемы
+    * webServiceConfig.wsdlConfig.xsdSchema: путь к xsd схеме
 3) serviceConfig - основные настройки модуля
-    serviceConfig.dataStoragePath - путь к директории на файловой системе для хранения xml - файлов с
+    * serviceConfig.dataStoragePath - путь к директории на файловой системе для хранения xml - файлов с
     обучающими выборками, которые использовались для определения основных показателей точности классификации
-    serviceConfig.fileFormat - формат xml - файлы с обучающей выборкой
+    * serviceConfig.fileFormat - формат xml - файлы с обучающей выборкой
 
 Инструкция по развертыванию
 ----------------------------------------

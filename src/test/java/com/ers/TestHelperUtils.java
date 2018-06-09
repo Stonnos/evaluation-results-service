@@ -1,6 +1,7 @@
 package com.ers;
 
 import com.ers.dto.ClassificationCostsReport;
+import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.ClassifierReport;
 import com.ers.dto.ConfusionMatrixReport;
 import com.ers.dto.EnsembleClassifierReport;
@@ -11,10 +12,17 @@ import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
+import com.ers.model.ClassifierOptionsInfo;
+import com.ers.model.EvaluationResultsInfo;
+import com.ers.model.InstancesInfo;
+import com.ers.model.StatisticsInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Tests utility class.
@@ -26,6 +34,9 @@ public class TestHelperUtils {
     private static final int OPTIONS_SIZE = 5;
     private static final int RANDOM_STRING_SIZE = 5;
     private static final String CHARS = "ABCDEFG123456";
+    private static final int NUM_FOLDS = 10;
+    private static final int NUM_TESTS = 1;
+    private static final int SEED = 1;
 
     /**
      * Creates evaluation results report.
@@ -37,7 +48,7 @@ public class TestHelperUtils {
         EvaluationResultsRequest resultsRequest = new EvaluationResultsRequest();
         resultsRequest.setRequestId(requestId);
         resultsRequest.setInstances(buildInstancesReport());
-        resultsRequest.setEvaluationMethodReport(buildEvaluationMethodReport());
+        resultsRequest.setEvaluationMethodReport(buildEvaluationMethodReport(EvaluationMethod.CROSS_VALIDATION));
         resultsRequest.setClassifierReport(buildClassifierReport());
         resultsRequest.setStatistics(buildStatisticsReport());
         for (int i = 0; i < OPTIONS_SIZE; i++) {
@@ -129,14 +140,15 @@ public class TestHelperUtils {
     /**
      * Creates evaluation method report.
      *
+     * @param evaluationMethod - evaluation method
      * @return evaluation method report
      */
-    public static EvaluationMethodReport buildEvaluationMethodReport() {
+    public static EvaluationMethodReport buildEvaluationMethodReport(EvaluationMethod evaluationMethod) {
         EvaluationMethodReport evaluationMethodReport = new EvaluationMethodReport();
-        evaluationMethodReport.setEvaluationMethod(EvaluationMethod.CROSS_VALIDATION);
-        evaluationMethodReport.setNumFolds(BigInteger.TEN);
-        evaluationMethodReport.setNumTests(BigInteger.TEN);
-        evaluationMethodReport.setSeed(BigInteger.ONE);
+        evaluationMethodReport.setEvaluationMethod(evaluationMethod);
+        evaluationMethodReport.setNumFolds(BigInteger.valueOf(NUM_FOLDS));
+        evaluationMethodReport.setNumTests(BigInteger.valueOf(NUM_TESTS));
+        evaluationMethodReport.setSeed(BigInteger.valueOf(SEED));
         return evaluationMethodReport;
     }
 
@@ -169,6 +181,69 @@ public class TestHelperUtils {
             classifierReport.getIndividualClassifiers().add(buildClassifierReport());
         }
         return classifierReport;
+    }
+
+    /**
+     * Creates classifier options info list.
+     *
+     * @param classifierOptionsInfoList - classifiers options info list
+     * @return classifier options info list
+     */
+    public static ClassifierOptionsInfo buildClassifierOptionsInfo(Map<String, String> inputOptionsMap,
+                                                                   List<ClassifierOptionsInfo> classifierOptionsInfoList) {
+        ClassifierOptionsInfo classifierOptionsInfo = new ClassifierOptionsInfo();
+        classifierOptionsInfo.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierOptionsInfo.setClassifierDescription(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
+        classifierOptionsInfo.setIndividualClassifiers(classifierOptionsInfoList);
+        return classifierOptionsInfo;
+    }
+
+    /**
+     * Creates classifier options info list.
+     *
+     * @return classifier options info list
+     */
+    public static ClassifierOptionsInfo buildClassifierOptionsInfo() {
+        return buildClassifierOptionsInfo(Collections.emptyMap(), Collections.emptyList());
+    }
+
+    /**
+     * Creates classifier options request.
+     *
+     * @param evaluationMethod - evaluation method
+     * @return classifier options request
+     */
+    public static ClassifierOptionsRequest createClassifierOptionsRequest(EvaluationMethod evaluationMethod) {
+        ClassifierOptionsRequest request = new ClassifierOptionsRequest();
+        request.setInstances(buildInstancesReport());
+        request.setEvaluationMethodReport(buildEvaluationMethodReport(evaluationMethod));
+        return request;
+    }
+
+    /**
+     * Creates evaluation results info.
+     *
+     * @param instancesInfo         - instances info
+     * @param classifierOptionsInfo - classifier options info
+     * @param evaluationMethod      - evaluation method
+     * @param pctCorrect            - pct correct
+     * @return evaluation results info
+     */
+    public static EvaluationResultsInfo createEvaluationResultsInfo(InstancesInfo instancesInfo,
+                                                                    ClassifierOptionsInfo classifierOptionsInfo,
+                                                                    com.ers.model.EvaluationMethod evaluationMethod,
+                                                                    BigDecimal pctCorrect) {
+        EvaluationResultsInfo evaluationResultsInfo = new EvaluationResultsInfo();
+        evaluationResultsInfo.setInstances(instancesInfo);
+        evaluationResultsInfo.setClassifierOptionsInfo(classifierOptionsInfo);
+        evaluationResultsInfo.setNumFolds(NUM_FOLDS);
+        evaluationResultsInfo.setNumTests(NUM_TESTS);
+        evaluationResultsInfo.setSeed(SEED);
+        evaluationResultsInfo.setEvaluationMethod(evaluationMethod);
+        evaluationResultsInfo.setStatistics(new StatisticsInfo());
+        evaluationResultsInfo.getStatistics().setPctCorrect(pctCorrect);
+        return evaluationResultsInfo;
     }
 
     private static void populateInputOptionsMap(InputOptionsMap inputOptionsMap) {

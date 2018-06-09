@@ -20,4 +20,5 @@ webServiceConfig:
 serviceConfig:
   dataStoragePath: /home/roman/evaluationResultsStorage
   fileFormat: data%d.xml
+  resultSize: 5
 

@@ -41,7 +41,11 @@ public class EvaluationResultsRequestMapperTest {
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix().size()).isEqualTo(
                 resultsRequest.getConfusionMatrix().size());
         Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getEvaluationOptionsMap()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getEvaluationOptionsMap().size()).isEqualTo(3);
+        Assertions.assertThat(evaluationResultsInfo.getNumFolds().intValue()).isEqualTo(
+                resultsRequest.getEvaluationMethodReport().getNumFolds().intValue());
+        Assertions.assertThat(evaluationResultsInfo.getNumTests().intValue()).isEqualTo(
+                resultsRequest.getEvaluationMethodReport().getNumTests().intValue());
+        Assertions.assertThat(evaluationResultsInfo.getSeed().intValue()).isEqualTo(
+                resultsRequest.getEvaluationMethodReport().getSeed().intValue());
     }
 }
