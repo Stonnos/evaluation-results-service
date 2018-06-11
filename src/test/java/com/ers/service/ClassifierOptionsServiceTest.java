@@ -91,31 +91,46 @@ public class ClassifierOptionsServiceTest {
         classifierOptionsInfo4.setClassifierName("Classifier4");
         ClassifierOptionsInfo classifierOptionsInfo5 = TestHelperUtils.buildClassifierOptionsInfo();
         classifierOptionsInfo5.setClassifierName("Classifier5");
+        ClassifierOptionsInfo classifierOptionsInfo6 = TestHelperUtils.buildClassifierOptionsInfo();
+        classifierOptionsInfo5.setClassifierName("Classifier6");
+        ClassifierOptionsInfo classifierOptionsInfo7 = TestHelperUtils.buildClassifierOptionsInfo();
+        classifierOptionsInfo5.setClassifierName("Classifier7");
 
         com.ers.model.EvaluationMethod modelEvaluationMethod = evaluationMethodMapper.map(evaluationMethod);
         EvaluationResultsInfo evaluationResultsInfo1 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
-                classifierOptionsInfo1, modelEvaluationMethod, BigDecimal.valueOf(67.73d));
+                classifierOptionsInfo1, modelEvaluationMethod, BigDecimal.valueOf(67.73d),
+                BigDecimal.valueOf(0.76d), BigDecimal.valueOf(0.07d));
         EvaluationResultsInfo evaluationResultsInfo2 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
-                classifierOptionsInfo2, modelEvaluationMethod, BigDecimal.valueOf(65.96d));
+                classifierOptionsInfo2, modelEvaluationMethod, BigDecimal.valueOf(65.96d),
+                BigDecimal.valueOf(0.72d), BigDecimal.valueOf(0.046d));
         EvaluationResultsInfo evaluationResultsInfo3 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
-                classifierOptionsInfo3, modelEvaluationMethod, BigDecimal.valueOf(61.08d));
+                classifierOptionsInfo3, modelEvaluationMethod, BigDecimal.valueOf(61.08d),
+                BigDecimal.valueOf(0.73d), BigDecimal.valueOf(0.006d));
         EvaluationResultsInfo evaluationResultsInfo4 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
-                classifierOptionsInfo4, modelEvaluationMethod, BigDecimal.valueOf(68.86d));
+                classifierOptionsInfo4, modelEvaluationMethod, BigDecimal.valueOf(87.79d),
+                BigDecimal.valueOf(0.71d), BigDecimal.valueOf(0.01d));
         EvaluationResultsInfo evaluationResultsInfo5 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
-                classifierOptionsInfo5, modelEvaluationMethod, BigDecimal.valueOf(87.79d));
+                classifierOptionsInfo5, modelEvaluationMethod, BigDecimal.valueOf(87.79d),
+                BigDecimal.valueOf(0.79d), BigDecimal.valueOf(0.04d));
         EvaluationResultsInfo evaluationResultsInfo6 = TestHelperUtils.createEvaluationResultsInfo(anotherInstancesInfo,
-                classifierOptionsInfo1, modelEvaluationMethod, BigDecimal.valueOf(56.80d));
+                classifierOptionsInfo6, modelEvaluationMethod, BigDecimal.valueOf(56.80d),
+                BigDecimal.valueOf(0.88d), BigDecimal.valueOf(0.09d));
+        EvaluationResultsInfo evaluationResultsInfo7 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
+                classifierOptionsInfo7, modelEvaluationMethod, BigDecimal.valueOf(87.79d),
+                BigDecimal.valueOf(0.81d), BigDecimal.valueOf(0.03d));
         evaluationResultsInfoRepository.save(
                 Arrays.asList(evaluationResultsInfo1, evaluationResultsInfo2, evaluationResultsInfo3,
-                        evaluationResultsInfo4, evaluationResultsInfo5, evaluationResultsInfo6));
+                        evaluationResultsInfo4, evaluationResultsInfo5, evaluationResultsInfo6, evaluationResultsInfo7));
 
         List<ClassifierOptionsInfo> classifierOptionsInfoList =
                 classifierOptionsService.findBestClassifierOptions(request);
         Assertions.assertThat(classifierOptionsInfoList).isNotEmpty();
         Assertions.assertThat(classifierOptionsInfoList.size()).isEqualTo(serviceConfig.getResultSize());
         Assertions.assertThat(classifierOptionsInfoList.get(0).getClassifierName()).isEqualTo
-                (classifierOptionsInfo5.getClassifierName());
+                (classifierOptionsInfo7.getClassifierName());
         Assertions.assertThat(classifierOptionsInfoList.get(1).getClassifierName()).isEqualTo
+                (classifierOptionsInfo5.getClassifierName());
+        Assertions.assertThat(classifierOptionsInfoList.get(2).getClassifierName()).isEqualTo
                 (classifierOptionsInfo4.getClassifierName());
     }
 }

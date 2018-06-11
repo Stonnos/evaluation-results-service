@@ -30,7 +30,8 @@ public interface ClassifierOptionsInfoRepository extends JpaRepository<Classifie
     @Query("select co from EvaluationResultsInfo evr join evr.classifierOptionsInfo co " +
             "where evr.instances = :instances and evr.evaluationMethod = 'CROSS_VALIDATION' " +
             "and evr.numFolds = :numFolds and evr.numTests = :numTests and evr.seed = :seed " +
-            "order by evr.statistics.pctCorrect desc")
+            "order by evr.statistics.pctCorrect desc, evr.statistics.maxAucValue desc, " +
+            "evr.statistics.varianceError asc")
     List<ClassifierOptionsInfo> findTopClassifierOptionsByCrossValidation(
             @Param("instances") InstancesInfo instancesInfo, @Param("numFolds") Integer numFolds,
             @Param("numTests") Integer numTests, @Param("seed") Integer seed, Pageable pageable);
@@ -45,6 +46,6 @@ public interface ClassifierOptionsInfoRepository extends JpaRepository<Classifie
      */
     @Query("select co from EvaluationResultsInfo evr join evr.classifierOptionsInfo co " +
             "where evr.instances = :instances and evr.evaluationMethod = 'TRAINING_DATA' " +
-            "order by evr.statistics.pctCorrect desc")
+            "order by evr.statistics.pctCorrect desc, evr.statistics.maxAucValue desc")
     List<ClassifierOptionsInfo> findTopClassifierOptions(@Param("instances") InstancesInfo instancesInfo, Pageable pageable);
 }

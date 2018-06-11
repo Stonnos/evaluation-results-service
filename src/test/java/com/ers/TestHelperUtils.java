@@ -229,12 +229,16 @@ public class TestHelperUtils {
      * @param classifierOptionsInfo - classifier options info
      * @param evaluationMethod      - evaluation method
      * @param pctCorrect            - pct correct
+     * @param maxAucValue           - max AUC value
+     * @param varianceError         - variance error
      * @return evaluation results info
      */
     public static EvaluationResultsInfo createEvaluationResultsInfo(InstancesInfo instancesInfo,
                                                                     ClassifierOptionsInfo classifierOptionsInfo,
                                                                     com.ers.model.EvaluationMethod evaluationMethod,
-                                                                    BigDecimal pctCorrect) {
+                                                                    BigDecimal pctCorrect,
+                                                                    BigDecimal maxAucValue,
+                                                                    BigDecimal varianceError) {
         EvaluationResultsInfo evaluationResultsInfo = new EvaluationResultsInfo();
         evaluationResultsInfo.setInstances(instancesInfo);
         evaluationResultsInfo.setClassifierOptionsInfo(classifierOptionsInfo);
@@ -244,6 +248,8 @@ public class TestHelperUtils {
         evaluationResultsInfo.setEvaluationMethod(evaluationMethod);
         evaluationResultsInfo.setStatistics(new StatisticsInfo());
         evaluationResultsInfo.getStatistics().setPctCorrect(pctCorrect);
+        evaluationResultsInfo.getStatistics().setMaxAucValue(maxAucValue);
+        evaluationResultsInfo.getStatistics().setVarianceError(varianceError);
         return evaluationResultsInfo;
     }
 
