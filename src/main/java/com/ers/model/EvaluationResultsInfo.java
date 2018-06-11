@@ -104,7 +104,7 @@ public class EvaluationResultsInfo {
             @AttributeOverride(name = "rootMeanSquaredError",
                     column = @Column(name = "root_mean_squared_error", precision = FieldSize.PRECISION,
                             scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "maxAuc",
+            @AttributeOverride(name = "maxAucValue",
                     column = @Column(name = "max_auc", precision = FieldSize.PRECISION,
                             scale = FieldSize.SCALE)),
             @AttributeOverride(name = "varianceError",
