@@ -92,9 +92,9 @@ public class ClassifierOptionsServiceTest {
         ClassifierOptionsInfo classifierOptionsInfo5 = TestHelperUtils.buildClassifierOptionsInfo();
         classifierOptionsInfo5.setClassifierName("Classifier5");
         ClassifierOptionsInfo classifierOptionsInfo6 = TestHelperUtils.buildClassifierOptionsInfo();
-        classifierOptionsInfo5.setClassifierName("Classifier6");
+        classifierOptionsInfo6.setClassifierName("Classifier6");
         ClassifierOptionsInfo classifierOptionsInfo7 = TestHelperUtils.buildClassifierOptionsInfo();
-        classifierOptionsInfo5.setClassifierName("Classifier7");
+        classifierOptionsInfo7.setClassifierName("Classifier7");
 
         com.ers.model.EvaluationMethod modelEvaluationMethod = evaluationMethodMapper.map(evaluationMethod);
         EvaluationResultsInfo evaluationResultsInfo1 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
