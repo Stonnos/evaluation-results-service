@@ -34,6 +34,7 @@ public class StatisticsReportMapperTest {
         Assertions.assertThat(statisticsInfo.getPctIncorrect()).isEqualTo(report.getPctIncorrect());
         Assertions.assertThat(statisticsInfo.getMeanAbsoluteError()).isEqualTo(report.getMeanAbsoluteError());
         Assertions.assertThat(statisticsInfo.getRootMeanSquaredError()).isEqualTo(report.getRootMeanSquaredError());
+        Assertions.assertThat(statisticsInfo.getMaxAucValue()).isEqualTo(report.getMaxAucValue());
         Assertions.assertThat(statisticsInfo.getVarianceError()).isEqualTo(report.getVarianceError());
         Assertions.assertThat(statisticsInfo.getConfidenceIntervalLowerBound()).isEqualTo(
                 report.getConfidenceIntervalLowerBound());

@@ -50,6 +50,11 @@ public class StatisticsInfo {
     private BigDecimal rootMeanSquaredError;
 
     /**
+     * Maximum AUC value
+     */
+    private BigDecimal maxAucValue;
+
+    /**
      * Classifier variance error
      */
     private BigDecimal varianceError;

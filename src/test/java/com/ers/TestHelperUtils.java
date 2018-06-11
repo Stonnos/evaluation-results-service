@@ -131,6 +131,7 @@ public class TestHelperUtils {
         statisticsReport.setNumIncorrect(BigInteger.TEN);
         statisticsReport.setMeanAbsoluteError(BigDecimal.valueOf(Math.random()));
         statisticsReport.setRootMeanSquaredError(BigDecimal.valueOf(Math.random()));
+        statisticsReport.setMaxAucValue(BigDecimal.valueOf(Math.random()));
         statisticsReport.setVarianceError(BigDecimal.valueOf(Math.random()));
         statisticsReport.setConfidenceIntervalLowerBound(BigDecimal.valueOf(Math.random()));
         statisticsReport.setConfidenceIntervalUpperBound(BigDecimal.valueOf(Math.random()));
