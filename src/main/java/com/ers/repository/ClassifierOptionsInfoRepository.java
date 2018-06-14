@@ -47,5 +47,6 @@ public interface ClassifierOptionsInfoRepository extends JpaRepository<Classifie
     @Query("select co from EvaluationResultsInfo evr join evr.classifierOptionsInfo co " +
             "where evr.instances = :instances and evr.evaluationMethod = 'TRAINING_DATA' " +
             "order by evr.statistics.pctCorrect desc, evr.statistics.maxAucValue desc")
-    List<ClassifierOptionsInfo> findTopClassifierOptions(@Param("instances") InstancesInfo instancesInfo, Pageable pageable);
+    List<ClassifierOptionsInfo> findTopClassifierOptions(@Param("instances") InstancesInfo instancesInfo,
+                                                         Pageable pageable);
 }
