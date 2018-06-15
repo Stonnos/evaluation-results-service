@@ -90,6 +90,8 @@ public class EvaluationResultsEndpoint {
                 List<ClassifierOptionsInfo> classifierOptionsInfoList =
                         classifierOptionsService.findBestClassifierOptions(classifierOptionsRequest);
                 if (CollectionUtils.isEmpty(classifierOptionsInfoList)) {
+                    log.info("Best classifiers options not found for data '{}', request id [{}]",
+                            classifierOptionsRequest.getInstances().getRelationName(), requestId);
                     responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
                 } else {
                     log.info("{} best classifiers options has been found for data '{}', request id [{}]",
