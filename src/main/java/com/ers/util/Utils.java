@@ -21,6 +21,9 @@ import java.util.UUID;
  */
 public class Utils {
 
+    private Utils() {
+    }
+
     /**
      * Creates evaluation results response.
      *

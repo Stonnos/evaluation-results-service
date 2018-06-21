@@ -19,6 +19,9 @@ import java.io.StringReader;
  */
 public class FileUtils {
 
+    private FileUtils() {
+    }
+
     /**
      * Saves xml string to file.
      *
