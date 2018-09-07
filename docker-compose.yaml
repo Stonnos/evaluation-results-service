@@ -1,0 +1,30 @@
+version: '3.5'
+services:
+
+  ers-db:
+    image: postgres:9.6.9
+    container_name: ers-db
+    volumes:
+      - ./scripts/postgresinit.sql:/docker-entrypoint-initdb.d/postgresinit.sql
+    ports:
+      - "5434:5432"
+    networks:
+      - default
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  evaluation-results-service:
+    image: evaluation-results-service
+    container_name: evaluation-results-service
+    ports:
+      - "8081:8080"
+    networks:
+      - default
+    depends_on:
+      - ers-db
+
+networks:
+  default:
+    name: eca_network
+    driver: bridge
