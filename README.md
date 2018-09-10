@@ -52,7 +52,7 @@ Evaluation results service v1.1
 
 2. Далее, необходимо собрать проект с помощью команды:
 
-mvn clean install dockerfile:build -Dspring.datasource.url=jdbc:postgresql://ers-db:5432/evaluation_results_storage -Dspring.jpa.hibernate.ddl-auto=update -DserviceConfig.dataStoragePath=/home/evaluationResultsStorage
+mvn clean install dockerfile:build
 
 3. Используя пакетный менеджер docker-compose, создать docker контейнеры с помощью команды:
 
