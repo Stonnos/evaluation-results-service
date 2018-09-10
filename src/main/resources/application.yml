@@ -2,12 +2,12 @@ spring:
   ## Datasource properties
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://ers-db:5432/evaluation_results_storage
+    url: jdbc:postgresql://localhost:5432/evaluation_results_storage
     username: postgres
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 
 webServiceConfig:

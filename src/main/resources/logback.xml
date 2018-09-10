@@ -10,9 +10,9 @@
     </appender>
 
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>evaluation-results-storage.log</file>
+        <file>evaluation-results-service.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>evaluation-results-storage.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>evaluation-results-service.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 30 days keep logs -->
             <maxHistory>30</maxHistory>
             <totalSizeCap>100mb</totalSizeCap>

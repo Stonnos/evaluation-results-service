@@ -42,7 +42,22 @@ Evaluation results service v1.1
 
    mvn clean install
    
-4. Развернуть target/evaluation-results-service-1.1.war на одном из контейнеров сервлетов (например, Tomcat)
+4. Развернуть target/evaluation-results-service.war на одном из контейнеров сервлетов (например, Tomcat)
    с префиксом /evaluation-results-service.
+   
+Инструкция по развертыванию в Docker
+-------------------------------------------------------
+
+1. Для Windows достаточно скачать и установить дистрибутив Docker Desktop (https://www.docker.com/products/docker-desktop).
+
+2. Далее, необходимо собрать проект с помощью команды:
+
+mvn clean install dockerfile:build -Dspring.datasource.url=jdbc:postgresql://ers-db:5432/evaluation_results_storage -Dspring.jpa.hibernate.ddl-auto=update -DserviceConfig.dataStoragePath=/home/evaluationResultsStorage
+
+3. Используя пакетный менеджер docker-compose, создать docker контейнеры с помощью команды:
+
+docker-compose up
+
+ВАЖНО! Данную команду необходимо выполнять из корневой папки проекта.
 
    
