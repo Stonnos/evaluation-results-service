@@ -9,15 +9,20 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
 
-webServiceConfig:
+web-service-config:
   wsdlConfig:
     portTypeName: EvaluationResultsPort
     locationUri: /ws
     targetNamespace: http://schemas.xmlsoap.org/soap/envelope/
   xsdSchema: evaluation-results.xsd
 
-serviceConfig:
+service-config:
   dataStoragePath: /home/evaluationResultsStorage
   fileFormat: data%d.xml
   resultSize: 5

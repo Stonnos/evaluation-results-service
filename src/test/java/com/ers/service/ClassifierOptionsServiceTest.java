@@ -79,7 +79,7 @@ public class ClassifierOptionsServiceTest {
         instancesInfo.setDataMd5Hash(DigestUtils.md5DigestAsHex(request.getInstances().getXmlInstances().getBytes()));
         InstancesInfo anotherInstancesInfo = new InstancesInfo();
         anotherInstancesInfo.setDataMd5Hash(DigestUtils.md5DigestAsHex(StringUtils.EMPTY.getBytes()));
-        instancesInfoRepository.save(Arrays.asList(instancesInfo, anotherInstancesInfo));
+        instancesInfoRepository.saveAll(Arrays.asList(instancesInfo, anotherInstancesInfo));
 
         ClassifierOptionsInfo classifierOptionsInfo1 = TestHelperUtils.buildClassifierOptionsInfo();
         classifierOptionsInfo1.setClassifierName("Classifier1");
@@ -118,9 +118,10 @@ public class ClassifierOptionsServiceTest {
         EvaluationResultsInfo evaluationResultsInfo7 = TestHelperUtils.createEvaluationResultsInfo(instancesInfo,
                 classifierOptionsInfo7, modelEvaluationMethod, BigDecimal.valueOf(87.79d),
                 BigDecimal.valueOf(0.81d), BigDecimal.valueOf(0.03d));
-        evaluationResultsInfoRepository.save(
+        evaluationResultsInfoRepository.saveAll(
                 Arrays.asList(evaluationResultsInfo1, evaluationResultsInfo2, evaluationResultsInfo3,
-                        evaluationResultsInfo4, evaluationResultsInfo5, evaluationResultsInfo6, evaluationResultsInfo7));
+                        evaluationResultsInfo4, evaluationResultsInfo5, evaluationResultsInfo6,
+                        evaluationResultsInfo7));
 
         List<ClassifierOptionsInfo> classifierOptionsInfoList =
                 classifierOptionsService.findBestClassifierOptions(request);

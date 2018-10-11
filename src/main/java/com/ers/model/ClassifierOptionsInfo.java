@@ -11,7 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -41,7 +40,7 @@ public class ClassifierOptionsInfo {
     /**
      * Classifier options (input options config)
      */
-    @Lob
+    @Column(columnDefinition = "text")
     private String options;
 
     /**
