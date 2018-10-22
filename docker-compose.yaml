@@ -13,10 +13,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      TZ: "Asia/Novosibirsk"
+      PGTZ: "Asia/Novosibirsk"
 
   evaluation-results-service:
     image: evaluation-results-service
     container_name: evaluation-results-service
+    environment:
+      TZ: "Asia/Novosibirsk"
     ports:
       - "8081:8080"
     networks:
