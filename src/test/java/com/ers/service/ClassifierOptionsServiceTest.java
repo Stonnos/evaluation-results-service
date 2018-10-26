@@ -6,6 +6,7 @@ import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethod;
 import com.ers.exception.DataNotFoundException;
 import com.ers.mapping.EvaluationMethodMapper;
+import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.model.ClassifierOptionsInfo;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
@@ -17,7 +18,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.DigestUtils;
 
@@ -32,7 +38,12 @@ import java.util.List;
  * @author Roman Batygin
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@AutoConfigureDataJpa
+@EnableJpaRepositories(basePackageClasses = EvaluationResultsInfoRepository.class)
+@EntityScan(basePackageClasses = EvaluationResultsInfo.class)
+@EnableConfigurationProperties
+@TestPropertySource("classpath:application.properties")
+@Import({ClassifierOptionsService.class, ServiceConfig.class, EvaluationMethodMapperImpl.class})
 public class ClassifierOptionsServiceTest {
 
     @Inject

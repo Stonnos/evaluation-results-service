@@ -7,7 +7,7 @@ import com.ers.model.EvaluationResultsInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
@@ -19,7 +19,10 @@ import java.util.UUID;
  * @author Roman Batygin
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@Import({EvaluationResultsRequestMapperImpl.class, ClassificationCostsReportMapperImpl.class,
+        ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
+        EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
+        RocCurveReportMapperImpl.class})
 public class EvaluationResultsRequestMapperTest {
 
     @Inject
