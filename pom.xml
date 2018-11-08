@@ -28,7 +28,6 @@
         <jackson.version>2.9.1</jackson.version>
         <hibernate.version>5.3.6.Final</hibernate.version>
         <org.apache.commons.lang3.version>3.0</org.apache.commons.lang3.version>
-        <apache.commons.lang.version>2.6</apache.commons.lang.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <powermock.version>1.7.3</powermock.version>
         <inject.version>1</inject.version>
