@@ -62,7 +62,7 @@ public class ClassifierOptionsService {
         } else {
             EvaluationMethodReport evaluationMethodReport = classifierOptionsRequest.getEvaluationMethodReport();
             List<ClassifierOptionsInfo> classifierOptionsInfoList;
-            PageRequest pageRequest = new PageRequest(0, serviceConfig.getResultSize());
+            PageRequest pageRequest = PageRequest.of(0, serviceConfig.getResultSize());
             switch (evaluationMethodReport.getEvaluationMethod()) {
 
                 case TRAINING_DATA:
