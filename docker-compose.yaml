@@ -24,6 +24,7 @@ services:
     command: ["/wait-for-it.sh", "ers-db:5432", "--timeout=45", "--", "catalina.sh", "run"]
     environment:
       TZ: "Asia/Novosibirsk"
+      SPRING_PROFILES_ACTIVE: "docker"
     ports:
       - "8081:8080"
     networks:

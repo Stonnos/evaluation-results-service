@@ -30,6 +30,7 @@ Evaluation results service v1.2
     * service-config.dataStoragePath - путь к директории на файловой системе для хранения xml - файлов с
     обучающими выборками, которые использовались для определения основных показателей точности классификации
     * service-config.fileFormat - формат xml - файлы с обучающей выборкой
+    * service-config.resultSize - число наилучших конфигураций классификаторов
 
 Инструкция по развертыванию
 ----------------------------------------
@@ -60,9 +61,5 @@ mvn clean install dockerfile:build
 docker-compose up
 
 ВАЖНО! Данную команду необходимо выполнять из корневой папки проекта.
-
-Для развертывания окружения на production, в файле application.yml необходимо установить следующие параметры:
-
-  * spring.datasource.url=jdbc:postgresql://ers-db:5432/evaluation_results_storage
 
    

@@ -1,0 +1,21 @@
+spring:
+  ## Datasource properties
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ers-db:5432/evaluation_results_storage
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+
+web-service-config:
+  wsdlConfig:
+    portTypeName: EvaluationResultsPort
+    locationUri: /ws
+    targetNamespace: http://schemas.xmlsoap.org/soap/envelope/
+
+service-config:
+  dataStoragePath: /home/evaluationResultsStorage
+
