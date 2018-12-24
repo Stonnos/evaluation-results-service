@@ -14,6 +14,9 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  liquibase:
+    contexts: schema,data
+    change-log: classpath:db/liquibase-changelog.xml
 
 web-service-config:
   wsdlConfig:
@@ -23,7 +26,5 @@ web-service-config:
   xsdSchema: evaluation-results.xsd
 
 service-config:
-  dataStoragePath: /home/evaluationResultsStorage
-  fileFormat: data%d.xml
   resultSize: 5
 

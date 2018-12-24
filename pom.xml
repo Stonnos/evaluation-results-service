@@ -35,6 +35,7 @@
         <jacoco-plugin.version>0.7.7.201606060606</jacoco-plugin.version>
         <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
         <maven-plugin.version>3.2.0</maven-plugin.version>
+        <liquibase.version>3.6.2</liquibase.version>
     </properties>
 
     <dependencies>
@@ -80,6 +81,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postresql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <dependency>

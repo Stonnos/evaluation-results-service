@@ -9,16 +9,24 @@ import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
-import com.ers.util.FileUtils;
 import com.ers.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
+import org.springframework.xml.transform.StringResult;
+import org.w3c.dom.Document;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,6 +62,29 @@ public class EvaluationResultsService {
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
         this.instancesInfoRepository = instancesInfoRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+        List<InstancesInfo> instancesInfoList = instancesInfoRepository.findByDataPathIsNotNull();
+        if (!CollectionUtils.isEmpty(instancesInfoList)) {
+            for (InstancesInfo instancesInfo : instancesInfoList) {
+                try {
+                    File file = new File(instancesInfo.getDataPath());
+                    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+                    Transformer transformer = TransformerFactory.newInstance().newTransformer();
+                    StringResult xmlData = new StringResult();
+                    transformer.transform(new DOMSource(document), xmlData);
+                    instancesInfo.setXmlData(xmlData.toString());
+                    instancesInfo.setDataPath(null);
+                    log.info("Instances#{}: expected {}, actual {}", instancesInfo.getId(), instancesInfo
+                            .getDataMd5Hash(), DigestUtils.md5Digest(instancesInfo.getXmlData().getBytes()));
+                    instancesInfoRepository.save(instancesInfo);
+                } catch (Exception ex) {
+                    log.error("There was an error for instances {}: {}", instancesInfo.getId(), ex.getMessage());
+                }
+            }
+        }
     }
 
     /**
@@ -106,7 +137,7 @@ public class EvaluationResultsService {
                 if (instancesInfo != null) {
                     evaluationResultsInfo.setInstances(instancesInfo);
                 } else {
-                    saveXmlData(evaluationResultsInfo, xmlData);
+                    evaluationResultsInfo.getInstances().setXmlData(xmlData);
                     evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
                     instancesInfoRepository.save(evaluationResultsInfo.getInstances());
                 }
@@ -114,12 +145,5 @@ public class EvaluationResultsService {
                 instancesInfoRepository.save(evaluationResultsInfo.getInstances());
             }
         }
-    }
-
-    private void saveXmlData(EvaluationResultsInfo evaluationResultsInfo, String xmlData) {
-        File xmlDataFile = new File(serviceConfig.getDataStoragePath(),
-                String.format(serviceConfig.getFileFormat(), System.currentTimeMillis()));
-        FileUtils.saveXmlToFile(xmlData, xmlDataFile);
-        evaluationResultsInfo.getInstances().setDataPath(xmlDataFile.getAbsolutePath());
     }
 }

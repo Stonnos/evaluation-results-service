@@ -30,6 +30,12 @@ public class InstancesInfo {
     private String dataPath;
 
     /**
+     * Xml data string
+     */
+    @Column(name = "xml_data", columnDefinition = "text")
+    private String xmlData;
+
+    /**
      * Data MD5 hash
      */
     @Column(name = "data_md5_hash")

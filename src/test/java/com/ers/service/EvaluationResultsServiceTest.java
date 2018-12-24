@@ -17,15 +17,10 @@ import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
-import com.ers.util.FileUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
@@ -42,14 +37,12 @@ import java.util.UUID;
  *
  * @author Roman Batygin
  */
+@RunWith(SpringRunner.class)
 @AutoConfigureDataJpa
 @EnableJpaRepositories(basePackageClasses = EvaluationResultsInfoRepository.class)
 @EntityScan(basePackageClasses = EvaluationResultsInfo.class)
 @EnableConfigurationProperties
 @TestPropertySource("classpath:application.properties")
-@RunWith(PowerMockRunner.class)
-@PowerMockRunnerDelegate(SpringRunner.class)
-@PrepareForTest(FileUtils.class)
 @Import({ServiceConfig.class, EvaluationResultsRequestMapperImpl.class,
         ClassificationCostsReportMapperImpl.class, ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
@@ -67,7 +60,6 @@ public class EvaluationResultsServiceTest {
     public void init() {
         evaluationResultsInfoRepository.deleteAll();
         instancesInfoRepository.deleteAll();
-        PowerMockito.mockStatic(FileUtils.class);
     }
 
     @Test

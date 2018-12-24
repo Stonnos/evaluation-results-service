@@ -3,6 +3,8 @@ package com.ers.repository;
 import com.ers.model.InstancesInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * Repository to manage with {@link InstancesInfo} persistence entity.
  *
@@ -17,4 +19,6 @@ public interface InstancesInfoRepository extends JpaRepository<InstancesInfo, Lo
      * @return instances info
      */
     InstancesInfo findByDataMd5Hash(String dataMd5Hash);
+
+    List<InstancesInfo> findByDataPathIsNotNull();
 }
