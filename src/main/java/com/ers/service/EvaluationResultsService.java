@@ -25,6 +25,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import java.io.File;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +38,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Service
 public class EvaluationResultsService {
+
+    private static final String UTF_8 = "UTF-8";
 
     private final ServiceConfig serviceConfig;
     private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
@@ -75,10 +78,8 @@ public class EvaluationResultsService {
                     Transformer transformer = TransformerFactory.newInstance().newTransformer();
                     StringResult xmlData = new StringResult();
                     transformer.transform(new DOMSource(document), xmlData);
-                    instancesInfo.setXmlData(xmlData.toString());
+                    instancesInfo.setXmlData(xmlData.toString().getBytes(Charset.forName(UTF_8)));
                     instancesInfo.setDataPath(null);
-                    log.info("Instances#{}: expected {}, actual {}", instancesInfo.getId(), instancesInfo
-                            .getDataMd5Hash(), DigestUtils.md5Digest(instancesInfo.getXmlData().getBytes()));
                     instancesInfoRepository.save(instancesInfo);
                 } catch (Exception ex) {
                     log.error("There was an error for instances {}: {}", instancesInfo.getId(), ex.getMessage());
@@ -132,12 +133,13 @@ public class EvaluationResultsService {
         if (evaluationResultsRequest.getInstances() != null) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
             if (!StringUtils.isEmpty(xmlData)) {
-                String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
+                byte[] xmlDataBytes = xmlData.getBytes(Charset.forName(UTF_8));
+                String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
                 InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
                 if (instancesInfo != null) {
                     evaluationResultsInfo.setInstances(instancesInfo);
                 } else {
-                    evaluationResultsInfo.getInstances().setXmlData(xmlData);
+                    evaluationResultsInfo.getInstances().setXmlData(xmlDataBytes);
                     evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
                     instancesInfoRepository.save(evaluationResultsInfo.getInstances());
                 }

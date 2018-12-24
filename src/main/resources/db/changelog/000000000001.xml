@@ -13,7 +13,7 @@
         </preConditions>
 
         <addColumn tableName="instances_info">
-            <column name="xml_data" type="text"/>
+            <column name="xml_data" type="oid"/>
         </addColumn>
     </changeSet>
 

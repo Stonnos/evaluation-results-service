@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -32,8 +33,9 @@ public class InstancesInfo {
     /**
      * Xml data string
      */
-    @Column(name = "xml_data", columnDefinition = "text")
-    private String xmlData;
+    @Lob
+    @Column(name = "xml_data")
+    private byte[] xmlData;
 
     /**
      * Data MD5 hash
