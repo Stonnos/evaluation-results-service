@@ -25,13 +25,7 @@ public class InstancesInfo {
     private Long id;
 
     /**
-     * Instances file path
-     */
-    @Column(name = "data_path")
-    private String dataPath;
-
-    /**
-     * Xml data string
+     * Xml data bytes
      */
     @Lob
     @Column(name = "xml_data")

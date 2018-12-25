@@ -13,20 +13,10 @@ import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
-import org.springframework.xml.transform.StringResult;
-import org.w3c.dom.Document;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import java.io.File;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -58,28 +48,6 @@ public class EvaluationResultsService {
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
         this.instancesInfoRepository = instancesInfoRepository;
-    }
-
-    @PostConstruct
-    public void init() {
-        List<InstancesInfo> instancesInfoList = instancesInfoRepository.findByDataPathIsNotNull();
-        if (!CollectionUtils.isEmpty(instancesInfoList)) {
-            for (InstancesInfo instancesInfo : instancesInfoList) {
-                try {
-                    File file = new File(instancesInfo.getDataPath());
-                    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-                    Transformer transformer = TransformerFactory.newInstance().newTransformer();
-                    StringResult xmlData = new StringResult();
-                    transformer.transform(new DOMSource(document), xmlData);
-                    instancesInfo.setXmlData(xmlData.toString().getBytes(Charsets.UTF_8));
-                    log.info("MD5 #{}: {}", instancesInfo.getId(), DigestUtils.md5DigestAsHex(instancesInfo.getXmlData()));
-                    instancesInfo.setDataPath(null);
-                    instancesInfoRepository.save(instancesInfo);
-                } catch (Exception ex) {
-                    log.error("There was an error for instances {}: {}", instancesInfo.getId(), ex.getMessage());
-                }
-            }
-        }
     }
 
     /**
@@ -123,7 +91,7 @@ public class EvaluationResultsService {
     }
 
     private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
-                                       EvaluationResultsInfo evaluationResultsInfo) {
+                                                           EvaluationResultsInfo evaluationResultsInfo) {
         if (evaluationResultsRequest.getInstances() != null) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
             if (!StringUtils.isEmpty(xmlData)) {
