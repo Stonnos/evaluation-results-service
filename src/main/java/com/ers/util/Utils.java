@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Utility class.
@@ -81,13 +80,26 @@ public class Utils {
     }
 
     /**
-     * Validates classifier options request.
+     * Validates classifier options request. Checks for not empty xml instances and not null evaluation method.
      *
      * @param request - classifier options request
      * @return {@code true} if classifier options request is valid
      */
     public static boolean validateClassifierOptionsRequest(ClassifierOptionsRequest request) {
         return Optional.ofNullable(request).map(ClassifierOptionsRequest::getInstances).isPresent() &&
+                !StringUtils.isEmpty(request.getInstances().getXmlInstances()) &&
+                Optional.ofNullable(request.getEvaluationMethodReport()).map(
+                        EvaluationMethodReport::getEvaluationMethod).isPresent();
+    }
+
+    /**
+     * Validates evaluation results request. Checks for not empty xml instances and not null evaluation method.
+     *
+     * @param request - classifier options request
+     * @return {@code true} if evaluation results request is valid
+     */
+    public static boolean validateEvaluationResultsRequest(EvaluationResultsRequest request) {
+        return Optional.ofNullable(request).map(EvaluationResultsRequest::getInstances).isPresent() &&
                 !StringUtils.isEmpty(request.getInstances().getXmlInstances()) &&
                 Optional.ofNullable(request.getEvaluationMethodReport()).map(
                         EvaluationMethodReport::getEvaluationMethod).isPresent();

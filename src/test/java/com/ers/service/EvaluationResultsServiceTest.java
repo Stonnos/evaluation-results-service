@@ -105,6 +105,16 @@ public class EvaluationResultsServiceTest {
     }
 
     @Test
+    public void testInvalidRequestParams() {
+        EvaluationResultsRequest request = new EvaluationResultsRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        evaluationResultsService.saveEvaluationResults(request);
+        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_PARAMS);
+    }
+
+    @Test
     public void testDataCache() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         evaluationResultsService.saveEvaluationResults(request);

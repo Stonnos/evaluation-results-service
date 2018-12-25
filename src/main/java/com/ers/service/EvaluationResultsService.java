@@ -11,13 +11,15 @@ import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.ers.util.Utils.hasRequestId;
+import static com.ers.util.Utils.validateEvaluationResultsRequest;
 
 /**
  * Implements service for saving evaluation results into database.
@@ -58,9 +60,12 @@ public class EvaluationResultsService {
      */
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsRequest evaluationResultsRequest) {
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        if (!Utils.hasRequestId(evaluationResultsRequest)) {
+        if (!hasRequestId(evaluationResultsRequest)) {
             log.error("Request id isn't specified!");
             responseStatus = ResponseStatus.INVALID_REQUEST_ID;
+        } else if (!validateEvaluationResultsRequest(evaluationResultsRequest)) {
+            log.error("Required request params isn't specified!");
+            responseStatus = ResponseStatus.INVALID_REQUEST_PARAMS;
         } else {
             log.info("Starting to save evaluation results report with request id = {}.",
                     evaluationResultsRequest.getRequestId());
@@ -94,18 +99,14 @@ public class EvaluationResultsService {
                                                            EvaluationResultsInfo evaluationResultsInfo) {
         if (evaluationResultsRequest.getInstances() != null) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
-            if (!StringUtils.isEmpty(xmlData)) {
-                byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
-                String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
-                InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
-                if (instancesInfo != null) {
-                    evaluationResultsInfo.setInstances(instancesInfo);
-                } else {
-                    evaluationResultsInfo.getInstances().setXmlData(xmlDataBytes);
-                    evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
-                    instancesInfoRepository.save(evaluationResultsInfo.getInstances());
-                }
+            byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
+            String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
+            InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
+            if (instancesInfo != null) {
+                evaluationResultsInfo.setInstances(instancesInfo);
             } else {
+                evaluationResultsInfo.getInstances().setXmlData(xmlDataBytes);
+                evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
                 instancesInfoRepository.save(evaluationResultsInfo.getInstances());
             }
         }
