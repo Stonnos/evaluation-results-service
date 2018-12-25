@@ -1,7 +1,6 @@
 package com.ers.service;
 
 import com.ers.TestHelperUtils;
-import com.ers.config.ServiceConfig;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
@@ -43,8 +42,8 @@ import java.util.UUID;
 @EntityScan(basePackageClasses = EvaluationResultsInfo.class)
 @EnableConfigurationProperties
 @TestPropertySource("classpath:application.properties")
-@Import({ServiceConfig.class, EvaluationResultsRequestMapperImpl.class,
-        ClassificationCostsReportMapperImpl.class, ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
+@Import({EvaluationResultsRequestMapperImpl.class, ClassificationCostsReportMapperImpl.class,
+        ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class})
 public class EvaluationResultsServiceTest {

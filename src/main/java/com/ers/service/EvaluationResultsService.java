@@ -1,6 +1,5 @@
 package com.ers.service;
 
-import com.ers.config.ServiceConfig;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
@@ -10,6 +9,7 @@ import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
+import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import java.io.File;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,9 +38,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class EvaluationResultsService {
 
-    private static final String UTF_8 = "UTF-8";
-
-    private final ServiceConfig serviceConfig;
     private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final InstancesInfoRepository instancesInfoRepository;
@@ -51,17 +47,14 @@ public class EvaluationResultsService {
     /**
      * Constructor with spring dependency injection.
      *
-     * @param serviceConfig                   - service config bean
      * @param evaluationResultsRequestMapper  - evaluation results request mapper bean
      * @param evaluationResultsInfoRepository - evaluation results info repository bean
      * @param instancesInfoRepository         - instances info repository bean
      */
     @Inject
-    public EvaluationResultsService(ServiceConfig serviceConfig,
-                                    EvaluationResultsRequestMapper evaluationResultsRequestMapper,
+    public EvaluationResultsService(EvaluationResultsRequestMapper evaluationResultsRequestMapper,
                                     EvaluationResultsInfoRepository evaluationResultsInfoRepository,
                                     InstancesInfoRepository instancesInfoRepository) {
-        this.serviceConfig = serviceConfig;
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
         this.instancesInfoRepository = instancesInfoRepository;
@@ -78,7 +71,8 @@ public class EvaluationResultsService {
                     Transformer transformer = TransformerFactory.newInstance().newTransformer();
                     StringResult xmlData = new StringResult();
                     transformer.transform(new DOMSource(document), xmlData);
-                    instancesInfo.setXmlData(xmlData.toString().getBytes(Charset.forName(UTF_8)));
+                    instancesInfo.setXmlData(xmlData.toString().getBytes(Charsets.UTF_8));
+                    log.info("MD5 #{}: {}", instancesInfo.getId(), DigestUtils.md5DigestAsHex(instancesInfo.getXmlData()));
                     instancesInfo.setDataPath(null);
                     instancesInfoRepository.save(instancesInfo);
                 } catch (Exception ex) {
@@ -133,7 +127,7 @@ public class EvaluationResultsService {
         if (evaluationResultsRequest.getInstances() != null) {
             String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
             if (!StringUtils.isEmpty(xmlData)) {
-                byte[] xmlDataBytes = xmlData.getBytes(Charset.forName(UTF_8));
+                byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
                 String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
                 InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
                 if (instancesInfo != null) {
