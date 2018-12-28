@@ -36,7 +36,6 @@ public class EvaluationResultsRequestMapperTest {
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(resultsRequest.getRequestId());
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts().size()).isEqualTo(
                 resultsRequest.getClassificationCosts().size());

@@ -20,12 +20,4 @@ public interface InstancesInfoRepository extends JpaRepository<InstancesInfo, Lo
      */
     @Query("select ins.id from InstancesInfo ins where ins.dataMd5Hash = :dataMd5Hash")
     Long findIdByDataMd5Hash(@Param("dataMd5Hash") String dataMd5Hash);
-
-    /**
-     * Finds instances info by MD5 hash.
-     *
-     * @param dataMd5Hash - data MD5 hash
-     * @return instances info
-     */
-    InstancesInfo findByDataMd5Hash(String dataMd5Hash);
 }

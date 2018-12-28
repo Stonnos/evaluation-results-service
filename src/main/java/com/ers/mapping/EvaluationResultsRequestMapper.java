@@ -12,7 +12,7 @@ import org.mapstruct.Mappings;
  * @author Roman Batygin
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class, StatisticsReportMapper.class,
-        EvaluationMethodMapper.class, InstancesMapper.class, ClassifierReportMapper.class})
+        EvaluationMethodMapper.class, ClassifierReportMapper.class})
 public interface EvaluationResultsRequestMapper {
 
     /**
@@ -26,7 +26,8 @@ public interface EvaluationResultsRequestMapper {
             @Mapping(source = "evaluationMethodReport.numFolds", target = "numFolds"),
             @Mapping(source = "evaluationMethodReport.numTests", target = "numTests"),
             @Mapping(source = "evaluationMethodReport.seed", target = "seed"),
-            @Mapping(source = "classifierReport", target = "classifierOptionsInfo")
+            @Mapping(source = "classifierReport", target = "classifierOptionsInfo"),
+            @Mapping(target = "instances", ignore = true)
     })
     EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
 

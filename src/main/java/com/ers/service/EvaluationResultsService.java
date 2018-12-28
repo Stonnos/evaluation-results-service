@@ -4,6 +4,7 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsRequestMapper;
+import com.ers.mapping.InstancesMapper;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
@@ -32,6 +33,7 @@ import static com.ers.util.Utils.validateEvaluationResultsRequest;
 public class EvaluationResultsService {
 
     private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
+    private final InstancesMapper instancesMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final InstancesInfoRepository instancesInfoRepository;
 
@@ -41,14 +43,17 @@ public class EvaluationResultsService {
      * Constructor with spring dependency injection.
      *
      * @param evaluationResultsRequestMapper  - evaluation results request mapper bean
+     * @param instancesMapper                 - instances mapper bean
      * @param evaluationResultsInfoRepository - evaluation results info repository bean
      * @param instancesInfoRepository         - instances info repository bean
      */
     @Inject
     public EvaluationResultsService(EvaluationResultsRequestMapper evaluationResultsRequestMapper,
+                                    InstancesMapper instancesMapper,
                                     EvaluationResultsInfoRepository evaluationResultsInfoRepository,
                                     InstancesInfoRepository instancesInfoRepository) {
         this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
+        this.instancesMapper = instancesMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
         this.instancesInfoRepository = instancesInfoRepository;
     }
@@ -103,14 +108,19 @@ public class EvaluationResultsService {
             String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
             byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
             String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
-            InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
-            if (instancesInfo != null) {
+            InstancesInfo instancesInfo;
+            Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);
+            if (instancesInfoId != null) {
+                instancesInfo = new InstancesInfo();
+                instancesInfo.setId(instancesInfoId);
                 evaluationResultsInfo.setInstances(instancesInfo);
             } else {
-                evaluationResultsInfo.getInstances().setXmlData(xmlDataBytes);
-                evaluationResultsInfo.getInstances().setDataMd5Hash(md5Hash);
-                instancesInfoRepository.save(evaluationResultsInfo.getInstances());
+                instancesInfo = instancesMapper.map(evaluationResultsRequest.getInstances());
+                instancesInfo.setXmlData(xmlDataBytes);
+                instancesInfo.setDataMd5Hash(md5Hash);
+                instancesInfoRepository.save(instancesInfo);
             }
+            evaluationResultsInfo.setInstances(instancesInfo);
         }
     }
 }
