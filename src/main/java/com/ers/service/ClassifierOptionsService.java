@@ -55,8 +55,8 @@ public class ClassifierOptionsService {
     public List<ClassifierOptionsInfo> findBestClassifierOptions(ClassifierOptionsRequest classifierOptionsRequest) {
         String xmlData = classifierOptionsRequest.getInstances().getXmlInstances();
         String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
-        InstancesInfo instancesInfo = instancesInfoRepository.findByDataMd5Hash(md5Hash);
-        if (instancesInfo == null) {
+        Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);
+        if (instancesInfoId == null) {
             throw new DataNotFoundException(String.format("Instances '%s' doesn't exists!",
                     classifierOptionsRequest.getInstances().getRelationName()));
         } else {
@@ -67,12 +67,12 @@ public class ClassifierOptionsService {
 
                 case TRAINING_DATA:
                     classifierOptionsInfoList =
-                            classifierOptionsInfoRepository.findTopClassifierOptions(instancesInfo, pageRequest);
+                            classifierOptionsInfoRepository.findTopClassifierOptions(instancesInfoId, pageRequest);
                     break;
 
                 case CROSS_VALIDATION:
                     classifierOptionsInfoList =
-                            classifierOptionsInfoRepository.findTopClassifierOptionsByCrossValidation(instancesInfo,
+                            classifierOptionsInfoRepository.findTopClassifierOptionsByCrossValidation(instancesInfoId,
                                     Utils.toInteger(evaluationMethodReport.getNumFolds()),
                                     Utils.toInteger(evaluationMethodReport.getNumTests()),
                                     Utils.toInteger(evaluationMethodReport.getSeed()), pageRequest);

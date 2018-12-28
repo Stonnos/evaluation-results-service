@@ -12,6 +12,7 @@ import com.ers.util.Utils;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
@@ -58,6 +59,7 @@ public class EvaluationResultsService {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results response
      */
+    @Transactional
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsRequest evaluationResultsRequest) {
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
         if (!hasRequestId(evaluationResultsRequest)) {
