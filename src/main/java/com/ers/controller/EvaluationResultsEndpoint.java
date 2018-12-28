@@ -95,7 +95,8 @@ public class EvaluationResultsEndpoint {
                     responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
                 } else {
                     log.info("{} best classifiers options has been found for data '{}', request id [{}]",
-                            classifierOptionsRequest.getInstances().getRelationName(), requestId);
+                            classifierOptionsInfoList.size(), classifierOptionsRequest.getInstances().getRelationName(),
+                            requestId);
                     return Utils.buildClassifierOptionsResponse(requestId,
                             classifierOptionsInfoMapper.map(classifierOptionsInfoList), responseStatus);
                 }
