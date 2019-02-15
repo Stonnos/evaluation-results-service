@@ -27,24 +27,16 @@ Evaluation results service v1.2
     * web-service-config.wsdlConfig.targetNamespace - целевое пространство имен схемы
     * web-service-config.wsdlConfig.xsdSchema: путь к xsd схеме
 3) service-config - основные настройки модуля
-    * service-config.dataStoragePath - путь к директории на файловой системе для хранения xml - файлов с
-    обучающими выборками, которые использовались для определения основных показателей точности классификации
-    * service-config.fileFormat - формат xml - файлы с обучающей выборкой
     * service-config.resultSize - число наилучших конфигураций классификаторов
 
 Инструкция по развертыванию
 ----------------------------------------
-    
-1. В файловой системе создать директорию, например, с именем evaluationResultsStorage.
-
-2. В настройке serviceConfig.dataStoragePath указать абсолютный путь к этой директории,
-   например, /home/roman/evaluationResultsStorage.
    
-3. Собрать проект с помощью системы сборки проекта maven. Ниже приведен пример команды:
+1. Собрать проект с помощью системы сборки проекта maven. Ниже приведен пример команды:
 
    mvn clean install
    
-4. Развернуть target/evaluation-results-service.war на одном из контейнеров сервлетов (например, Tomcat 8)
+2. Развернуть target/evaluation-results-service.war на одном из контейнеров сервлетов (например, Tomcat 8)
    с префиксом /evaluation-results-service.
    
 Инструкция по развертыванию в Docker
