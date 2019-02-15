@@ -113,7 +113,6 @@ public class EvaluationResultsService {
             if (instancesInfoId != null) {
                 instancesInfo = new InstancesInfo();
                 instancesInfo.setId(instancesInfoId);
-                evaluationResultsInfo.setInstances(instancesInfo);
             } else {
                 instancesInfo = instancesMapper.map(evaluationResultsRequest.getInstances());
                 instancesInfo.setXmlData(xmlDataBytes);
