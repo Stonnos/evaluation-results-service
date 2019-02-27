@@ -43,6 +43,7 @@ Evaluation results service v1.2
 -------------------------------------------------------
 
 1. Для Windows 10 достаточно скачать и установить дистрибутив Docker Desktop (https://www.docker.com/products/docker-desktop).
+
    Для Linux сначала необходимо установить Docker CE (https://docs.docker.com/install/linux/docker-ce/ubuntu/),
    затем Docker compose (https://docs.docker.com/compose/install/).
 
@@ -53,8 +54,7 @@ mvn clean install dockerfile:build
 3. Используя пакетный менеджер docker-compose, создать docker контейнеры с помощью команды:
 
 docker-compose up (для ОС семейства Linux)
+
 docker-compose -f docker-compose.yaml -f docker-compose.win10.yaml up (для Windows 10)
 
 ВАЖНО! Данную команду необходимо выполнять из корневой папки проекта.
-
-   
