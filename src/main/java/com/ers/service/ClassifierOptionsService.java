@@ -5,7 +5,6 @@ import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.exception.DataNotFoundException;
 import com.ers.model.ClassifierOptionsInfo;
-import com.ers.model.InstancesInfo;
 import com.ers.repository.ClassifierOptionsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
