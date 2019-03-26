@@ -1,19 +1,21 @@
 package com.ers.mapping;
 
 import com.ers.dto.EvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsSimpleResponse;
 import com.ers.model.EvaluationResultsInfo;
+import com.ers.projection.EvaluationResultsSimpleInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 /**
- * Implements mapping evaluation results request to evaluation results database model.
+ * Implements evaluation results mapper.
  *
  * @author Roman Batygin
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class, StatisticsReportMapper.class,
-        EvaluationMethodMapper.class, ClassifierReportMapper.class})
-public interface EvaluationResultsRequestMapper {
+        EvaluationMethodMapper.class, ClassifierReportMapper.class, ClassifierOptionsInfoMapper.class})
+public interface EvaluationResultsMapper {
 
     /**
      * Maps evaluation results request to evaluation results entity.
@@ -31,4 +33,18 @@ public interface EvaluationResultsRequestMapper {
     })
     EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
 
+    /**
+     * Maps evaluation results simple info to evaluation results response model.
+     *
+     * @param evaluationResultsSimpleInfo - evaluation results simple info
+     * @return evaluation results simple response
+     */
+    @Mappings({
+            @Mapping(source = "evaluationMethod", target = "evaluationMethodReport.evaluationMethod"),
+            @Mapping(source = "numFolds", target = "evaluationMethodReport.numFolds"),
+            @Mapping(source = "numTests", target = "evaluationMethodReport.numTests"),
+            @Mapping(source = "seed", target = "evaluationMethodReport.seed"),
+            @Mapping(source = "classifierOptionsInfo", target = "classifierReport")
+    })
+    GetEvaluationResultsSimpleResponse map(EvaluationResultsSimpleInfo evaluationResultsSimpleInfo);
 }

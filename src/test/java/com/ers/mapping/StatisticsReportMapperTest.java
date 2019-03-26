@@ -41,4 +41,26 @@ public class StatisticsReportMapperTest {
         Assertions.assertThat(statisticsInfo.getConfidenceIntervalUpperBound()).isEqualTo(
                 report.getConfidenceIntervalUpperBound());
     }
+
+    @Test
+    public void testMapStatisticsInfo() {
+        StatisticsInfo statisticsInfo = TestHelperUtils.buildStatisticsInfo();
+        StatisticsReport statisticsReport = statisticsReportMapper.map(statisticsInfo);
+        Assertions.assertThat(statisticsReport.getNumTestInstances().intValue()).isEqualTo(
+                statisticsInfo.getNumTestInstances());
+        Assertions.assertThat(statisticsReport.getNumCorrect().intValue()).isEqualTo(statisticsInfo.getNumCorrect());
+        Assertions.assertThat(statisticsReport.getNumIncorrect().intValue()).isEqualTo(
+                statisticsInfo.getNumIncorrect());
+        Assertions.assertThat(statisticsReport.getPctCorrect()).isEqualTo(statisticsInfo.getPctCorrect());
+        Assertions.assertThat(statisticsReport.getPctIncorrect()).isEqualTo(statisticsInfo.getPctIncorrect());
+        Assertions.assertThat(statisticsReport.getMeanAbsoluteError()).isEqualTo(statisticsInfo.getMeanAbsoluteError());
+        Assertions.assertThat(statisticsReport.getRootMeanSquaredError()).isEqualTo(
+                statisticsInfo.getRootMeanSquaredError());
+        Assertions.assertThat(statisticsReport.getMaxAucValue()).isEqualTo(statisticsInfo.getMaxAucValue());
+        Assertions.assertThat(statisticsReport.getVarianceError()).isEqualTo(statisticsInfo.getVarianceError());
+        Assertions.assertThat(statisticsReport.getConfidenceIntervalLowerBound()).isEqualTo(
+                statisticsInfo.getConfidenceIntervalLowerBound());
+        Assertions.assertThat(statisticsReport.getConfidenceIntervalUpperBound()).isEqualTo(
+                statisticsInfo.getConfidenceIntervalUpperBound());
+    }
 }

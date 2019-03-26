@@ -6,6 +6,8 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
+import com.ers.dto.GetEvaluationResultsSimpleRequest;
+import com.ers.dto.GetEvaluationResultsSimpleResponse;
 import com.ers.dto.ResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,6 +50,16 @@ public class Utils {
     }
 
     /**
+     * Checks existing of request id.
+     *
+     * @param evaluationResultsRequest - evaluation results request
+     * @return {@code true} if request id is not empty
+     */
+    public static boolean hasRequestId(GetEvaluationResultsSimpleRequest evaluationResultsRequest) {
+        return evaluationResultsRequest != null && !StringUtils.isEmpty(evaluationResultsRequest.getRequestId());
+    }
+
+    /**
      * Creates classifier options response.
      *
      * @param requestId      - request id
@@ -60,6 +72,21 @@ public class Utils {
         classifierOptionsResponse.setRequestId(requestId);
         classifierOptionsResponse.setStatus(responseStatus);
         return classifierOptionsResponse;
+    }
+
+    /**
+     * Creates evaluation results simple response.
+     *
+     * @param requestId      - request id
+     * @param responseStatus - response status
+     * @return evaluation results simple response
+     */
+    public static GetEvaluationResultsSimpleResponse buildEvaluationResultsResponse(String requestId,
+                                                                                    ResponseStatus responseStatus) {
+        GetEvaluationResultsSimpleResponse evaluationResultsSimpleResponse = new GetEvaluationResultsSimpleResponse();
+        evaluationResultsSimpleResponse.setRequestId(requestId);
+        evaluationResultsSimpleResponse.setStatus(responseStatus);
+        return evaluationResultsSimpleResponse;
     }
 
     /**

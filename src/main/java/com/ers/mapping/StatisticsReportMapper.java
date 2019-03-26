@@ -19,4 +19,12 @@ public interface StatisticsReportMapper {
      * @return statistics info entity
      */
     StatisticsInfo map(StatisticsReport statisticsReport);
+
+    /**
+     * Maps statistics info entity to statistics report.
+     *
+     * @param statisticsInfo - statistics info
+     * @return statistics report
+     */
+    StatisticsReport map(StatisticsInfo statisticsInfo);
 }

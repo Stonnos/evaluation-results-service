@@ -14,25 +14,25 @@ import javax.inject.Inject;
 import java.util.UUID;
 
 /**
- * Unit tests for checking {@link EvaluationResultsRequestMapper} functionality.
+ * Unit tests for checking {@link EvaluationResultsMapper} functionality.
  *
  * @author Roman Batygin
  */
 @RunWith(SpringRunner.class)
-@Import({EvaluationResultsRequestMapperImpl.class, ClassificationCostsReportMapperImpl.class,
+@Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
         EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
-        RocCurveReportMapperImpl.class})
-public class EvaluationResultsRequestMapperTest {
+        RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
+public class EvaluationResultsMapperTest {
 
     @Inject
-    private EvaluationResultsRequestMapper evaluationResultsRequestMapper;
+    private EvaluationResultsMapper evaluationResultsMapper;
 
     @Test
     public void testMapEvaluationResultsReport() {
         EvaluationResultsRequest resultsRequest =
                 TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        EvaluationResultsInfo evaluationResultsInfo = evaluationResultsRequestMapper.map(resultsRequest);
+        EvaluationResultsInfo evaluationResultsInfo = evaluationResultsMapper.map(resultsRequest);
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(resultsRequest.getRequestId());
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();

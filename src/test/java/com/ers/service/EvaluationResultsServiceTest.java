@@ -3,12 +3,16 @@ package com.ers.service;
 import com.ers.TestHelperUtils;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
+import com.ers.dto.GetEvaluationResultsSimpleRequest;
+import com.ers.dto.GetEvaluationResultsSimpleResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.ClassificationCostsReportMapperImpl;
+import com.ers.mapping.ClassifierOptionsInfoMapperImpl;
+import com.ers.mapping.ClassifierReportFactory;
 import com.ers.mapping.ClassifierReportMapperImpl;
 import com.ers.mapping.ConfusionMatrixMapperImpl;
 import com.ers.mapping.EvaluationMethodMapperImpl;
-import com.ers.mapping.EvaluationResultsRequestMapperImpl;
+import com.ers.mapping.EvaluationResultsMapperImpl;
 import com.ers.mapping.InstancesMapperImpl;
 import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
@@ -17,6 +21,7 @@ import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,10 +47,11 @@ import java.util.UUID;
 @EntityScan(basePackageClasses = EvaluationResultsInfo.class)
 @EnableConfigurationProperties
 @TestPropertySource("classpath:application.properties")
-@Import({EvaluationResultsRequestMapperImpl.class, ClassificationCostsReportMapperImpl.class,
+@Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
-        EvaluationResultsService.class, ClassifierReportMapperImpl.class})
+        EvaluationResultsService.class, ClassifierReportMapperImpl.class,
+        ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsServiceTest {
 
     @Inject
@@ -123,5 +129,52 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
         Assertions.assertThat(instancesInfoRepository.count()).isEqualTo(1);
+    }
+
+    @Test
+    public void testGetEvaluationResultsWithInvalidId() {
+        GetEvaluationResultsSimpleRequest request = TestHelperUtils.buildGetEvaluationResultsRequest(null);
+        GetEvaluationResultsSimpleResponse response =
+                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
+    }
+
+    @Test
+    public void testGetEvaluationResultsNotFound() {
+        GetEvaluationResultsSimpleRequest request =
+                TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
+        GetEvaluationResultsSimpleResponse response =
+                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.RESULTS_NOT_FOUND);
+    }
+
+    @Test
+    public void testGetEvaluationResults() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        EvaluationResultsResponse evaluationResultsResponse =
+                evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
+        Assertions.assertThat(evaluationResultsResponse).isNotNull();
+        Assertions.assertThat(evaluationResultsResponse.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
+        GetEvaluationResultsSimpleRequest request =
+                TestHelperUtils.buildGetEvaluationResultsRequest(evaluationResultsRequest.getRequestId());
+        GetEvaluationResultsSimpleResponse response =
+                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
+        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
+        Assertions.assertThat(response.getClassifierReport()).isNotNull();
+        Assertions.assertThat(response.getEvaluationMethodReport()).isNotNull();
+        Assertions.assertThat(response.getStatistics()).isNotNull();
+    }
+
+    @After
+    public void doAfter() {
+        evaluationResultsInfoRepository.deleteAll();
+        instancesInfoRepository.deleteAll();
     }
 }

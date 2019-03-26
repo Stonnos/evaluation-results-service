@@ -8,6 +8,7 @@ import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsSimpleRequest;
 import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.RocCurveReport;
@@ -139,6 +140,27 @@ public class TestHelperUtils {
     }
 
     /**
+     * Creates statistics info.
+     *
+     * @return statistics info
+     */
+    public static StatisticsInfo buildStatisticsInfo() {
+        StatisticsInfo statisticsInfo = new StatisticsInfo();
+        statisticsInfo.setPctCorrect(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setPctIncorrect(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setNumTestInstances(BigInteger.TEN.intValue());
+        statisticsInfo.setNumCorrect(BigInteger.ZERO.intValue());
+        statisticsInfo.setNumIncorrect(BigInteger.TEN.intValue());
+        statisticsInfo.setMeanAbsoluteError(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setRootMeanSquaredError(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setMaxAucValue(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setVarianceError(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setConfidenceIntervalLowerBound(BigDecimal.valueOf(Math.random()));
+        statisticsInfo.setConfidenceIntervalUpperBound(BigDecimal.valueOf(Math.random()));
+        return statisticsInfo;
+    }
+
+    /**
      * Creates evaluation method report.
      *
      * @param evaluationMethod - evaluation method
@@ -251,6 +273,18 @@ public class TestHelperUtils {
         evaluationResultsInfo.getStatistics().setMaxAucValue(maxAucValue);
         evaluationResultsInfo.getStatistics().setVarianceError(varianceError);
         return evaluationResultsInfo;
+    }
+
+    /**
+     * Creates evaluation results get request.
+     *
+     * @param requestId - request id
+     * @return evaluation results get request
+     */
+    public static GetEvaluationResultsSimpleRequest buildGetEvaluationResultsRequest(String requestId) {
+        GetEvaluationResultsSimpleRequest request = new GetEvaluationResultsSimpleRequest();
+        request.setRequestId(requestId);
+        return request;
     }
 
     private static void populateInputOptionsMap(InputOptionsMap inputOptionsMap) {

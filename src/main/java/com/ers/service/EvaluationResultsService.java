@@ -2,11 +2,14 @@ package com.ers.service;
 
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
+import com.ers.dto.GetEvaluationResultsSimpleRequest;
+import com.ers.dto.GetEvaluationResultsSimpleResponse;
 import com.ers.dto.ResponseStatus;
-import com.ers.mapping.EvaluationResultsRequestMapper;
+import com.ers.mapping.EvaluationResultsMapper;
 import com.ers.mapping.InstancesMapper;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
+import com.ers.projection.EvaluationResultsSimpleInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
@@ -20,6 +23,7 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.ers.util.Utils.buildEvaluationResultsResponse;
 import static com.ers.util.Utils.hasRequestId;
 import static com.ers.util.Utils.validateEvaluationResultsRequest;
 
@@ -32,7 +36,7 @@ import static com.ers.util.Utils.validateEvaluationResultsRequest;
 @Service
 public class EvaluationResultsService {
 
-    private final EvaluationResultsRequestMapper evaluationResultsRequestMapper;
+    private final EvaluationResultsMapper evaluationResultsMapper;
     private final InstancesMapper instancesMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final InstancesInfoRepository instancesInfoRepository;
@@ -42,17 +46,17 @@ public class EvaluationResultsService {
     /**
      * Constructor with spring dependency injection.
      *
-     * @param evaluationResultsRequestMapper  - evaluation results request mapper bean
+     * @param evaluationResultsMapper         - evaluation results mapper bean
      * @param instancesMapper                 - instances mapper bean
      * @param evaluationResultsInfoRepository - evaluation results info repository bean
      * @param instancesInfoRepository         - instances info repository bean
      */
     @Inject
-    public EvaluationResultsService(EvaluationResultsRequestMapper evaluationResultsRequestMapper,
+    public EvaluationResultsService(EvaluationResultsMapper evaluationResultsMapper,
                                     InstancesMapper instancesMapper,
                                     EvaluationResultsInfoRepository evaluationResultsInfoRepository,
                                     InstancesInfoRepository instancesInfoRepository) {
-        this.evaluationResultsRequestMapper = evaluationResultsRequestMapper;
+        this.evaluationResultsMapper = evaluationResultsMapper;
         this.instancesMapper = instancesMapper;
         this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
         this.instancesInfoRepository = instancesInfoRepository;
@@ -85,7 +89,7 @@ public class EvaluationResultsService {
                 } else {
                     try {
                         EvaluationResultsInfo evaluationResultsInfo =
-                                evaluationResultsRequestMapper.map(evaluationResultsRequest);
+                                evaluationResultsMapper.map(evaluationResultsRequest);
                         populateAndSaveInstancesInfo(evaluationResultsRequest, evaluationResultsInfo);
                         evaluationResultsInfo.setSaveDate(LocalDateTime.now());
                         evaluationResultsInfoRepository.save(evaluationResultsInfo);
@@ -100,6 +104,41 @@ public class EvaluationResultsService {
             cachedIds.remove(evaluationResultsRequest.getRequestId());
         }
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
+    }
+
+    /**
+     * Gets evaluation results simple response.
+     *
+     * @param request - evaluation results request
+     * @return evaluation results simple response
+     */
+    public GetEvaluationResultsSimpleResponse getEvaluationResultsSimpleResponse(
+            GetEvaluationResultsSimpleRequest request) {
+        log.info("Starting to get simple evaluation results for request id [{}]", request.getRequestId());
+        ResponseStatus responseStatus;
+        if (!hasRequestId(request)) {
+            log.error("Request id isn't specified!");
+            responseStatus = ResponseStatus.INVALID_REQUEST_ID;
+        } else {
+            try {
+                EvaluationResultsSimpleInfo evaluationResultsSimpleInfo =
+                        evaluationResultsInfoRepository.findEvaluationResultsSimpleInfo(request.getRequestId());
+                if (evaluationResultsSimpleInfo == null) {
+                    log.info("Evaluation results not found for request id [{}]", request.getRequestId());
+                    responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
+                } else {
+                    GetEvaluationResultsSimpleResponse response =
+                            evaluationResultsMapper.map(evaluationResultsSimpleInfo);
+                    response.setStatus(ResponseStatus.SUCCESS);
+                    log.info("Received simple evaluation results for request id [{}]", request.getRequestId());
+                    return response;
+                }
+            } catch (Exception ex) {
+                log.error(ex.getMessage());
+                responseStatus = ResponseStatus.ERROR;
+            }
+        }
+        return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
     }
 
     private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,

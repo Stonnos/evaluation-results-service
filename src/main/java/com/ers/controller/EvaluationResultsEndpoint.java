@@ -4,6 +4,8 @@ import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.ClassifierOptionsResponse;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
+import com.ers.dto.GetEvaluationResultsSimpleRequest;
+import com.ers.dto.GetEvaluationResultsSimpleResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.exception.DataNotFoundException;
 import com.ers.mapping.ClassifierOptionsInfoMapper;
@@ -34,6 +36,7 @@ public class EvaluationResultsEndpoint {
     private static final String NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
     private static final String EVALUATION_RESULTS_REQUEST_LOCAL_PART = "evaluationResultsRequest";
     private static final String CLASSIFIER_OPTIONS_REQUEST_LOCAL_PART = "classifierOptionsRequest";
+    private static final String GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART = "getEvaluationResultsSimpleRequest";
 
     private final EvaluationResultsService evaluationResultsService;
     private final ClassifierOptionsService classifierOptionsService;
@@ -65,6 +68,19 @@ public class EvaluationResultsEndpoint {
     @ResponsePayload
     public EvaluationResultsResponse save(@RequestPayload EvaluationResultsRequest evaluationResultsRequest) {
         return evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
+    }
+
+    /**
+     * Gets evaluation results simple report.
+     *
+     * @param request - get evaluation result request
+     * @return evaluation results response
+     */
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART)
+    @ResponsePayload
+    public GetEvaluationResultsSimpleResponse getEvaluationResultsSimpleResponse(
+            @RequestPayload GetEvaluationResultsSimpleRequest request) {
+        return evaluationResultsService.getEvaluationResultsSimpleResponse(request);
     }
 
     /**
