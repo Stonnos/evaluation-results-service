@@ -1,4 +1,4 @@
-Evaluation results service v1.2
+Evaluation results service v1.3
 ========================================
 
 Описание
