@@ -140,12 +140,12 @@ public class EvaluationResultsService {
         return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
     }
 
-    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
+    private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                               EvaluationResultsInfo evaluationResultsInfo) {
         String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
         byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
         String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
-        cachedDataMd5Hashes.put(md5Hash, new Object());
+        cachedDataMd5Hashes.putIfAbsent(md5Hash, new Object());
         synchronized (cachedDataMd5Hashes.get(md5Hash)) {
             InstancesInfo instancesInfo;
             Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);

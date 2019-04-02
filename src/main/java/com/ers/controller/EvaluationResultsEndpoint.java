@@ -2,13 +2,10 @@ package com.ers.controller;
 
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.ClassifierOptionsResponse;
-import com.ers.dto.EvaluationMethod;
-import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsSimpleRequest;
 import com.ers.dto.GetEvaluationResultsSimpleResponse;
-import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.exception.DataNotFoundException;
 import com.ers.mapping.ClassifierOptionsInfoMapper;
@@ -70,28 +67,7 @@ public class EvaluationResultsEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = EVALUATION_RESULTS_REQUEST_LOCAL_PART)
     @ResponsePayload
     public EvaluationResultsResponse save(@RequestPayload EvaluationResultsRequest evaluationResultsRequest) {
-        new Thread(() -> {
-            EvaluationResultsRequest resultsRequest = new EvaluationResultsRequest();
-            resultsRequest.setRequestId(UUID.randomUUID().toString());
-            resultsRequest.setEvaluationMethodReport(new EvaluationMethodReport());
-            resultsRequest.getEvaluationMethodReport().setEvaluationMethod(EvaluationMethod.CROSS_VALIDATION);
-            resultsRequest.setInstances(new InstancesReport());
-            resultsRequest.getInstances().setXmlInstances("XML data121");
-            EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(resultsRequest);
-            log.info(response.getStatus().name());
-        }).start();
-        new Thread(() -> {
-            EvaluationResultsRequest resultsRequest = new EvaluationResultsRequest();
-            resultsRequest.setRequestId(UUID.randomUUID().toString());
-            resultsRequest.setEvaluationMethodReport(new EvaluationMethodReport());
-            resultsRequest.getEvaluationMethodReport().setEvaluationMethod(EvaluationMethod.CROSS_VALIDATION);
-            resultsRequest.setInstances(new InstancesReport());
-            resultsRequest.getInstances().setXmlInstances("XML data121");
-            EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(resultsRequest);
-            log.info(response.getStatus().name());
-        }).start();
-        EvaluationResultsResponse resultsResponse = new EvaluationResultsResponse();
-        return resultsResponse;
+        return evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
     }
 
     /**
