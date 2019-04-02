@@ -16,7 +16,6 @@ import com.ers.util.Utils;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
@@ -41,7 +40,8 @@ public class EvaluationResultsService {
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final InstancesInfoRepository instancesInfoRepository;
 
-    private ConcurrentHashMap<String, Object> cachedIds = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Object> cachedRequestIds = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Object> cachedDataMd5Hashes = new ConcurrentHashMap<>();
 
     /**
      * Constructor with spring dependency injection.
@@ -68,7 +68,6 @@ public class EvaluationResultsService {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results response
      */
-    @Transactional
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsRequest evaluationResultsRequest) {
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
         if (!hasRequestId(evaluationResultsRequest)) {
@@ -80,8 +79,8 @@ public class EvaluationResultsService {
         } else {
             log.info("Starting to save evaluation results report with request id = {}.",
                     evaluationResultsRequest.getRequestId());
-            cachedIds.putIfAbsent(evaluationResultsRequest.getRequestId(), new Object());
-            synchronized (cachedIds.get(evaluationResultsRequest.getRequestId())) {
+            cachedRequestIds.putIfAbsent(evaluationResultsRequest.getRequestId(), new Object());
+            synchronized (cachedRequestIds.get(evaluationResultsRequest.getRequestId())) {
                 if (evaluationResultsInfoRepository.existsByRequestId(evaluationResultsRequest.getRequestId())) {
                     log.warn("Evaluation results with request id = {} is already exists!",
                             evaluationResultsRequest.getRequestId());
@@ -101,7 +100,7 @@ public class EvaluationResultsService {
                     }
                 }
             }
-            cachedIds.remove(evaluationResultsRequest.getRequestId());
+            cachedRequestIds.remove(evaluationResultsRequest.getRequestId());
         }
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
     }
@@ -141,12 +140,13 @@ public class EvaluationResultsService {
         return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
     }
 
-    private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
-                                                           EvaluationResultsInfo evaluationResultsInfo) {
-        if (evaluationResultsRequest.getInstances() != null) {
-            String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
-            byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
-            String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
+    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
+                                              EvaluationResultsInfo evaluationResultsInfo) {
+        String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
+        byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
+        String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
+        cachedDataMd5Hashes.put(md5Hash, new Object());
+        synchronized (cachedDataMd5Hashes.get(md5Hash)) {
             InstancesInfo instancesInfo;
             Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);
             if (instancesInfoId != null) {
@@ -160,5 +160,6 @@ public class EvaluationResultsService {
             }
             evaluationResultsInfo.setInstances(instancesInfo);
         }
+        cachedDataMd5Hashes.remove(md5Hash);
     }
 }
