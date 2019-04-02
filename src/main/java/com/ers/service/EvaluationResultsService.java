@@ -140,7 +140,7 @@ public class EvaluationResultsService {
         return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
     }
 
-    private synchronized void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
+    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                               EvaluationResultsInfo evaluationResultsInfo) {
         String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
         byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
