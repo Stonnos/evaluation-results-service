@@ -136,7 +136,7 @@ public class EvaluationResultsServiceTest {
         EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
-        Assertions.assertThat(instancesInfoRepository.count()).isEqualTo(1);
+        Assertions.assertThat(instancesInfoRepository.count()).isOne();
     }
 
     @Test
@@ -153,9 +153,7 @@ public class EvaluationResultsServiceTest {
         }
         finishedLatch.await();
         executorService.shutdownNow();
-        List<EvaluationResultsInfo> evaluationResultsInfoList = evaluationResultsInfoRepository.findAll();
-        Assertions.assertThat(evaluationResultsInfoList).isNotEmpty();
-        Assertions.assertThat(evaluationResultsInfoList.size()).isOne();
+        Assertions.assertThat(evaluationResultsInfoRepository.count()).isOne();
     }
 
     @Test
@@ -174,12 +172,8 @@ public class EvaluationResultsServiceTest {
         }
         finishedLatch.await();
         executorService.shutdownNow();
-        List<EvaluationResultsInfo> evaluationResultsInfoList = evaluationResultsInfoRepository.findAll();
-        Assertions.assertThat(evaluationResultsInfoList).isNotEmpty();
-        Assertions.assertThat(evaluationResultsInfoList.size()).isEqualTo(2);
-        List<InstancesInfo> instancesInfoList = instancesInfoRepository.findAll();
-        Assertions.assertThat(instancesInfoList).isNotEmpty();
-        Assertions.assertThat(instancesInfoList.size()).isOne();
+        Assertions.assertThat(evaluationResultsInfoRepository.count()).isEqualTo(2);
+        Assertions.assertThat(instancesInfoRepository.count()).isOne();
     }
 
 
