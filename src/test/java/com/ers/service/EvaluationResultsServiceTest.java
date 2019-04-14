@@ -5,6 +5,7 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsSimpleRequest;
 import com.ers.dto.GetEvaluationResultsSimpleResponse;
+import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.ClassificationCostsReportMapperImpl;
 import com.ers.mapping.ClassifierOptionsInfoMapperImpl;
@@ -18,6 +19,7 @@ import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
 import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
+import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.assertj.core.api.Assertions;
@@ -34,7 +36,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Unit tests for checking {@link EvaluationResultsService} functionality.
@@ -53,6 +59,8 @@ import java.util.UUID;
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsServiceTest {
+
+    private static final int NUM_THREADS = 2;
 
     @Inject
     private EvaluationResultsService evaluationResultsService;
@@ -130,6 +138,50 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
         Assertions.assertThat(instancesInfoRepository.count()).isEqualTo(1);
     }
+
+    @Test
+    public void testDuplicateRequestIdInMultiThreadEnvironment() throws Exception {
+        final String requestId = UUID.randomUUID().toString();
+        final CountDownLatch finishedLatch = new CountDownLatch(NUM_THREADS);
+        ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+        for (int i = 0; i < NUM_THREADS; i++) {
+            executorService.submit(() -> {
+                EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(requestId);
+                evaluationResultsService.saveEvaluationResults(request);
+                finishedLatch.countDown();
+            });
+        }
+        finishedLatch.await();
+        executorService.shutdownNow();
+        List<EvaluationResultsInfo> evaluationResultsInfoList = evaluationResultsInfoRepository.findAll();
+        Assertions.assertThat(evaluationResultsInfoList).isNotEmpty();
+        Assertions.assertThat(evaluationResultsInfoList.size()).isOne();
+    }
+
+    @Test
+    public void testDataCacheIdInMultiThreadEnvironment() throws Exception {
+        final CountDownLatch finishedLatch = new CountDownLatch(NUM_THREADS);
+        ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+        final InstancesReport instancesReport = TestHelperUtils.buildInstancesReport();
+        for (int i = 0; i < NUM_THREADS; i++) {
+            executorService.submit(() -> {
+                EvaluationResultsRequest request =
+                        TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+                request.setInstances(instancesReport);
+                evaluationResultsService.saveEvaluationResults(request);
+                finishedLatch.countDown();
+            });
+        }
+        finishedLatch.await();
+        executorService.shutdownNow();
+        List<EvaluationResultsInfo> evaluationResultsInfoList = evaluationResultsInfoRepository.findAll();
+        Assertions.assertThat(evaluationResultsInfoList).isNotEmpty();
+        Assertions.assertThat(evaluationResultsInfoList.size()).isEqualTo(2);
+        List<InstancesInfo> instancesInfoList = instancesInfoRepository.findAll();
+        Assertions.assertThat(instancesInfoList).isNotEmpty();
+        Assertions.assertThat(instancesInfoList.size()).isOne();
+    }
+
 
     @Test
     public void testGetEvaluationResultsWithInvalidId() {
