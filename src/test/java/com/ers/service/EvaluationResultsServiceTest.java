@@ -15,11 +15,12 @@ import com.ers.mapping.ConfusionMatrixMapperImpl;
 import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.mapping.EvaluationResultsMapperImpl;
 import com.ers.mapping.InstancesMapperImpl;
+import com.ers.mapping.RocCurveDataMapperImpl;
+import com.ers.mapping.RocCurvePointMapperImpl;
 import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
 import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
-import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.assertj.core.api.Assertions;
@@ -36,7 +37,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -57,7 +57,8 @@ import java.util.concurrent.Executors;
         ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
-        ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
+        ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class,
+        RocCurvePointMapperImpl.class, RocCurveDataMapperImpl.class})
 public class EvaluationResultsServiceTest {
 
     private static final int NUM_THREADS = 2;
@@ -98,6 +99,7 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).isNotNull();
     }
 
     @Test

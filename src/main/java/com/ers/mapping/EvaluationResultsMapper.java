@@ -13,8 +13,9 @@ import org.mapstruct.Mappings;
  *
  * @author Roman Batygin
  */
-@Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class, StatisticsReportMapper.class,
-        EvaluationMethodMapper.class, ClassifierReportMapper.class, ClassifierOptionsInfoMapper.class})
+@Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class,
+        StatisticsReportMapper.class, EvaluationMethodMapper.class, ClassifierReportMapper.class,
+        ClassifierOptionsInfoMapper.class, RocCurveDataMapper.class})
 public interface EvaluationResultsMapper {
 
     /**

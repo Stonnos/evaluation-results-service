@@ -132,4 +132,11 @@ public class EvaluationResultsInfo {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
     private List<ConfusionMatrix> confusionMatrix;
+
+    /**
+     * Roc curve data list
+     */
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluation_results_info_id", nullable = false)
+    private List<RocCurveDataEntity> rocCurveData;
 }

@@ -22,7 +22,8 @@ import java.util.UUID;
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
         EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
-        RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
+        RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class,
+        RocCurvePointMapperImpl.class, RocCurveDataMapperImpl.class})
 public class EvaluationResultsMapperTest {
 
     @Inject
@@ -37,11 +38,11 @@ public class EvaluationResultsMapperTest {
         Assertions.assertThat(evaluationResultsInfo.getEvaluationMethod()).isEqualTo(EvaluationMethod.CROSS_VALIDATION);
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getClassificationCosts().size()).isEqualTo(
-                resultsRequest.getClassificationCosts().size());
+        Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).hasSameSizeAs(
+                resultsRequest.getClassificationCosts());
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix().size()).isEqualTo(
-                resultsRequest.getConfusionMatrix().size());
+        Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).hasSameSizeAs(
+                resultsRequest.getConfusionMatrix());
         Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getNumFolds().intValue()).isEqualTo(
                 resultsRequest.getEvaluationMethodReport().getNumFolds().intValue());
@@ -49,5 +50,8 @@ public class EvaluationResultsMapperTest {
                 resultsRequest.getEvaluationMethodReport().getNumTests().intValue());
         Assertions.assertThat(evaluationResultsInfo.getSeed().intValue()).isEqualTo(
                 resultsRequest.getEvaluationMethodReport().getSeed().intValue());
+        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).hasSameSizeAs(
+                resultsRequest.getRocCurveData());
     }
 }

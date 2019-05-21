@@ -11,6 +11,8 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsSimpleRequest;
 import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
+import com.ers.dto.RocCurveData;
+import com.ers.dto.RocCurvePoint;
 import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
 import com.ers.model.ClassifierOptionsInfo;
@@ -38,6 +40,7 @@ public class TestHelperUtils {
     private static final int NUM_FOLDS = 10;
     private static final int NUM_TESTS = 1;
     private static final int SEED = 1;
+    private static final String CLASS_VALUE = "Class";
 
     /**
      * Creates evaluation results report.
@@ -55,6 +58,7 @@ public class TestHelperUtils {
         for (int i = 0; i < OPTIONS_SIZE; i++) {
             resultsRequest.getConfusionMatrix().add(buildConfusionMatrix());
             resultsRequest.getClassificationCosts().add(buildClassificationCostsReport());
+            resultsRequest.getRocCurveData().add(buildRocCurveData());
         }
         return resultsRequest;
     }
@@ -102,6 +106,33 @@ public class TestHelperUtils {
         classificationCostsReport.setFalsePositiveRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setRocCurve(buildRocCurveReport());
         return classificationCostsReport;
+    }
+
+    /**
+     * Creates roc curve data.
+     *
+     * @return roc curve data
+     */
+    public static RocCurveData buildRocCurveData() {
+        RocCurveData rocCurveData = new RocCurveData();
+        rocCurveData.setClassValue(CLASS_VALUE);
+        for (int i = 0; i < OPTIONS_SIZE; i++) {
+            rocCurveData.getPoints().add(buildRocCurvePoint());
+        }
+        return rocCurveData;
+    }
+
+    /**
+     * Creates roc curve point.
+     *
+     * @return roc curve point
+     */
+    public static RocCurvePoint buildRocCurvePoint() {
+        RocCurvePoint rocCurvePoint = new RocCurvePoint();
+        rocCurvePoint.setXValue(BigDecimal.ONE);
+        rocCurvePoint.setYValue(BigDecimal.ONE);
+        rocCurvePoint.setThresholdValue(BigDecimal.ONE);
+        return rocCurvePoint;
     }
 
     /**
