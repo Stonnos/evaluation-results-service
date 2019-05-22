@@ -33,5 +33,5 @@ public interface ConfusionMatrixMapper {
      * @param confusionMatrixReports - confusion matrix reports
      * @return confusion matrices entities
      */
-    List<ConfusionMatrix> mapList(List<ConfusionMatrixReport> confusionMatrixReports);
+    List<ConfusionMatrix> map(List<ConfusionMatrixReport> confusionMatrixReports);
 }

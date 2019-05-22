@@ -33,6 +33,6 @@ public interface ClassificationCostsReportMapper {
      * @param classificationCostsReports -  classification costs reports list
      * @return classification costs info list
      */
-    List<ClassificationCostsInfo> mapList(List<ClassificationCostsReport> classificationCostsReports);
+    List<ClassificationCostsInfo> map(List<ClassificationCostsReport> classificationCostsReports);
 
 }
