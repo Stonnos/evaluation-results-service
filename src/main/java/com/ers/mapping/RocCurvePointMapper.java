@@ -5,6 +5,7 @@ import com.ers.model.RocCurvePointEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Roc - curve point mapper.
@@ -26,7 +27,7 @@ public interface RocCurvePointMapper {
      * Maps roc - curve points dto list to its entities list.
      *
      * @param rocCurvePoints - roc curve points list
-     * @return roc curve points entites list
+     * @return roc curve points entities list
      */
-    List<RocCurvePointEntity> map(List<RocCurvePoint> rocCurvePoints);
+    Set<RocCurvePointEntity> map(List<RocCurvePoint> rocCurvePoints);
 }

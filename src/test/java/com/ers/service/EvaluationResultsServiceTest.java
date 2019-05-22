@@ -83,7 +83,7 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
         EvaluationResultsInfo evaluationResultsInfo =
-                evaluationResultsInfoRepository.findAll().stream().findFirst().orElse(null);
+                evaluationResultsInfoRepository.findByRequestId(request.getRequestId());
         Assertions.assertThat(evaluationResultsInfo).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getSaveDate()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getRequestId()).isEqualTo(request.getRequestId());
@@ -95,11 +95,16 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(evaluationResultsInfo.getSeed().intValue()).isEqualTo(
                 request.getEvaluationMethodReport().getSeed().intValue());
         Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getConfusionMatrix()).hasSameSizeAs(request.getConfusionMatrix());
         Assertions.assertThat(evaluationResultsInfo.getStatistics()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getClassificationCosts()).hasSameSizeAs(
+                request.getClassificationCosts());
         Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
+        //Assertion roc curve data
         Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).isNotNull();
+        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).hasSameSizeAs(request.getRocCurveData());
     }
 
     @Test

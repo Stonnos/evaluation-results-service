@@ -2,14 +2,10 @@ package com.ers.mapping;
 
 import com.ers.dto.ConfusionMatrixReport;
 import com.ers.model.ConfusionMatrix;
-import com.ers.model.EvaluationResultsInfo;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Context;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Confusion matrix mapper.
@@ -33,5 +29,5 @@ public interface ConfusionMatrixMapper {
      * @param confusionMatrixReports - confusion matrix reports
      * @return confusion matrices entities
      */
-    List<ConfusionMatrix> mapList(List<ConfusionMatrixReport> confusionMatrixReports);
+    Set<ConfusionMatrix> map(List<ConfusionMatrixReport> confusionMatrixReports);
 }

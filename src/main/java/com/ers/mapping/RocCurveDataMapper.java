@@ -5,6 +5,7 @@ import com.ers.model.RocCurveDataEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Roc - curve data mapper.
@@ -28,5 +29,5 @@ public interface RocCurveDataMapper {
      * @param rocCurveDataList - roc curve data list
      * @return roc curve data entities list
      */
-    List<RocCurveDataEntity> map(List<RocCurveData> rocCurveDataList);
+    Set<RocCurveDataEntity> map(List<RocCurveData> rocCurveDataList);
 }

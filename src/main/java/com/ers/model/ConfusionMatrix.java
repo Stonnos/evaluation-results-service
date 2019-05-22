@@ -1,13 +1,12 @@
 package com.ers.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +14,8 @@ import javax.persistence.Table;
  *
  * @author Roman Batygin
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "confusion_matrix")
 public class ConfusionMatrix {

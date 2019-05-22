@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Classification costs report mapper.
@@ -33,6 +34,6 @@ public interface ClassificationCostsReportMapper {
      * @param classificationCostsReports -  classification costs reports list
      * @return classification costs info list
      */
-    List<ClassificationCostsInfo> mapList(List<ClassificationCostsReport> classificationCostsReports);
+    Set<ClassificationCostsInfo> map(List<ClassificationCostsReport> classificationCostsReports);
 
 }

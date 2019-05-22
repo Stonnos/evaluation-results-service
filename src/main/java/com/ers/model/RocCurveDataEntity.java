@@ -1,6 +1,7 @@
 package com.ers.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,14 +11,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Roc curve data persistence entity.
  *
  * @author Roman Batygin
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "roc_curve_data_entity")
 public class RocCurveDataEntity {
@@ -37,5 +39,5 @@ public class RocCurveDataEntity {
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "roc_curve_data_id", nullable = false)
-    private List<RocCurvePointEntity> points;
+    private Set<RocCurvePointEntity> points;
 }

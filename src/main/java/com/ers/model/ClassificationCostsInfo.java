@@ -1,9 +1,9 @@
 package com.ers.model;
 
 import com.ers.util.FieldSize;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -11,8 +11,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 
@@ -21,7 +19,8 @@ import java.math.BigDecimal;
  *
  * @author Roman Batygin
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "classification_costs_info")
 public class ClassificationCostsInfo {

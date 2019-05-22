@@ -2,6 +2,7 @@ package com.ers.repository;
 
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.projection.EvaluationResultsSimpleInfo;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -32,4 +33,13 @@ public interface EvaluationResultsInfoRepository extends JpaRepository<Evaluatio
             "e.statistics as statistics, e.classifierOptionsInfo as classifierOptionsInfo " +
             "from EvaluationResultsInfo e where e.requestId = :requestId")
     EvaluationResultsSimpleInfo findEvaluationResultsSimpleInfo(@Param("requestId") String requestId);
+
+    /**
+     * Finds evaluation results info by request id
+     *
+     * @param requestId - request id
+     * @return evaluation results info
+     */
+    @EntityGraph(value = "evaluationResults", type = EntityGraph.EntityGraphType.FETCH)
+    EvaluationResultsInfo findByRequestId(String requestId);
 }

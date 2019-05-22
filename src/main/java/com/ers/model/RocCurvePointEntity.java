@@ -1,10 +1,10 @@
 package com.ers.model;
 
 import com.ers.util.FieldSize;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,7 +16,8 @@ import java.math.BigDecimal;
  *
  * @author Roman Batygin
  */
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "roc_curve_point_entity")
 public class RocCurvePointEntity {

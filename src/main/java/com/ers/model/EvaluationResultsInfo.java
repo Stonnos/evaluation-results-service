@@ -16,11 +16,14 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Evaluation results info persistence entity.
@@ -30,6 +33,16 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "evaluation_results_info", indexes = @Index(columnList = "request_id", name = "request_id_index"))
+@NamedEntityGraph(name = "evaluationResults",
+        attributeNodes = {
+                @NamedAttributeNode(value = "classificationCosts"),
+                @NamedAttributeNode(value = "confusionMatrix"),
+                @NamedAttributeNode(value = "rocCurveData", subgraph = "pointsValues")
+        },
+        subgraphs = {
+                @NamedSubgraph(name = "pointsValues", attributeNodes = {@NamedAttributeNode("points")})
+        }
+)
 public class EvaluationResultsInfo {
 
     @Id
@@ -124,19 +137,19 @@ public class EvaluationResultsInfo {
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
-    private List<ClassificationCostsInfo> classificationCosts;
+    private Set<ClassificationCostsInfo> classificationCosts;
 
     /**
      * Confusion matrix
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
-    private List<ConfusionMatrix> confusionMatrix;
+    private Set<ConfusionMatrix> confusionMatrix;
 
     /**
      * Roc curve data list
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
-    private List<RocCurveDataEntity> rocCurveData;
+    private Set<RocCurveDataEntity> rocCurveData;
 }
