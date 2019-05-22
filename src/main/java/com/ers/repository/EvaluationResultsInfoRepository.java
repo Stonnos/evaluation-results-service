@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository to manage with {@link EvaluationResultsInfo} persistence entity.
@@ -41,5 +42,6 @@ public interface EvaluationResultsInfoRepository extends JpaRepository<Evaluatio
      * @return evaluation results info
      */
     @EntityGraph(value = "evaluationResults", type = EntityGraph.EntityGraphType.FETCH)
+    @Transactional
     EvaluationResultsInfo findByRequestId(String requestId);
 }
