@@ -20,7 +20,9 @@ import com.ers.model.ClassifierOptionsInfo;
 import com.ers.model.ConfusionMatrix;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
+import com.ers.model.RocCurveDataEntity;
 import com.ers.model.RocCurveInfo;
+import com.ers.model.RocCurvePointEntity;
 import com.ers.model.StatisticsInfo;
 import com.google.common.base.Charsets;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -30,6 +32,8 @@ import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static com.google.common.collect.Sets.newHashSet;
 
 /**
  * Tests utility class.
@@ -173,6 +177,21 @@ public class TestHelperUtils {
     }
 
     /**
+     * Creates roc curve data entity.
+     *
+     * @return roc curve data entity
+     */
+    public static RocCurveDataEntity buildRocCurveDataEntity() {
+        RocCurveDataEntity rocCurveDataEntity = new RocCurveDataEntity();
+        rocCurveDataEntity.setClassValue(CLASS_VALUE);
+        rocCurveDataEntity.setPoints(newHashSet());
+        for (int i = 0; i < OPTIONS_SIZE; i++) {
+            rocCurveDataEntity.getPoints().add(buildRocCurvePointEntity());
+        }
+        return rocCurveDataEntity;
+    }
+
+    /**
      * Creates roc curve point.
      *
      * @return roc curve point
@@ -183,6 +202,19 @@ public class TestHelperUtils {
         rocCurvePoint.setYValue(BigDecimal.ONE);
         rocCurvePoint.setThresholdValue(BigDecimal.ONE);
         return rocCurvePoint;
+    }
+
+    /**
+     * Creates roc curve point entity.
+     *
+     * @return roc curve point entity
+     */
+    public static RocCurvePointEntity buildRocCurvePointEntity() {
+        RocCurvePointEntity rocCurvePointEntity = new RocCurvePointEntity();
+        rocCurvePointEntity.setXValue(BigDecimal.ONE);
+        rocCurvePointEntity.setYValue(BigDecimal.ONE);
+        rocCurvePointEntity.setThresholdValue(BigDecimal.ONE);
+        return rocCurvePointEntity;
     }
 
     /**

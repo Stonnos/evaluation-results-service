@@ -32,4 +32,14 @@ public class RocCurvePointMapperTest {
         Assertions.assertThat(rocCurvePointEntity.getYValue()).isEqualTo(rocCurvePoint.getYValue());
         Assertions.assertThat(rocCurvePointEntity.getThresholdValue()).isEqualTo(rocCurvePoint.getThresholdValue());
     }
+
+    @Test
+    public void testRocCurvePointEntityMap() {
+        RocCurvePointEntity rocCurvePointEntity = TestHelperUtils.buildRocCurvePointEntity();
+        RocCurvePoint rocCurvePoint = rocCurvePointMapper.map(rocCurvePointEntity);
+        Assertions.assertThat(rocCurvePoint).isNotNull();
+        Assertions.assertThat(rocCurvePoint.getXValue()).isEqualTo(rocCurvePointEntity.getXValue());
+        Assertions.assertThat(rocCurvePoint.getYValue()).isEqualTo(rocCurvePointEntity.getYValue());
+        Assertions.assertThat(rocCurvePoint.getThresholdValue()).isEqualTo(rocCurvePointEntity.getThresholdValue());
+    }
 }

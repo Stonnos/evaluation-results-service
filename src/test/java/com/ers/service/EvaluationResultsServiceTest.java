@@ -223,6 +223,10 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response.getClassifierReport()).isNotNull();
         Assertions.assertThat(response.getEvaluationMethodReport()).isNotNull();
         Assertions.assertThat(response.getStatistics()).isNotNull();
+        Assertions.assertThat(response.getClassificationCosts()).hasSameSizeAs(evaluationResultsRequest.getClassificationCosts());
+        Assertions.assertThat(response.getConfusionMatrix()).hasSameSizeAs(evaluationResultsRequest.getConfusionMatrix());
+        Assertions.assertThat(response.getRocCurveData()).hasSameSizeAs(evaluationResultsRequest.getRocCurveData());
+        Assertions.assertThat(response.getInstances()).isNotNull();
     }
 
     @After

@@ -31,4 +31,13 @@ public class RocCurveDataMapperTest {
         Assertions.assertThat(rocCurveDataEntity.getClassValue()).isEqualTo(rocCurveData.getClassValue());
         Assertions.assertThat(rocCurveDataEntity.getPoints()).hasSameSizeAs(rocCurveData.getPoints());
     }
+
+    @Test
+    public void testRocCurveDataEntityMap() {
+        RocCurveDataEntity rocCurveDataEntity = TestHelperUtils.buildRocCurveDataEntity();
+        RocCurveData rocCurveData = rocCurveDataMapper.map(rocCurveDataEntity);
+        Assertions.assertThat(rocCurveData).isNotNull();
+        Assertions.assertThat(rocCurveData.getClassValue()).isEqualTo(rocCurveDataEntity.getClassValue());
+        Assertions.assertThat(rocCurveData.getPoints()).hasSameSizeAs(rocCurveDataEntity.getPoints());
+    }
 }
