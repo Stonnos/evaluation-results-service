@@ -24,7 +24,7 @@ public class InstancesMapperTest {
     private InstancesMapper instancesMapper;
 
     @Test
-    public void testMapInstancesReport() throws Exception {
+    public void testMapInstancesReport() {
         InstancesReport report = TestHelperUtils.buildInstancesReport();
         InstancesInfo instancesInfo = instancesMapper.map(report);
         Assertions.assertThat(instancesInfo.getRelationName()).isEqualTo(report.getRelationName());
@@ -33,5 +33,19 @@ public class InstancesMapperTest {
                 report.getNumInstances().intValue());
         Assertions.assertThat(instancesInfo.getNumAttributes().intValue()).isEqualTo(
                 report.getNumAttributes().intValue());
+    }
+
+    @Test
+    public void testMapInstancesInfo() {
+        InstancesInfo instancesInfo = TestHelperUtils.buildInstancesInfo();
+        InstancesReport instancesReport = instancesMapper.map(instancesInfo);
+        Assertions.assertThat(instancesReport.getRelationName()).isEqualTo(instancesInfo.getRelationName());
+        Assertions.assertThat(instancesReport.getNumClasses().intValue()).isEqualTo(
+                instancesInfo.getNumClasses().intValue());
+        Assertions.assertThat(instancesReport.getNumInstances().intValue()).isEqualTo(
+                instancesInfo.getNumInstances().intValue());
+        Assertions.assertThat(instancesReport.getNumAttributes().intValue()).isEqualTo(
+                instancesInfo.getNumAttributes().intValue());
+        Assertions.assertThat(instancesReport.getXmlInstances()).isNotNull();
     }
 }

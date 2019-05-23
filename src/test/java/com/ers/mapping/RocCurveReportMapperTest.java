@@ -32,4 +32,14 @@ public class RocCurveReportMapperTest {
         Assertions.assertThat(rocCurveInfo.getSensitivity()).isEqualTo(rocCurveReport.getSensitivity());
         Assertions.assertThat(rocCurveInfo.getThresholdValue()).isEqualTo(rocCurveReport.getThresholdValue());
     }
+
+    @Test
+    public void testRocCurveInfoMap() {
+        RocCurveInfo rocCurveInfo = TestHelperUtils.buildRocCurveInfo();
+        RocCurveReport rocCurveReport = rocCurveReportMapper.map(rocCurveInfo);
+        Assertions.assertThat(rocCurveReport.getAucValue()).isEqualTo(rocCurveInfo.getAucValue());
+        Assertions.assertThat(rocCurveReport.getSpecificity()).isEqualTo(rocCurveInfo.getSpecificity());
+        Assertions.assertThat(rocCurveReport.getSensitivity()).isEqualTo(rocCurveInfo.getSensitivity());
+        Assertions.assertThat(rocCurveReport.getThresholdValue()).isEqualTo(rocCurveInfo.getThresholdValue());
+    }
 }

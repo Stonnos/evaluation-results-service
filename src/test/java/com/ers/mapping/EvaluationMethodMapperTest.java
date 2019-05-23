@@ -32,4 +32,16 @@ public class EvaluationMethodMapperTest {
         Assertions.assertThat(evaluationMethodMapper.map(EvaluationMethod.TRAINING_DATA)).isEqualTo(
                 com.ers.model.EvaluationMethod.TRAINING_DATA);
     }
+
+    @Test
+    public void testMapToCrossValidationMethodDto() {
+        Assertions.assertThat(evaluationMethodMapper.map(com.ers.model.EvaluationMethod.CROSS_VALIDATION)).isEqualTo(
+                EvaluationMethod.CROSS_VALIDATION);
+    }
+
+    @Test
+    public void testMapToTrainingDataMethodDto() {
+        Assertions.assertThat(evaluationMethodMapper.map(com.ers.model.EvaluationMethod.TRAINING_DATA)).isEqualTo(
+                EvaluationMethod.TRAINING_DATA);
+    }
 }

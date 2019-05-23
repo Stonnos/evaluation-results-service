@@ -22,6 +22,7 @@ import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.model.RocCurveInfo;
 import com.ers.model.StatisticsInfo;
+import com.google.common.base.Charsets;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;
@@ -44,6 +45,7 @@ public class TestHelperUtils {
     private static final int NUM_TESTS = 1;
     private static final int SEED = 1;
     private static final String CLASS_VALUE = "Class";
+    private static final String XML_DATA = "xmlData";
 
     /**
      * Creates evaluation results report.
@@ -80,6 +82,22 @@ public class TestHelperUtils {
         instancesReport.setNumClasses(BigInteger.TEN);
         instancesReport.setClassName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         return instancesReport;
+    }
+
+    /**
+     * Creates instances info.
+     *
+     * @return instances info
+     */
+    public static InstancesInfo buildInstancesInfo() {
+        InstancesInfo instancesInfo = new InstancesInfo();
+        instancesInfo.setXmlData(XML_DATA.getBytes(Charsets.UTF_8));
+        instancesInfo.setRelationName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesInfo.setNumInstances(BigInteger.TEN.intValue());
+        instancesInfo.setNumAttributes(BigInteger.TEN.intValue());
+        instancesInfo.setNumClasses(BigInteger.TEN.intValue());
+        instancesInfo.setClassName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        return instancesInfo;
     }
 
     /**
