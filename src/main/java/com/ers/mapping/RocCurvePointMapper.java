@@ -1,5 +1,6 @@
 package com.ers.mapping;
 
+import com.ers.dto.RocCurveData;
 import com.ers.dto.RocCurvePoint;
 import com.ers.model.RocCurvePointEntity;
 import org.mapstruct.Mapper;
@@ -30,4 +31,12 @@ public interface RocCurvePointMapper {
      * @return roc curve points entities list
      */
     Set<RocCurvePointEntity> map(List<RocCurvePoint> rocCurvePoints);
+
+    /**
+     * Maps roc - curve entity to its dto model.
+     *
+     * @param rocCurvePointEntity - roc - curve point entity
+     * @return roc - curve point dto
+     */
+    RocCurvePoint map(RocCurvePointEntity rocCurvePointEntity);
 }

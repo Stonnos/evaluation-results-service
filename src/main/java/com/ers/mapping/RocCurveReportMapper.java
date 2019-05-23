@@ -19,4 +19,12 @@ public interface RocCurveReportMapper {
      * @return roc - curve info
      */
     RocCurveInfo map(RocCurveReport rocCurveReport);
+
+    /**
+     * Maps roc - curve info to its dto model.
+     *
+     * @param rocCurveInfo - roc - curve info
+     * @return roc - curve dto
+     */
+    RocCurveReport map(RocCurveInfo rocCurveInfo);
 }

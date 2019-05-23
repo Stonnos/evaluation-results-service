@@ -18,4 +18,12 @@ public interface EvaluationMethodMapper {
      * @return evaluation method
      */
     EvaluationMethod map(com.ers.dto.EvaluationMethod evaluationMethod);
+
+    /**
+     * Maps evaluation method to dto model.
+     *
+     * @param evaluationMethod - evaluation method
+     * @return evaluation method dto enum
+     */
+    com.ers.dto.EvaluationMethod map(EvaluationMethod evaluationMethod);
 }

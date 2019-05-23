@@ -36,4 +36,14 @@ public interface ClassificationCostsReportMapper {
      */
     Set<ClassificationCostsInfo> map(List<ClassificationCostsReport> classificationCostsReports);
 
+    /**
+     * Maps classification costs entity to its dto model.
+     *
+     * @param classificationCostsInfo - classification costs entity
+     * @return classification costs dto
+     */
+    @Mappings({
+            @Mapping(source = "rocCurveInfo", target = "rocCurve")
+    })
+    ClassificationCostsReport map(ClassificationCostsInfo classificationCostsInfo);
 }

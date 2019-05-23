@@ -30,4 +30,12 @@ public interface RocCurveDataMapper {
      * @return roc curve data entities list
      */
     Set<RocCurveDataEntity> map(List<RocCurveData> rocCurveDataList);
+
+    /**
+     * Maps roc - curve entity to its dto model.
+     *
+     * @param rocCurveDataEntity - roc - curve data entity
+     * @return roc - curve data dto
+     */
+    RocCurveData map(RocCurveDataEntity rocCurveDataEntity);
 }

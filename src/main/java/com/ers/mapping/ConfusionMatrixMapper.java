@@ -30,4 +30,12 @@ public interface ConfusionMatrixMapper {
      * @return confusion matrices entities
      */
     Set<ConfusionMatrix> map(List<ConfusionMatrixReport> confusionMatrixReports);
+
+    /**
+     * Maps confusion matrix entity to its dto model.
+     *
+     * @param confusionMatrix - confusion matrix entity
+     * @return confusion matrix dto
+     */
+    ConfusionMatrixReport map(ConfusionMatrix confusionMatrix);
 }
