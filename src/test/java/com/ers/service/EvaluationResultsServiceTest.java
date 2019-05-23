@@ -3,8 +3,8 @@ package com.ers.service;
 import com.ers.TestHelperUtils;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
-import com.ers.dto.GetEvaluationResultsSimpleRequest;
-import com.ers.dto.GetEvaluationResultsSimpleResponse;
+import com.ers.dto.GetEvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.ClassificationCostsReportMapperImpl;
@@ -186,9 +186,9 @@ public class EvaluationResultsServiceTest {
 
     @Test
     public void testGetEvaluationResultsWithInvalidId() {
-        GetEvaluationResultsSimpleRequest request = TestHelperUtils.buildGetEvaluationResultsRequest(null);
-        GetEvaluationResultsSimpleResponse response =
-                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        GetEvaluationResultsRequest request = TestHelperUtils.buildGetEvaluationResultsRequest(null);
+        GetEvaluationResultsResponse response =
+                evaluationResultsService.getEvaluationResultsResponse(request);
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
@@ -196,10 +196,10 @@ public class EvaluationResultsServiceTest {
 
     @Test
     public void testGetEvaluationResultsNotFound() {
-        GetEvaluationResultsSimpleRequest request =
+        GetEvaluationResultsRequest request =
                 TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
-        GetEvaluationResultsSimpleResponse response =
-                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        GetEvaluationResultsResponse response =
+                evaluationResultsService.getEvaluationResultsResponse(request);
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.RESULTS_NOT_FOUND);
@@ -213,10 +213,10 @@ public class EvaluationResultsServiceTest {
                 evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
         Assertions.assertThat(evaluationResultsResponse).isNotNull();
         Assertions.assertThat(evaluationResultsResponse.getStatus()).isEqualTo(ResponseStatus.SUCCESS);
-        GetEvaluationResultsSimpleRequest request =
+        GetEvaluationResultsRequest request =
                 TestHelperUtils.buildGetEvaluationResultsRequest(evaluationResultsRequest.getRequestId());
-        GetEvaluationResultsSimpleResponse response =
-                evaluationResultsService.getEvaluationResultsSimpleResponse(request);
+        GetEvaluationResultsResponse response =
+                evaluationResultsService.getEvaluationResultsResponse(request);
         Assertions.assertThat(response).isNotNull();
         Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
         Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.SUCCESS);

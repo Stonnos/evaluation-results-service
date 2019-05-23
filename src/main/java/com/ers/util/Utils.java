@@ -6,8 +6,8 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
-import com.ers.dto.GetEvaluationResultsSimpleRequest;
-import com.ers.dto.GetEvaluationResultsSimpleResponse;
+import com.ers.dto.GetEvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,7 +55,7 @@ public class Utils {
      * @param evaluationResultsRequest - evaluation results request
      * @return {@code true} if request id is not empty
      */
-    public static boolean hasRequestId(GetEvaluationResultsSimpleRequest evaluationResultsRequest) {
+    public static boolean hasRequestId(GetEvaluationResultsRequest evaluationResultsRequest) {
         return evaluationResultsRequest != null && !StringUtils.isEmpty(evaluationResultsRequest.getRequestId());
     }
 
@@ -75,18 +75,18 @@ public class Utils {
     }
 
     /**
-     * Creates evaluation results simple response.
+     * Creates evaluation results response.
      *
      * @param requestId      - request id
      * @param responseStatus - response status
      * @return evaluation results simple response
      */
-    public static GetEvaluationResultsSimpleResponse buildEvaluationResultsResponse(String requestId,
-                                                                                    ResponseStatus responseStatus) {
-        GetEvaluationResultsSimpleResponse evaluationResultsSimpleResponse = new GetEvaluationResultsSimpleResponse();
-        evaluationResultsSimpleResponse.setRequestId(requestId);
-        evaluationResultsSimpleResponse.setStatus(responseStatus);
-        return evaluationResultsSimpleResponse;
+    public static GetEvaluationResultsResponse buildEvaluationResultsResponse(String requestId,
+                                                                              ResponseStatus responseStatus) {
+        GetEvaluationResultsResponse evaluationResultsResponse = new GetEvaluationResultsResponse();
+        evaluationResultsResponse.setRequestId(requestId);
+        evaluationResultsResponse.setStatus(responseStatus);
+        return evaluationResultsResponse;
     }
 
     /**

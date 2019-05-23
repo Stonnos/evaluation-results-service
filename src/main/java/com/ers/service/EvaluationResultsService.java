@@ -2,20 +2,20 @@ package com.ers.service;
 
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
-import com.ers.dto.GetEvaluationResultsSimpleRequest;
-import com.ers.dto.GetEvaluationResultsSimpleResponse;
+import com.ers.dto.GetEvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsMapper;
 import com.ers.mapping.InstancesMapper;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
-import com.ers.projection.EvaluationResultsSimpleInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
 import com.google.common.base.Charsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
@@ -106,30 +106,29 @@ public class EvaluationResultsService {
     }
 
     /**
-     * Gets evaluation results simple response.
+     * Gets evaluation results response.
      *
      * @param request - evaluation results request
      * @return evaluation results simple response
      */
-    public GetEvaluationResultsSimpleResponse getEvaluationResultsSimpleResponse(
-            GetEvaluationResultsSimpleRequest request) {
-        log.info("Starting to get simple evaluation results for request id [{}]", request.getRequestId());
+    @Transactional
+    public GetEvaluationResultsResponse getEvaluationResultsResponse(GetEvaluationResultsRequest request) {
+        log.info("Starting to get evaluation results for request id [{}]", request.getRequestId());
         ResponseStatus responseStatus;
         if (!hasRequestId(request)) {
             log.error("Request id isn't specified!");
             responseStatus = ResponseStatus.INVALID_REQUEST_ID;
         } else {
             try {
-                EvaluationResultsSimpleInfo evaluationResultsSimpleInfo =
-                        evaluationResultsInfoRepository.findEvaluationResultsSimpleInfo(request.getRequestId());
-                if (evaluationResultsSimpleInfo == null) {
+                EvaluationResultsInfo evaluationResultsInfo =
+                        evaluationResultsInfoRepository.findByRequestId(request.getRequestId());
+                if (evaluationResultsInfo == null) {
                     log.info("Evaluation results not found for request id [{}]", request.getRequestId());
                     responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
                 } else {
-                    GetEvaluationResultsSimpleResponse response =
-                            evaluationResultsMapper.map(evaluationResultsSimpleInfo);
+                    GetEvaluationResultsResponse response = evaluationResultsMapper.map(evaluationResultsInfo);
                     response.setStatus(ResponseStatus.SUCCESS);
-                    log.info("Received simple evaluation results for request id [{}]", request.getRequestId());
+                    log.info("Received evaluation results for request id [{}]", request.getRequestId());
                     return response;
                 }
             } catch (Exception ex) {

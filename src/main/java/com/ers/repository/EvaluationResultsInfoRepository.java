@@ -1,12 +1,8 @@
 package com.ers.repository;
 
 import com.ers.model.EvaluationResultsInfo;
-import com.ers.projection.EvaluationResultsSimpleInfo;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Repository to manage with {@link EvaluationResultsInfo} persistence entity.
@@ -24,24 +20,11 @@ public interface EvaluationResultsInfoRepository extends JpaRepository<Evaluatio
     boolean existsByRequestId(String requestId);
 
     /**
-     * Gets evaluation results simple info by request id
-     *
-     * @param requestId - request id
-     * @return evaluation results simple info
-     */
-    @Query("select e.requestId as requestId, e.evaluationMethod as evaluationMethod, e.numFolds as numFolds, " +
-            "e.numTests as numTests, e.seed as seed, " +
-            "e.statistics as statistics, e.classifierOptionsInfo as classifierOptionsInfo " +
-            "from EvaluationResultsInfo e where e.requestId = :requestId")
-    EvaluationResultsSimpleInfo findEvaluationResultsSimpleInfo(@Param("requestId") String requestId);
-
-    /**
      * Finds evaluation results info by request id
      *
      * @param requestId - request id
      * @return evaluation results info
      */
     @EntityGraph(value = "evaluationResults", type = EntityGraph.EntityGraphType.FETCH)
-    @Transactional
     EvaluationResultsInfo findByRequestId(String requestId);
 }

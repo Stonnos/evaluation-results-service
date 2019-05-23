@@ -8,7 +8,7 @@ import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
-import com.ers.dto.GetEvaluationResultsSimpleRequest;
+import com.ers.dto.GetEvaluationResultsRequest;
 import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.RocCurveData;
@@ -312,8 +312,8 @@ public class TestHelperUtils {
      * @param requestId - request id
      * @return evaluation results get request
      */
-    public static GetEvaluationResultsSimpleRequest buildGetEvaluationResultsRequest(String requestId) {
-        GetEvaluationResultsSimpleRequest request = new GetEvaluationResultsSimpleRequest();
+    public static GetEvaluationResultsRequest buildGetEvaluationResultsRequest(String requestId) {
+        GetEvaluationResultsRequest request = new GetEvaluationResultsRequest();
         request.setRequestId(requestId);
         return request;
     }

@@ -1,9 +1,8 @@
 package com.ers.mapping;
 
 import com.ers.dto.EvaluationResultsRequest;
-import com.ers.dto.GetEvaluationResultsSimpleResponse;
+import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.model.EvaluationResultsInfo;
-import com.ers.projection.EvaluationResultsSimpleInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -15,7 +14,7 @@ import org.mapstruct.Mappings;
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class,
         StatisticsReportMapper.class, EvaluationMethodMapper.class, ClassifierReportMapper.class,
-        ClassifierOptionsInfoMapper.class, RocCurveDataMapper.class})
+        ClassifierOptionsInfoMapper.class, RocCurveDataMapper.class, InstancesMapper.class})
 public interface EvaluationResultsMapper {
 
     /**
@@ -35,17 +34,18 @@ public interface EvaluationResultsMapper {
     EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
 
     /**
-     * Maps evaluation results simple info to evaluation results response model.
+     * Maps evaluation results entity to response dto.
      *
-     * @param evaluationResultsSimpleInfo - evaluation results simple info
-     * @return evaluation results simple response
+     * @param evaluationResultsInfo - evaluation results info entity
+     * @return evaluation results response
      */
     @Mappings({
             @Mapping(source = "evaluationMethod", target = "evaluationMethodReport.evaluationMethod"),
             @Mapping(source = "numFolds", target = "evaluationMethodReport.numFolds"),
             @Mapping(source = "numTests", target = "evaluationMethodReport.numTests"),
             @Mapping(source = "seed", target = "evaluationMethodReport.seed"),
-            @Mapping(source = "classifierOptionsInfo", target = "classifierReport")
+            @Mapping(source = "classifierOptionsInfo", target = "classifierReport"),
+
     })
-    GetEvaluationResultsSimpleResponse map(EvaluationResultsSimpleInfo evaluationResultsSimpleInfo);
+    GetEvaluationResultsResponse map(EvaluationResultsInfo evaluationResultsInfo);
 }
