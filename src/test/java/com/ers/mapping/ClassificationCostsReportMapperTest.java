@@ -2,6 +2,7 @@ package com.ers.mapping;
 
 import com.ers.TestHelperUtils;
 import com.ers.dto.ClassificationCostsReport;
+import com.ers.dto.RocCurveReport;
 import com.ers.model.ClassificationCostsInfo;
 import com.ers.model.RocCurveInfo;
 import org.assertj.core.api.Assertions;
@@ -43,5 +44,29 @@ public class ClassificationCostsReportMapperTest {
                 costsReport.getTrueNegativeRate());
         Assertions.assertThat(classificationCostsInfo.getTruePositiveRate()).isEqualTo(
                 costsReport.getTruePositiveRate());
+    }
+
+    @Test
+    public void testMapClassificationCostsInfo() {
+        ClassificationCostsInfo classificationCostsInfo = TestHelperUtils.buildClassificationCostsInfo();
+        ClassificationCostsReport costsReport = costsReportMapper.map(classificationCostsInfo);
+        Assertions.assertThat(costsReport.getClassValue()).isEqualTo(classificationCostsInfo.getClassValue());
+        RocCurveReport rocCurveReport = costsReport.getRocCurve();
+        Assertions.assertThat(rocCurveReport.getAucValue()).isEqualTo(
+                classificationCostsInfo.getRocCurveInfo().getAucValue());
+        Assertions.assertThat(rocCurveReport.getSpecificity()).isEqualTo(
+                classificationCostsInfo.getRocCurveInfo().getSpecificity());
+        Assertions.assertThat(rocCurveReport.getSensitivity()).isEqualTo(
+                classificationCostsInfo.getRocCurveInfo().getSensitivity());
+        Assertions.assertThat(rocCurveReport.getThresholdValue()).isEqualTo(
+                classificationCostsInfo.getRocCurveInfo().getThresholdValue());
+        Assertions.assertThat(costsReport.getFalseNegativeRate()).isEqualTo(
+                classificationCostsInfo.getFalseNegativeRate());
+        Assertions.assertThat(costsReport.getFalsePositiveRate()).isEqualTo(
+                classificationCostsInfo.getFalsePositiveRate());
+        Assertions.assertThat(costsReport.getTrueNegativeRate()).isEqualTo(
+                classificationCostsInfo.getTrueNegativeRate());
+        Assertions.assertThat(costsReport.getTruePositiveRate()).isEqualTo(
+                classificationCostsInfo.getTruePositiveRate());
     }
 }

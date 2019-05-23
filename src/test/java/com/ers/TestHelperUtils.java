@@ -15,9 +15,12 @@ import com.ers.dto.RocCurveData;
 import com.ers.dto.RocCurvePoint;
 import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
+import com.ers.model.ClassificationCostsInfo;
 import com.ers.model.ClassifierOptionsInfo;
+import com.ers.model.ConfusionMatrix;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
+import com.ers.model.RocCurveInfo;
 import com.ers.model.StatisticsInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -56,7 +59,7 @@ public class TestHelperUtils {
         resultsRequest.setClassifierReport(buildClassifierReport());
         resultsRequest.setStatistics(buildStatisticsReport());
         for (int i = 0; i < OPTIONS_SIZE; i++) {
-            resultsRequest.getConfusionMatrix().add(buildConfusionMatrix());
+            resultsRequest.getConfusionMatrix().add(buildConfusionMatrixReport());
             resultsRequest.getClassificationCosts().add(buildClassificationCostsReport());
             resultsRequest.getRocCurveData().add(buildRocCurveData());
         }
@@ -84,11 +87,24 @@ public class TestHelperUtils {
      *
      * @return confusion matrix report
      */
-    public static ConfusionMatrixReport buildConfusionMatrix() {
+    public static ConfusionMatrixReport buildConfusionMatrixReport() {
         ConfusionMatrixReport confusionMatrix = new ConfusionMatrixReport();
         confusionMatrix.setActualClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         confusionMatrix.setPredictedClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         confusionMatrix.setNumInstances(BigInteger.TEN);
+        return confusionMatrix;
+    }
+
+    /**
+     * Creates confusion matrix.
+     *
+     * @return confusion matrix
+     */
+    public static ConfusionMatrix buildConfusionMatrix() {
+        ConfusionMatrix confusionMatrix = new ConfusionMatrix();
+        confusionMatrix.setActualClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        confusionMatrix.setPredictedClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        confusionMatrix.setNumInstances(BigInteger.TEN.intValue());
         return confusionMatrix;
     }
 
@@ -106,6 +122,22 @@ public class TestHelperUtils {
         classificationCostsReport.setFalsePositiveRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setRocCurve(buildRocCurveReport());
         return classificationCostsReport;
+    }
+
+    /**
+     * Creates classification costs info.
+     *
+     * @return classification costs info
+     */
+    public static ClassificationCostsInfo buildClassificationCostsInfo() {
+        ClassificationCostsInfo classificationCostsInfo = new ClassificationCostsInfo();
+        classificationCostsInfo.setClassValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classificationCostsInfo.setFalseNegativeRate(BigDecimal.valueOf(Math.random()));
+        classificationCostsInfo.setTrueNegativeRate(BigDecimal.valueOf(Math.random()));
+        classificationCostsInfo.setTruePositiveRate(BigDecimal.valueOf(Math.random()));
+        classificationCostsInfo.setFalsePositiveRate(BigDecimal.valueOf(Math.random()));
+        classificationCostsInfo.setRocCurveInfo(buildRocCurveInfo());
+        return classificationCostsInfo;
     }
 
     /**
@@ -147,6 +179,20 @@ public class TestHelperUtils {
         rocCurveReport.setSensitivity(BigDecimal.valueOf(Math.random()));
         rocCurveReport.setThresholdValue(BigDecimal.valueOf(Math.random()));
         return rocCurveReport;
+    }
+
+    /**
+     * Creates roc - curve info.
+     *
+     * @return roc - curve info
+     */
+    public static RocCurveInfo buildRocCurveInfo() {
+        RocCurveInfo rocCurveInfo = new RocCurveInfo();
+        rocCurveInfo.setAucValue(BigDecimal.valueOf(Math.random()));
+        rocCurveInfo.setSpecificity(BigDecimal.valueOf(Math.random()));
+        rocCurveInfo.setSensitivity(BigDecimal.valueOf(Math.random()));
+        rocCurveInfo.setThresholdValue(BigDecimal.valueOf(Math.random()));
+        return rocCurveInfo;
     }
 
     /**
