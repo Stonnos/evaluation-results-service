@@ -2,11 +2,11 @@ package com.ers.mapping;
 
 import com.ers.dto.InstancesReport;
 import com.ers.model.InstancesInfo;
+import com.google.common.base.Charsets;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 /**
@@ -36,6 +36,6 @@ public abstract class InstancesMapper {
     @AfterMapping
     protected void mapXmlData(InstancesInfo instancesInfo, @MappingTarget InstancesReport instancesReport) {
         instancesReport.setXmlInstances(Optional.ofNullable(instancesInfo.getXmlData()).map(
-                data -> new String(data, StandardCharsets.UTF_8)).orElse(null));
+                data -> new String(data, Charsets.UTF_8)).orElse(null));
     }
 }
