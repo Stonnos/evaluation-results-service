@@ -18,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,11 +35,7 @@ import java.util.Set;
 @NamedEntityGraph(name = "evaluationResults",
         attributeNodes = {
                 @NamedAttributeNode(value = "classificationCosts"),
-                @NamedAttributeNode(value = "confusionMatrix"),
-                @NamedAttributeNode(value = "rocCurveData", subgraph = "pointsValues")
-        },
-        subgraphs = {
-                @NamedSubgraph(name = "pointsValues", attributeNodes = {@NamedAttributeNode("points")})
+                @NamedAttributeNode(value = "confusionMatrix")
         }
 )
 public class EvaluationResultsInfo {
@@ -145,11 +140,4 @@ public class EvaluationResultsInfo {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
     private Set<ConfusionMatrix> confusionMatrix;
-
-    /**
-     * Roc curve data list
-     */
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "evaluation_results_info_id", nullable = false)
-    private Set<RocCurveDataEntity> rocCurveData;
 }

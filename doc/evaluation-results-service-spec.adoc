@@ -104,7 +104,7 @@ Evaluation results service представляет собой SOAP веб - с�
 |2
 |instances
 |InstancesReport
-|-
+|+
 |Блок содержит информацию об обучающей выборке, на основе которой были получены результаты классификации
 |
 |3
@@ -116,7 +116,7 @@ Evaluation results service представляет собой SOAP веб - с�
 |4
 |evaluationMethodReport
 |EvaluationMethodReport
-|-
+|+
 |Блок содержит информацию о методе оценки точности классификатора
 |
 |5
@@ -136,12 +136,6 @@ Evaluation results service представляет собой SOAP веб - с�
 |ConfusionMatrixReport sequence
 |-
 |Структура матрицы классификации
-|
-|8
-|rocCurveData
-|RocCurveData sequence
-|-
-|Данные точек ROC - кривых для каждого класса
 |
 |===
 
@@ -240,7 +234,7 @@ Evaluation results service представляет собой SOAP веб - с�
 |1
 |evaluationMethod
 |EvaluationMethod
-|-
+|+
 |Метод оценки точности классификатора
 |Заполняется по по справочнику <<Справочник значений EvaluationMethod>>
 |2
@@ -435,50 +429,6 @@ Evaluation results service представляет собой SOAP веб - с�
 |
 |===
 
-==== 2.2.10. Описание полей блока RocCurveData
-
-[options="header"]
-|===
-|№|Название поля|Тип|Обязательное|Описание|Комментарий
-|1
-|classValue
-|string
-|-
-|Название класса
-|
-|2
-|points
-|RocCurvePoint sequence
-|-
-|Массив точек ROC - кривой для данного класса
-|
-|===
-
-==== 2.2.11. Описание полей блока RocCurvePoint
-
-[options="header"]
-|===
-|№|Название поля|Тип|Обязательное|Описание|Комментарий
-|1
-|xValue
-|decimal
-|-
-|Координата x (100 - Specificity)
-|
-|2
-|yValue
-|decimal
-|-
-|Координата y (Sensitivity)
-|
-|3
-|thresholdValue
-|decimal
-|-
-|Значения порога в данной точке
-|
-|===
-
 == 3. Описание формата ответа на запрос о сохранении результатов классификации
 
 === 3.1. Структура SOAP - ответа на запрос о сохранении результатов классификации
@@ -661,9 +611,9 @@ Evaluation results service представляет собой SOAP веб - с�
                   xmlns:evaluation="http://schemas.xmlsoap.org/soap/envelope/">
     <soapenv:Header/>
     <soapenv:Body>
-        <evaluation:getEvaluationResultsSimpleRequest>
+        <evaluation:getEvaluationResultsRequest>
             <evaluation:requestId>28d60dba-2130-49a5-9502-feae4f496638</evaluation:requestId>
-        </evaluation:getEvaluationResultsSimpleRequest>
+        </evaluation:getEvaluationResultsRequest>
     </soapenv:Body>
 </soapenv:Envelope>
 ----
@@ -690,12 +640,20 @@ Evaluation results service представляет собой SOAP веб - с�
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     <SOAP-ENV:Header/>
     <SOAP-ENV:Body>
-        <SOAP-ENV:getEvaluationResultsSimpleResponse>
-            <SOAP-ENV:requestId>28d60dba-2130-49a5-9502-feae4f496638</SOAP-ENV:requestId>
+        <SOAP-ENV:getEvaluationResultsResponse>
+            <SOAP-ENV:requestId>e9223fa5-4eba-4133-b10a-02c18cca706f</SOAP-ENV:requestId>
             <SOAP-ENV:status>SUCCESS</SOAP-ENV:status>
+            <SOAP-ENV:instances>
+                <SOAP-ENV:xmlInstances></SOAP-ENV:xmlInstances>
+                <SOAP-ENV:relationName>Glass</SOAP-ENV:relationName>
+                <SOAP-ENV:numInstances>214</SOAP-ENV:numInstances>
+                <SOAP-ENV:numAttributes>10</SOAP-ENV:numAttributes>
+                <SOAP-ENV:numClasses>6</SOAP-ENV:numClasses>
+                <SOAP-ENV:className>Type</SOAP-ENV:className>
+            </SOAP-ENV:instances>
             <SOAP-ENV:classifierReport>
                 <SOAP-ENV:classifierName>CART</SOAP-ENV:classifierName>
-                <SOAP-ENV:options>{"type":"decision_tree","decisionTreeType":"CART","minObj":2,"maxDepth":0,"randomTree":false,"numRandomAttr":0,"useBinarySplits":true,"useRandomSplits":false,"numRandomSplits":1,"seed":0,"additionalOptions":null}</SOAP-ENV:options>
+                <SOAP-ENV:options>{"type":"decision_tree","decisionTreeType":"CART","minObj":2,"maxDepth":0,"randomTree":false,"numRandomAttr":0,"useBinarySplits":true,"useRandomSplits":false,"numRandomSplits":1,"seed":1,"additionalOptions":null}</SOAP-ENV:options>
                 <SOAP-ENV:inputOptionsMap>
                     <SOAP-ENV:entry>
                         <SOAP-ENV:key>Случайное дерево:</SOAP-ENV:key>
@@ -719,30 +677,288 @@ Evaluation results service представляет собой SOAP веб - с�
                     </SOAP-ENV:entry>
                     <SOAP-ENV:entry>
                         <SOAP-ENV:key>Начальное значение (Seed)</SOAP-ENV:key>
-                        <SOAP-ENV:value>0</SOAP-ENV:value>
+                        <SOAP-ENV:value>1</SOAP-ENV:value>
                     </SOAP-ENV:entry>
                 </SOAP-ENV:inputOptionsMap>
             </SOAP-ENV:classifierReport>
             <SOAP-ENV:evaluationMethodReport>
                 <SOAP-ENV:evaluationMethod>CROSS_VALIDATION</SOAP-ENV:evaluationMethod>
-                <SOAP-ENV:numFolds>3</SOAP-ENV:numFolds>
+                <SOAP-ENV:numFolds>10</SOAP-ENV:numFolds>
                 <SOAP-ENV:numTests>1</SOAP-ENV:numTests>
                 <SOAP-ENV:seed>1</SOAP-ENV:seed>
             </SOAP-ENV:evaluationMethodReport>
             <SOAP-ENV:statistics>
-                <SOAP-ENV:numTestInstances>150</SOAP-ENV:numTestInstances>
-                <SOAP-ENV:numCorrect>141</SOAP-ENV:numCorrect>
-                <SOAP-ENV:numIncorrect>9</SOAP-ENV:numIncorrect>
-                <SOAP-ENV:pctCorrect>94.0000</SOAP-ENV:pctCorrect>
-                <SOAP-ENV:pctIncorrect>6.0000</SOAP-ENV:pctIncorrect>
-                <SOAP-ENV:meanAbsoluteError>0.0507</SOAP-ENV:meanAbsoluteError>
-                <SOAP-ENV:rootMeanSquaredError>0.1926</SOAP-ENV:rootMeanSquaredError>
-                <SOAP-ENV:maxAucValue>0.9800</SOAP-ENV:maxAucValue>
-                <SOAP-ENV:varianceError>0.0012</SOAP-ENV:varianceError>
-                <SOAP-ENV:confidenceIntervalLowerBound>-0.0261</SOAP-ENV:confidenceIntervalLowerBound>
-                <SOAP-ENV:confidenceIntervalUpperBound>0.1461</SOAP-ENV:confidenceIntervalUpperBound>
+                <SOAP-ENV:numTestInstances>214</SOAP-ENV:numTestInstances>
+                <SOAP-ENV:numCorrect>154</SOAP-ENV:numCorrect>
+                <SOAP-ENV:numIncorrect>60</SOAP-ENV:numIncorrect>
+                <SOAP-ENV:pctCorrect>71.9626</SOAP-ENV:pctCorrect>
+                <SOAP-ENV:pctIncorrect>28.0374</SOAP-ENV:pctIncorrect>
+                <SOAP-ENV:meanAbsoluteError>0.1090</SOAP-ENV:meanAbsoluteError>
+                <SOAP-ENV:rootMeanSquaredError>0.2884</SOAP-ENV:rootMeanSquaredError>
+                <SOAP-ENV:maxAucValue>0.8824</SOAP-ENV:maxAucValue>
+                <SOAP-ENV:varianceError>0.0066</SOAP-ENV:varianceError>
+                <SOAP-ENV:confidenceIntervalLowerBound>0.2224</SOAP-ENV:confidenceIntervalLowerBound>
+                <SOAP-ENV:confidenceIntervalUpperBound>0.3384</SOAP-ENV:confidenceIntervalUpperBound>
             </SOAP-ENV:statistics>
-        </SOAP-ENV:getEvaluationResultsSimpleResponse>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>containers</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.7692</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.0100</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.9900</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.2308</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.8687</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>0.9900</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.7692</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.8182</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>headlamps</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.7931</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.0162</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.9838</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.2069</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.8824</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>0.9622</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.8276</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.3333</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>tableware</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.5556</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.0049</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.9951</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.4444</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.7192</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>1.0000</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.5556</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.6667</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>vehic wind float</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.2941</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.0558</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.9442</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.7059</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.6687</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>0.9036</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.4706</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.2222</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>build wind non-float</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.6974</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.1594</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.8406</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.3026</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.7923</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>0.8043</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.7368</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.3333</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:classificationCosts>
+                <SOAP-ENV:classValue>build wind float</SOAP-ENV:classValue>
+                <SOAP-ENV:truePositiveRate>0.8286</SOAP-ENV:truePositiveRate>
+                <SOAP-ENV:falsePositiveRate>0.1458</SOAP-ENV:falsePositiveRate>
+                <SOAP-ENV:trueNegativeRate>0.8542</SOAP-ENV:trueNegativeRate>
+                <SOAP-ENV:falseNegativeRate>0.1714</SOAP-ENV:falseNegativeRate>
+                <SOAP-ENV:rocCurve>
+                    <SOAP-ENV:aucValue>0.8298</SOAP-ENV:aucValue>
+                    <SOAP-ENV:specificity>0.8750</SOAP-ENV:specificity>
+                    <SOAP-ENV:sensitivity>0.8143</SOAP-ENV:sensitivity>
+                    <SOAP-ENV:thresholdValue>0.6667</SOAP-ENV:thresholdValue>
+                </SOAP-ENV:rocCurve>
+            </SOAP-ENV:classificationCosts>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>9</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>23</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>5</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>2</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>53</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>10</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>12</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>7</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>2</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>58</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>2</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>vehic wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>5</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>containers</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>2</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>containers</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>2</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>5</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>7</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>build wind non-float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>3</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>build wind non-float</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>headlamps</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>tableware</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>vehic wind float</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>1</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+            <SOAP-ENV:confusionMatrix>
+                <SOAP-ENV:actualClass>headlamps</SOAP-ENV:actualClass>
+                <SOAP-ENV:predictedClass>tableware</SOAP-ENV:predictedClass>
+                <SOAP-ENV:numInstances>0</SOAP-ENV:numInstances>
+            </SOAP-ENV:confusionMatrix>
+        </SOAP-ENV:getEvaluationResultsResponse>
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 ----
@@ -765,36 +981,41 @@ Evaluation results service представляет собой SOAP веб - с�
 |Статус ответа
 |Заполняется по по справочнику <<Справочник значений ResponseStatus>>
 |3
+|instances
+|InstancesReport
+|+
+|Блок содержит информацию об обучающей выборке, на основе которой были получены результаты классификации
+|
+|4
 |classifierReport
 |ClassifierReport
 |-
 |Информация о классификаторе
 |
-|4
+|5
 |evaluationMethodReport
 |EvaluationMethodReport
-|-
+|+
 |Блок содержит информацию о методе оценки точности классификатора
 |
-|5
+|6
 |statistics
 |StatisticsReport
 |-
 |Блок с основными показателями точности классификатора
 |
-|===
-
-== Справочник значений EvaluationMethod
-
-[options="header"]
-|===
-|№|Значение|Описание
-|1
-|TRAINING_DATA
-|Использование всей обучающей выборки для оценки точности классификатора
-|2
-|CROSS_VALIDATION
-|Метод k * V - блочной кросс проверки на тестовой выборке
+|7
+|classificationCosts
+|ClassificationCostsReport sequence
+|-
+|Результаты классификации с учетом издержек
+|
+|8
+|confusionMatrix
+|ConfusionMatrixReport sequence
+|-
+|Структура матрицы классификации
+|
 |===
 
 == Справочник значений ResponseStatus

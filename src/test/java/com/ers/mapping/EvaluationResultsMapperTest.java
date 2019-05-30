@@ -22,8 +22,7 @@ import java.util.UUID;
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
         EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
-        RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class,
-        RocCurvePointMapperImpl.class, RocCurveDataMapperImpl.class})
+        RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsMapperTest {
 
     @Inject
@@ -50,8 +49,5 @@ public class EvaluationResultsMapperTest {
                 resultsRequest.getEvaluationMethodReport().getNumTests().intValue());
         Assertions.assertThat(evaluationResultsInfo.getSeed().intValue()).isEqualTo(
                 resultsRequest.getEvaluationMethodReport().getSeed().intValue());
-        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).hasSameSizeAs(
-                resultsRequest.getRocCurveData());
     }
 }

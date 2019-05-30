@@ -14,7 +14,7 @@ import org.mapstruct.Mappings;
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class,
         StatisticsReportMapper.class, EvaluationMethodMapper.class, ClassifierReportMapper.class,
-        ClassifierOptionsInfoMapper.class, RocCurveDataMapper.class, InstancesMapper.class})
+        ClassifierOptionsInfoMapper.class, InstancesMapper.class})
 public interface EvaluationResultsMapper {
 
     /**

@@ -15,8 +15,6 @@ import com.ers.mapping.ConfusionMatrixMapperImpl;
 import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.mapping.EvaluationResultsMapperImpl;
 import com.ers.mapping.InstancesMapperImpl;
-import com.ers.mapping.RocCurveDataMapperImpl;
-import com.ers.mapping.RocCurvePointMapperImpl;
 import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
 import com.ers.model.EvaluationMethod;
@@ -57,8 +55,7 @@ import java.util.concurrent.Executors;
         ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
-        ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class,
-        RocCurvePointMapperImpl.class, RocCurveDataMapperImpl.class})
+        ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsServiceTest {
 
     private static final int NUM_THREADS = 2;
@@ -102,9 +99,6 @@ public class EvaluationResultsServiceTest {
                 request.getClassificationCosts());
         Assertions.assertThat(evaluationResultsInfo.getClassifierOptionsInfo()).isNotNull();
         Assertions.assertThat(evaluationResultsInfo.getInstances()).isNotNull();
-        //Assertion roc curve data
-        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).isNotNull();
-        Assertions.assertThat(evaluationResultsInfo.getRocCurveData()).hasSameSizeAs(request.getRocCurveData());
     }
 
     @Test
@@ -225,7 +219,6 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response.getStatistics()).isNotNull();
         Assertions.assertThat(response.getClassificationCosts()).hasSameSizeAs(evaluationResultsRequest.getClassificationCosts());
         Assertions.assertThat(response.getConfusionMatrix()).hasSameSizeAs(evaluationResultsRequest.getConfusionMatrix());
-        Assertions.assertThat(response.getRocCurveData()).hasSameSizeAs(evaluationResultsRequest.getRocCurveData());
         Assertions.assertThat(response.getInstances()).isNotNull();
     }
 
