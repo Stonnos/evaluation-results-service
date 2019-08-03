@@ -1,4 +1,4 @@
-Evaluation results service v1.3
+Evaluation results service v1.4
 ========================================
 
 Описание
@@ -49,12 +49,12 @@ Evaluation results service v1.3
 
 2. Далее для сборки проекта и создания образа проекта нужно выполнить команду
 
-mvn clean install dockerfile:build
+    mvn clean install dockerfile:build
 
 3. Используя пакетный менеджер docker-compose, создать docker контейнеры с помощью команды:
 
-docker-compose up (для ОС семейства Linux)
+    docker-compose up (для ОС семейства Linux)
 
-docker-compose -f docker-compose.yaml -f docker-compose.win10.yaml up (для Windows 10)
+    docker-compose -f docker-compose.yaml -f docker-compose.win10.yaml up (для Windows 10)
 
 ВАЖНО! Данную команду необходимо выполнять из корневой папки проекта.
