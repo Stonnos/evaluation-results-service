@@ -25,7 +25,7 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <assertj.core.version>3.13.1</assertj.core.version>
         <mockito.version>1.10.19</mockito.version>
-        <org.apache.commons.lang3.version>3.0</org.apache.commons.lang3.version>
+        <org.apache.commons.lang3.version>3.7</org.apache.commons.lang3.version>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <powermock.version>1.7.3</powermock.version>
         <inject.version>1</inject.version>
@@ -33,7 +33,7 @@
         <jaxb2-maven-plugin.version>2.3</jaxb2-maven-plugin.version>
         <jacoco-plugin.version>0.7.7.201606060606</jacoco-plugin.version>
         <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
-        <liquibase.version>3.6.2</liquibase.version>
+        <liquibase.version>3.7.0</liquibase.version>
         <guava.version>22.0</guava.version>
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
     </properties>
