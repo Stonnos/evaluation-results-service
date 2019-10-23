@@ -9,6 +9,7 @@ import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
@@ -20,10 +21,8 @@ import java.util.Optional;
  *
  * @author Roman Batygin
  */
+@UtilityClass
 public class Utils {
-
-    private Utils() {
-    }
 
     /**
      * Creates evaluation results response.
