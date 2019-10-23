@@ -5,6 +5,7 @@ import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.InputOptionsMap;
 import com.ers.model.ClassifierOptionsInfo;
 import org.mapstruct.AfterMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Roman Batygin
  */
-@Mapper(uses = ClassifierReportFactory.class)
+@Mapper(uses = ClassifierReportFactory.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class ClassifierOptionsInfoMapper {
 
     /**

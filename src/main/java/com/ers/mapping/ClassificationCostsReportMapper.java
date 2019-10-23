@@ -2,6 +2,7 @@ package com.ers.mapping;
 
 import com.ers.dto.ClassificationCostsReport;
 import com.ers.model.ClassificationCostsInfo;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -14,7 +15,7 @@ import java.util.Set;
  *
  * @author Roman Batygin
  */
-@Mapper(uses = RocCurveReportMapper.class)
+@Mapper(uses = RocCurveReportMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface ClassificationCostsReportMapper {
 
     /**

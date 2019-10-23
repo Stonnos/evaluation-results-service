@@ -3,6 +3,7 @@ package com.ers.mapping;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.model.EvaluationResultsInfo;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -14,7 +15,7 @@ import org.mapstruct.Mappings;
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class,
         StatisticsReportMapper.class, EvaluationMethodMapper.class, ClassifierReportMapper.class,
-        ClassifierOptionsInfoMapper.class, InstancesMapper.class})
+        ClassifierOptionsInfoMapper.class, InstancesMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface EvaluationResultsMapper {
 
     /**
