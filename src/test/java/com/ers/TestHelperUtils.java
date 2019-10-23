@@ -21,6 +21,7 @@ import com.ers.model.InstancesInfo;
 import com.ers.model.RocCurveInfo;
 import com.ers.model.StatisticsInfo;
 import com.google.common.base.Charsets;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;
@@ -34,6 +35,7 @@ import java.util.Map;
  *
  * @author Roman Batygin
  */
+@UtilityClass
 public class TestHelperUtils {
 
     private static final int OPTIONS_SIZE = 5;
@@ -42,7 +44,6 @@ public class TestHelperUtils {
     private static final int NUM_FOLDS = 10;
     private static final int NUM_TESTS = 1;
     private static final int SEED = 1;
-    private static final String CLASS_VALUE = "Class";
     private static final String XML_DATA = "xmlData";
 
     /**
