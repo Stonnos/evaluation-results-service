@@ -1,6 +1,14 @@
 language: java
 jdk: openjdk8
-script: mvn clean install
+services:
+  - docker
+script: mvn clean install dockerfile:build -Ddocker.image.name=$IMAGE_NAME
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "feature/travis-docker" ]; then
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD;
+      docker tag $IMAGE_NAME $DOCKER_USERNAME/$DOCKER_REPOSITORY:$IMAGE_NAME;
+      docker push $DOCKER_USERNAME/$DOCKER_REPOSITORY:$IMAGE_NAME;
+    fi
 cache:
   directories:
     - $HOME/.m2
