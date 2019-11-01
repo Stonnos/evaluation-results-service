@@ -4,7 +4,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <include file="db/changelog/init-schema.xml"/>
-    <include file="db/changelog/add-xml-data-column.xml"/>
-    <include file="db/changelog/drop-data-path-column.xml"/>
+    <include file="db/changelog/v0-init-schema.xml"/>
+    <include file="db/changelog/v1-add-xml-data-column.xml"/>
+    <include file="db/changelog/v2-drop-data-path-column.xml"/>
 </databaseChangeLog>
