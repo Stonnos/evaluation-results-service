@@ -71,20 +71,11 @@
             </column>
             <column name="option_value" type="varchar(255)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="5" author="roman.batygin@mail.ru" context="schema">
-        <preConditions onFail="MARK_RAN">
-            <tableExists tableName="input_options"/>
-            <not>
-                <primaryKeyExists primaryKeyName="pk_input_options"/>
-            </not>
-        </preConditions>
         <addPrimaryKey constraintName="pk_input_options" tableName="input_options"
                        columnNames="classifier_options_info_id, option_name"/>
     </changeSet>
 
-    <changeSet id="6" author="roman.batygin@mail.ru" context="schema">
+    <changeSet id="5" author="roman.batygin@mail.ru" context="schema">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="evaluation_results_info"/>
@@ -122,7 +113,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="7" author="roman.batygin@mail.ru" context="schema">
+    <changeSet id="6" author="roman.batygin@mail.ru" context="schema">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="confusion_matrix"/>
@@ -142,7 +133,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="8" author="roman.batygin@mail.ru" context="schema">
+    <changeSet id="7" author="roman.batygin@mail.ru" context="schema">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="classification_costs_info"/>
