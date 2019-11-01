@@ -39,6 +39,6 @@ public class ConfusionMatrix {
     /**
      * Instances number
      */
-    @Column(name = "numInstances")
+    @Column(name = "num_instances")
     private Integer numInstances;
 }
