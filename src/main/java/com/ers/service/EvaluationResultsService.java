@@ -13,12 +13,12 @@ import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
 import com.google.common.base.Charsets;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,6 +33,7 @@ import static com.ers.util.Utils.validateEvaluationResultsRequest;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EvaluationResultsService {
 
     private final EvaluationResultsMapper evaluationResultsMapper;
@@ -42,25 +43,6 @@ public class EvaluationResultsService {
 
     private ConcurrentHashMap<String, Object> cachedRequestIds = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Object> cachedDataMd5Hashes = new ConcurrentHashMap<>();
-
-    /**
-     * Constructor with spring dependency injection.
-     *
-     * @param evaluationResultsMapper         - evaluation results mapper bean
-     * @param instancesMapper                 - instances mapper bean
-     * @param evaluationResultsInfoRepository - evaluation results info repository bean
-     * @param instancesInfoRepository         - instances info repository bean
-     */
-    @Inject
-    public EvaluationResultsService(EvaluationResultsMapper evaluationResultsMapper,
-                                    InstancesMapper instancesMapper,
-                                    EvaluationResultsInfoRepository evaluationResultsInfoRepository,
-                                    InstancesInfoRepository instancesInfoRepository) {
-        this.evaluationResultsMapper = evaluationResultsMapper;
-        this.instancesMapper = instancesMapper;
-        this.evaluationResultsInfoRepository = evaluationResultsInfoRepository;
-        this.instancesInfoRepository = instancesInfoRepository;
-    }
 
     /**
      * Saves evaluation results report into database.

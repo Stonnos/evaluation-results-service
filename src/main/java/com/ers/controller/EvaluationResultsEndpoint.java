@@ -13,6 +13,7 @@ import com.ers.model.ClassifierOptionsInfo;
 import com.ers.service.ClassifierOptionsService;
 import com.ers.service.EvaluationResultsService;
 import com.ers.util.Utils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -20,7 +21,6 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +31,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Endpoint
+@RequiredArgsConstructor
 public class EvaluationResultsEndpoint {
 
     private static final String NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
@@ -41,22 +42,6 @@ public class EvaluationResultsEndpoint {
     private final EvaluationResultsService evaluationResultsService;
     private final ClassifierOptionsService classifierOptionsService;
     private final ClassifierOptionsInfoMapper classifierOptionsInfoMapper;
-
-    /**
-     * Constructor with spring dependency injection.
-     *
-     * @param evaluationResultsService    - evaluation results service bean
-     * @param classifierOptionsService    - classification options service bean
-     * @param classifierOptionsInfoMapper - classifier options info mapper bean
-     */
-    @Inject
-    public EvaluationResultsEndpoint(EvaluationResultsService evaluationResultsService,
-                                     ClassifierOptionsService classifierOptionsService,
-                                     ClassifierOptionsInfoMapper classifierOptionsInfoMapper) {
-        this.evaluationResultsService = evaluationResultsService;
-        this.classifierOptionsService = classifierOptionsService;
-        this.classifierOptionsInfoMapper = classifierOptionsInfoMapper;
-    }
 
     /**
      * Saves evaluation results report to database.

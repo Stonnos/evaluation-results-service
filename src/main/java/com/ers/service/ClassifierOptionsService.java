@@ -8,12 +8,12 @@ import com.ers.model.ClassifierOptionsInfo;
 import com.ers.repository.ClassifierOptionsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -23,27 +23,12 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ClassifierOptionsService {
 
     private final InstancesInfoRepository instancesInfoRepository;
     private final ClassifierOptionsInfoRepository classifierOptionsInfoRepository;
     private final ServiceConfig serviceConfig;
-
-    /**
-     * Constructor with spring dependency injection.
-     *
-     * @param instancesInfoRepository         - instances info repository bean
-     * @param classifierOptionsInfoRepository - classifier options info repository bean
-     * @param serviceConfig                   - service config bean
-     */
-    @Inject
-    public ClassifierOptionsService(InstancesInfoRepository instancesInfoRepository,
-                                    ClassifierOptionsInfoRepository classifierOptionsInfoRepository,
-                                    ServiceConfig serviceConfig) {
-        this.instancesInfoRepository = instancesInfoRepository;
-        this.classifierOptionsInfoRepository = classifierOptionsInfoRepository;
-        this.serviceConfig = serviceConfig;
-    }
 
     /**
      * Finds the best classifiers options.
