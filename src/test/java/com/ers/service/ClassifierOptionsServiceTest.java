@@ -13,6 +13,7 @@ import com.ers.model.InstancesInfo;
 import com.ers.repository.ClassifierOptionsInfoRepository;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
+import com.google.common.base.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
@@ -87,9 +88,10 @@ public class ClassifierOptionsServiceTest {
         ClassifierOptionsRequest request =
                 TestHelperUtils.createClassifierOptionsRequest(evaluationMethod);
         InstancesInfo instancesInfo = new InstancesInfo();
-        instancesInfo.setDataMd5Hash(DigestUtils.md5DigestAsHex(request.getInstances().getXmlInstances().getBytes()));
+        instancesInfo.setDataMd5Hash(
+                DigestUtils.md5DigestAsHex(request.getInstances().getXmlInstances().getBytes(Charsets.UTF_8)));
         InstancesInfo anotherInstancesInfo = new InstancesInfo();
-        anotherInstancesInfo.setDataMd5Hash(DigestUtils.md5DigestAsHex(StringUtils.EMPTY.getBytes()));
+        anotherInstancesInfo.setDataMd5Hash(DigestUtils.md5DigestAsHex(StringUtils.EMPTY.getBytes(Charsets.UTF_8)));
         instancesInfoRepository.saveAll(Arrays.asList(instancesInfo, anotherInstancesInfo));
 
         ClassifierOptionsInfo classifierOptionsInfo1 = TestHelperUtils.buildClassifierOptionsInfo();

@@ -8,6 +8,7 @@ import com.ers.model.ClassifierOptionsInfo;
 import com.ers.repository.ClassifierOptionsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
+import com.google.common.base.Charsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +39,7 @@ public class ClassifierOptionsService {
      */
     public List<ClassifierOptionsInfo> findBestClassifierOptions(ClassifierOptionsRequest classifierOptionsRequest) {
         String xmlData = classifierOptionsRequest.getInstances().getXmlInstances();
-        String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes());
+        String md5Hash = DigestUtils.md5DigestAsHex(xmlData.getBytes(Charsets.UTF_8));
         Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);
         if (instancesInfoId == null) {
             throw new DataNotFoundException(String.format("Instances '%s' doesn't exists!",
