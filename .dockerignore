@@ -4,7 +4,7 @@ src/
 doc/
 .git
 .gitignore
-.travis*
+.travis.yml
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###

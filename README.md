@@ -53,8 +53,8 @@ Evaluation results service v1.4
 
 3. Используя пакетный менеджер docker-compose, создать docker контейнеры с помощью команды:
 
-    docker-compose up (для ОС семейства Linux)
+    docker-compose up -d (для ОС семейства Linux)
 
-    docker-compose -f docker-compose.yaml -f docker-compose.win10.yaml up (для Windows 10)
+    docker-compose -f docker-compose.yaml -f docker-compose.win10.yaml up -d (для Windows 10)
 
 ВАЖНО! Данную команду необходимо выполнять из корневой папки проекта.
