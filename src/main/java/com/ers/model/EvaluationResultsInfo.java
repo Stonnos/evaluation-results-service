@@ -4,7 +4,6 @@ import com.ers.util.FieldSize;
 import lombok.Data;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -98,33 +97,28 @@ public class EvaluationResultsInfo {
      * Evaluation statistics info
      */
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "numTestInstances", column = @Column(name = "num_test_instances")),
-            @AttributeOverride(name = "numCorrect", column = @Column(name = "num_correct")),
-            @AttributeOverride(name = "numIncorrect", column = @Column(name = "num_incorrect")),
-            @AttributeOverride(name = "pctCorrect",
-                    column = @Column(name = "pct_correct", precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "pctIncorrect",
-                    column = @Column(name = "pct_incorrect", precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "meanAbsoluteError",
-                    column = @Column(name = "mean_abs_error", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "rootMeanSquaredError",
-                    column = @Column(name = "root_mean_squared_error", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "maxAucValue",
-                    column = @Column(name = "max_auc", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "varianceError",
-                    column = @Column(name = "variance_error", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "confidenceIntervalLowerBound",
-                    column = @Column(name = "confidence_interval_lower_bound", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "confidenceIntervalUpperBound",
-                    column = @Column(name = "confidence_interval_upper_bound", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE))
-    })
+    @AttributeOverride(name = "numTestInstances", column = @Column(name = "num_test_instances"))
+    @AttributeOverride(name = "numCorrect", column = @Column(name = "num_correct"))
+    @AttributeOverride(name = "numIncorrect", column = @Column(name = "num_incorrect"))
+    @AttributeOverride(name = "pctCorrect",
+            column = @Column(name = "pct_correct", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "pctIncorrect",
+            column = @Column(name = "pct_incorrect", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "meanAbsoluteError",
+            column = @Column(name = "mean_abs_error", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "rootMeanSquaredError",
+            column = @Column(name = "root_mean_squared_error", precision = FieldSize.PRECISION,
+                    scale = FieldSize.SCALE))
+    @AttributeOverride(name = "maxAucValue",
+            column = @Column(name = "max_auc", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "varianceError",
+            column = @Column(name = "variance_error", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "confidenceIntervalLowerBound",
+            column = @Column(name = "confidence_interval_lower_bound", precision = FieldSize.PRECISION,
+                    scale = FieldSize.SCALE))
+    @AttributeOverride(name = "confidenceIntervalUpperBound",
+            column = @Column(name = "confidence_interval_upper_bound", precision = FieldSize.PRECISION,
+                    scale = FieldSize.SCALE))
     private StatisticsInfo statistics;
 
     /**

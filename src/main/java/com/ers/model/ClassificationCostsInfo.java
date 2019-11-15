@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -63,16 +62,11 @@ public class ClassificationCostsInfo {
      * Roc - curve info
      */
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "aucValue",
-                    column = @Column(name = "auc_value", precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "specificity",
-                    column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "sensitivity",
-                    column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE)),
-            @AttributeOverride(name = "thresholdValue",
-                    column = @Column(name = "threshold_value", precision = FieldSize.PRECISION,
-                            scale = FieldSize.SCALE))}
-    )
+    @AttributeOverride(name = "aucValue",
+            column = @Column(name = "auc_value", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "specificity", column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "sensitivity", column = @Column(precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
+    @AttributeOverride(name = "thresholdValue",
+            column = @Column(name = "threshold_value", precision = FieldSize.PRECISION, scale = FieldSize.SCALE))
     private RocCurveInfo rocCurveInfo;
 }
