@@ -6,13 +6,17 @@ import com.ers.dto.InputOptionsMap;
 import com.ers.model.ClassifierOptionsInfo;
 import com.ers.util.FieldSize;
 import org.apache.commons.lang3.StringUtils;
-import org.mapstruct.*;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implements mapping classifier report to classifier options info entity.
@@ -28,7 +32,7 @@ public abstract class ClassifierReportMapper {
      * @param classifierReport - classifier report
      * @return classifier options info entity
      */
-    @Mappings( {
+    @Mappings({
             @Mapping(target = "inputOptionsMap", ignore = true),
             @Mapping(source = "classifierDescription", target = "classifierDescription",
                     qualifiedByName = "truncateClassifierDescription")
@@ -40,10 +44,8 @@ public abstract class ClassifierReportMapper {
                                    @MappingTarget ClassifierOptionsInfo classifierOptionsInfo) {
         if (Optional.ofNullable(classifierReport.getInputOptionsMap()).map(
                 InputOptionsMap::getEntry).isPresent()) {
-            Map<String, String> inputOptionsMap = new HashMap<>();
-            classifierReport.getInputOptionsMap().getEntry().forEach(
-                    entry -> inputOptionsMap.put(entry.getKey(), entry.getValue()));
-            classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
+            classifierOptionsInfo.setInputOptionsMap(classifierReport.getInputOptionsMap().getEntry().stream().collect(
+                    Collectors.toMap(InputOptionsMap.Entry::getKey, InputOptionsMap.Entry::getValue)));
         }
     }
 
