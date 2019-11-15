@@ -10,7 +10,6 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -33,11 +32,9 @@ public abstract class ClassifierReportMapper {
      * @param classifierReport - classifier report
      * @return classifier options info entity
      */
-    @Mappings({
-            @Mapping(target = "inputOptionsMap", ignore = true),
-            @Mapping(source = "classifierDescription", target = "classifierDescription",
-                    qualifiedByName = "truncateClassifierDescription")
-    })
+    @Mapping(target = "inputOptionsMap", ignore = true)
+    @Mapping(source = "classifierDescription", target = "classifierDescription",
+            qualifiedByName = "truncateClassifierDescription")
     public abstract ClassifierOptionsInfo map(ClassifierReport classifierReport);
 
     @AfterMapping

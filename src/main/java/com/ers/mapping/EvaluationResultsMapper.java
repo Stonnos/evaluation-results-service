@@ -6,7 +6,6 @@ import com.ers.model.EvaluationResultsInfo;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 /**
  * Implements evaluation results mapper.
@@ -24,14 +23,12 @@ public interface EvaluationResultsMapper {
      * @param evaluationResultsRequest - evaluation results report
      * @return evaluation results entity
      */
-    @Mappings({
-            @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod"),
-            @Mapping(source = "evaluationMethodReport.numFolds", target = "numFolds"),
-            @Mapping(source = "evaluationMethodReport.numTests", target = "numTests"),
-            @Mapping(source = "evaluationMethodReport.seed", target = "seed"),
-            @Mapping(source = "classifierReport", target = "classifierOptionsInfo"),
-            @Mapping(target = "instances", ignore = true)
-    })
+    @Mapping(source = "evaluationMethodReport.evaluationMethod", target = "evaluationMethod")
+    @Mapping(source = "evaluationMethodReport.numFolds", target = "numFolds")
+    @Mapping(source = "evaluationMethodReport.numTests", target = "numTests")
+    @Mapping(source = "evaluationMethodReport.seed", target = "seed")
+    @Mapping(source = "classifierReport", target = "classifierOptionsInfo")
+    @Mapping(target = "instances", ignore = true)
     EvaluationResultsInfo map(EvaluationResultsRequest evaluationResultsRequest);
 
     /**
@@ -40,13 +37,10 @@ public interface EvaluationResultsMapper {
      * @param evaluationResultsInfo - evaluation results info entity
      * @return evaluation results response
      */
-    @Mappings({
-            @Mapping(source = "evaluationMethod", target = "evaluationMethodReport.evaluationMethod"),
-            @Mapping(source = "numFolds", target = "evaluationMethodReport.numFolds"),
-            @Mapping(source = "numTests", target = "evaluationMethodReport.numTests"),
-            @Mapping(source = "seed", target = "evaluationMethodReport.seed"),
-            @Mapping(source = "classifierOptionsInfo", target = "classifierReport"),
-
-    })
+    @Mapping(source = "evaluationMethod", target = "evaluationMethodReport.evaluationMethod")
+    @Mapping(source = "numFolds", target = "evaluationMethodReport.numFolds")
+    @Mapping(source = "numTests", target = "evaluationMethodReport.numTests")
+    @Mapping(source = "seed", target = "evaluationMethodReport.seed")
+    @Mapping(source = "classifierOptionsInfo", target = "classifierReport")
     GetEvaluationResultsResponse map(EvaluationResultsInfo evaluationResultsInfo);
 }

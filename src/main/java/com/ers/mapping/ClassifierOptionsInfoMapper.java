@@ -9,7 +9,6 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -28,9 +27,7 @@ public abstract class ClassifierOptionsInfoMapper {
      * @param classifierOptionsInfo - classifier options info
      * @return classifier options report
      */
-    @Mappings( {
-            @Mapping(target = "inputOptionsMap", ignore = true)
-    })
+    @Mapping(target = "inputOptionsMap", ignore = true)
     public abstract ClassifierReport map(ClassifierOptionsInfo classifierOptionsInfo);
 
     /**

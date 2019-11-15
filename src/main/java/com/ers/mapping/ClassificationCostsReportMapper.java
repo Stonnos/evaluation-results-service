@@ -5,7 +5,6 @@ import com.ers.model.ClassificationCostsInfo;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 
 import java.util.List;
 import java.util.Set;
@@ -24,9 +23,7 @@ public interface ClassificationCostsReportMapper {
      * @param classificationCostsReport -  classification costs report
      * @return classification costs info entity
      */
-    @Mappings({
-            @Mapping(source = "classificationCostsReport.rocCurve", target = "rocCurveInfo")
-    })
+    @Mapping(source = "classificationCostsReport.rocCurve", target = "rocCurveInfo")
     ClassificationCostsInfo map(ClassificationCostsReport classificationCostsReport);
 
     /**
@@ -43,8 +40,6 @@ public interface ClassificationCostsReportMapper {
      * @param classificationCostsInfo - classification costs entity
      * @return classification costs dto
      */
-    @Mappings({
-            @Mapping(source = "rocCurveInfo", target = "rocCurve")
-    })
+    @Mapping(source = "rocCurveInfo", target = "rocCurve")
     ClassificationCostsReport map(ClassificationCostsInfo classificationCostsInfo);
 }
