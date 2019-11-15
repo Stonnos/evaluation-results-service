@@ -12,13 +12,13 @@ import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
-import com.google.common.base.Charsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,7 +124,7 @@ public class EvaluationResultsService {
     private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
                                               EvaluationResultsInfo evaluationResultsInfo) {
         String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
-        byte[] xmlDataBytes = xmlData.getBytes(Charsets.UTF_8);
+        byte[] xmlDataBytes = xmlData.getBytes(StandardCharsets.UTF_8);
         String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
         cachedDataMd5Hashes.putIfAbsent(md5Hash, new Object());
         synchronized (cachedDataMd5Hashes.get(md5Hash)) {

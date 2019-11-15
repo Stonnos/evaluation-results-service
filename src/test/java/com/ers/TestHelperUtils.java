@@ -20,12 +20,12 @@ import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.model.RocCurveInfo;
 import com.ers.model.StatisticsInfo;
-import com.google.common.base.Charsets;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +89,7 @@ public class TestHelperUtils {
      */
     public static InstancesInfo buildInstancesInfo() {
         InstancesInfo instancesInfo = new InstancesInfo();
-        instancesInfo.setXmlData(XML_DATA.getBytes(Charsets.UTF_8));
+        instancesInfo.setXmlData(XML_DATA.getBytes(StandardCharsets.UTF_8));
         instancesInfo.setRelationName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
         instancesInfo.setNumInstances(BigInteger.TEN.intValue());
         instancesInfo.setNumAttributes(BigInteger.TEN.intValue());
