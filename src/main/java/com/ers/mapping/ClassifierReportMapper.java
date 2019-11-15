@@ -15,6 +15,7 @@ import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,8 +45,9 @@ public abstract class ClassifierReportMapper {
                                    @MappingTarget ClassifierOptionsInfo classifierOptionsInfo) {
         if (Optional.ofNullable(classifierReport.getInputOptionsMap()).map(
                 InputOptionsMap::getEntry).isPresent()) {
-            classifierOptionsInfo.setInputOptionsMap(classifierReport.getInputOptionsMap().getEntry().stream().collect(
-                    Collectors.toMap(InputOptionsMap.Entry::getKey, InputOptionsMap.Entry::getValue)));
+            Map<String, String> inputOptionsMap = classifierReport.getInputOptionsMap().getEntry().stream().collect(
+                    Collectors.toMap(InputOptionsMap.Entry::getKey, InputOptionsMap.Entry::getValue));
+            classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
         }
     }
 
