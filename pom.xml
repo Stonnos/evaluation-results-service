@@ -32,6 +32,8 @@
         <xmlschema.version>2.2.3</xmlschema.version>
         <jaxb2-maven-plugin.version>2.3</jaxb2-maven-plugin.version>
         <jacoco-plugin.version>0.7.7.201606060606</jacoco-plugin.version>
+        <spring-cloud-sleuth.version>2.1.5.RELEASE</spring-cloud-sleuth.version>
+        <logstash-encoder.version>6.2</logstash-encoder.version>
         <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
         <docker.image.name>${project.artifactId}</docker.image.name>
         <liquibase.version>3.7.0</liquibase.version>
@@ -64,6 +66,18 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-access</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-encoder.version}</version>
         </dependency>
 
         <dependency>
@@ -110,6 +124,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <version>${spring-cloud-sleuth.version}</version>
         </dependency>
 
         <dependency>
