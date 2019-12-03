@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ers.util.Utils.buildEvaluationResultsResponse;
-import static com.ers.util.Utils.hasRequestId;
+import static com.ers.util.Utils.hasValidRequestId;
 import static com.ers.util.Utils.validateEvaluationResultsRequest;
 
 /**
@@ -52,8 +52,8 @@ public class EvaluationResultsService {
      */
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsRequest evaluationResultsRequest) {
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        if (!hasRequestId(evaluationResultsRequest)) {
-            log.error("Request id isn't specified!");
+        if (!hasValidRequestId(evaluationResultsRequest)) {
+            log.error("Request id doesn't match UUID format!");
             responseStatus = ResponseStatus.INVALID_REQUEST_ID;
         } else if (!validateEvaluationResultsRequest(evaluationResultsRequest)) {
             log.error("Required request params isn't specified!");
@@ -97,8 +97,8 @@ public class EvaluationResultsService {
     public GetEvaluationResultsResponse getEvaluationResultsResponse(GetEvaluationResultsRequest request) {
         log.info("Starting to get evaluation results for request id [{}]", request.getRequestId());
         ResponseStatus responseStatus;
-        if (!hasRequestId(request)) {
-            log.error("Request id isn't specified!");
+        if (!hasValidRequestId(request)) {
+            log.error("Request id doesn't match UUID format!");
             responseStatus = ResponseStatus.INVALID_REQUEST_ID;
         } else {
             try {

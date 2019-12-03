@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Utility class.
@@ -23,6 +24,9 @@ import java.util.Optional;
  */
 @UtilityClass
 public class Utils {
+
+    private static final String UUID_REGEX =
+            "^[0-9a-f]{8}-[0-9a-f]{4}-[34][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$";
 
     /**
      * Creates evaluation results response.
@@ -44,8 +48,8 @@ public class Utils {
      * @param evaluationResultsRequest - evaluation results request
      * @return {@code true} if request id is not empty
      */
-    public static boolean hasRequestId(EvaluationResultsRequest evaluationResultsRequest) {
-        return evaluationResultsRequest != null && !StringUtils.isEmpty(evaluationResultsRequest.getRequestId());
+    public static boolean hasValidRequestId(EvaluationResultsRequest evaluationResultsRequest) {
+        return evaluationResultsRequest != null && isValidUuid(evaluationResultsRequest.getRequestId());
     }
 
     /**
@@ -54,8 +58,22 @@ public class Utils {
      * @param evaluationResultsRequest - evaluation results request
      * @return {@code true} if request id is not empty
      */
-    public static boolean hasRequestId(GetEvaluationResultsRequest evaluationResultsRequest) {
-        return evaluationResultsRequest != null && !StringUtils.isEmpty(evaluationResultsRequest.getRequestId());
+    public static boolean hasValidRequestId(GetEvaluationResultsRequest evaluationResultsRequest) {
+        return evaluationResultsRequest != null && isValidUuid(evaluationResultsRequest.getRequestId());
+    }
+
+    /**
+     * Check uuid format.
+     *
+     * @param uuid - uuid as string
+     * @return {@code true} if uuid format is valid
+     */
+    public static boolean isValidUuid(String uuid) {
+        return !StringUtils.isEmpty(uuid) && uuid.matches(UUID_REGEX);
+    }
+
+    public static void main(String[] arhs) {
+        System.out.println(isValidUuid(UUID.randomUUID().toString()));
     }
 
     /**
