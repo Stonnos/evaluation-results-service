@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Utility class.
@@ -70,10 +69,6 @@ public class Utils {
      */
     public static boolean isValidUuid(String uuid) {
         return !StringUtils.isEmpty(uuid) && uuid.matches(UUID_REGEX);
-    }
-
-    public static void main(String[] arhs) {
-        System.out.println(isValidUuid(UUID.randomUUID().toString()));
     }
 
     /**
