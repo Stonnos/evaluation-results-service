@@ -41,6 +41,20 @@
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <properties>
+                <sonar.coverage.exclusions>
+                    **/config/*,
+                    **/exception/*,
+                    **/util/*,
+                    **/EvaluationResultsApplication.java
+                </sonar.coverage.exclusions>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
         <dependency>
