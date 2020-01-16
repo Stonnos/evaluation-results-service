@@ -40,6 +40,9 @@
         <guava.version>22.0</guava.version>
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
         <sonar.coverage.exclusions>
+            **/config/*,
+            **/exception/*,
+            **/util/*,
             **/EvaluationResultsApplication.java
         </sonar.coverage.exclusions>
     </properties>
