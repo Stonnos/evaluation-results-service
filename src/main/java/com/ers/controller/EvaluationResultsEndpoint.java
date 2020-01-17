@@ -6,23 +6,14 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsResponse;
-import com.ers.dto.ResponseStatus;
-import com.ers.exception.DataNotFoundException;
-import com.ers.mapping.ClassifierOptionsInfoMapper;
-import com.ers.model.ClassifierOptionsInfo;
-import com.ers.service.ClassifierOptionsService;
+import com.ers.service.ClassifierOptionsRequestService;
 import com.ers.service.EvaluationResultsService;
-import com.ers.util.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Evaluation results service endpoint.
@@ -40,8 +31,7 @@ public class EvaluationResultsEndpoint {
     private static final String GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART = "getEvaluationResultsRequest";
 
     private final EvaluationResultsService evaluationResultsService;
-    private final ClassifierOptionsService classifierOptionsService;
-    private final ClassifierOptionsInfoMapper classifierOptionsInfoMapper;
+    private final ClassifierOptionsRequestService classifierOptionsRequestService;
 
     /**
      * Saves evaluation results report to database.
@@ -78,37 +68,6 @@ public class EvaluationResultsEndpoint {
     @ResponsePayload
     public ClassifierOptionsResponse findClassifierOptions(
             @RequestPayload ClassifierOptionsRequest classifierOptionsRequest) {
-        String requestId = UUID.randomUUID().toString();
-        log.info("Received request [{}] for searching the best classifiers options.", requestId);
-        ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        if (!Utils.validateClassifierOptionsRequest(classifierOptionsRequest)) {
-            responseStatus = ResponseStatus.INVALID_REQUEST_PARAMS;
-        } else {
-            try {
-                log.info(
-                        "Starting to find the best classifiers options with request id [{}] for data '{}' classification.",
-                        requestId, classifierOptionsRequest.getInstances().getRelationName());
-                List<ClassifierOptionsInfo> classifierOptionsInfoList =
-                        classifierOptionsService.findBestClassifierOptions(classifierOptionsRequest);
-                if (CollectionUtils.isEmpty(classifierOptionsInfoList)) {
-                    log.info("Best classifiers options not found for data '{}', request id [{}]",
-                            classifierOptionsRequest.getInstances().getRelationName(), requestId);
-                    responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
-                } else {
-                    log.info("{} best classifiers options has been found for data '{}', request id [{}]",
-                            classifierOptionsInfoList.size(), classifierOptionsRequest.getInstances().getRelationName(),
-                            requestId);
-                    return Utils.buildClassifierOptionsResponse(requestId,
-                            classifierOptionsInfoMapper.map(classifierOptionsInfoList), responseStatus);
-                }
-            } catch (DataNotFoundException ex) {
-                log.warn(ex.getMessage());
-                responseStatus = ResponseStatus.DATA_NOT_FOUND;
-            } catch (Exception ex) {
-                log.error(ex.getMessage());
-                responseStatus = ResponseStatus.ERROR;
-            }
-        }
-        return Utils.buildClassifierOptionsResponse(requestId, responseStatus);
+        return classifierOptionsRequestService.findClassifierOptions(classifierOptionsRequest);
     }
 }
