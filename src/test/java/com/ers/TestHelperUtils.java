@@ -9,8 +9,10 @@ import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsRequest;
+import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
+import com.ers.dto.ResponseStatus;
 import com.ers.dto.RocCurveReport;
 import com.ers.dto.StatisticsReport;
 import com.ers.model.ClassificationCostsInfo;
@@ -351,6 +353,24 @@ public class TestHelperUtils {
         GetEvaluationResultsRequest request = new GetEvaluationResultsRequest();
         request.setRequestId(requestId);
         return request;
+    }
+
+    /**
+     * Creates evaluation results get response.
+     *
+     * @param requestId - request id
+     * @return evaluation results get response
+     */
+    public static GetEvaluationResultsResponse buildGetEvaluationResultsResponse(String requestId) {
+        GetEvaluationResultsResponse getEvaluationResultsResponse = new GetEvaluationResultsResponse();
+        getEvaluationResultsResponse.setRequestId(requestId);
+        getEvaluationResultsResponse.setStatus(ResponseStatus.SUCCESS);
+        getEvaluationResultsResponse.setClassifierReport(buildClassifierReport());
+        getEvaluationResultsResponse.setEvaluationMethodReport(
+                buildEvaluationMethodReport(EvaluationMethod.CROSS_VALIDATION));
+        getEvaluationResultsResponse.setStatistics(buildStatisticsReport());
+        getEvaluationResultsResponse.setInstances(buildInstancesReport());
+        return getEvaluationResultsResponse;
     }
 
     private static void populateInputOptionsMap(InputOptionsMap inputOptionsMap) {
