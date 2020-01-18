@@ -23,7 +23,6 @@ import com.ers.model.InstancesInfo;
 import com.ers.model.RocCurveInfo;
 import com.ers.model.StatisticsInfo;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -41,12 +40,18 @@ import java.util.Map;
 public class TestHelperUtils {
 
     private static final int OPTIONS_SIZE = 5;
-    private static final int RANDOM_STRING_SIZE = 5;
-    private static final String CHARS = "ABCDEFG123456";
     private static final int NUM_FOLDS = 10;
     private static final int NUM_TESTS = 1;
     private static final int SEED = 1;
     private static final String XML_DATA = "xmlData";
+    private static final String RELATION_NAME = "relation";
+    private static final String CLASS_NAME = "class";
+    private static final String ACTUAL_CLASS = "actual";
+    private static final String PREDICTED_CLASS = "predicted";
+    private static final String CLASSIFIER_NAME = "Classifier";
+    private static final String CLASSIFIER_DESCRIPTION = "description";
+    private static final String OPTIONS = "options";
+    private static final String OPTION_VALUE = "option-value";
 
     /**
      * Creates evaluation results report.
@@ -75,12 +80,12 @@ public class TestHelperUtils {
      */
     public static InstancesReport buildInstancesReport() {
         InstancesReport instancesReport = new InstancesReport();
-        instancesReport.setXmlInstances(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        instancesReport.setRelationName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesReport.setXmlInstances(XML_DATA);
+        instancesReport.setRelationName(RELATION_NAME);
         instancesReport.setNumInstances(BigInteger.TEN);
         instancesReport.setNumAttributes(BigInteger.TEN);
         instancesReport.setNumClasses(BigInteger.TEN);
-        instancesReport.setClassName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesReport.setClassName(CLASS_NAME);
         return instancesReport;
     }
 
@@ -92,11 +97,11 @@ public class TestHelperUtils {
     public static InstancesInfo buildInstancesInfo() {
         InstancesInfo instancesInfo = new InstancesInfo();
         instancesInfo.setXmlData(XML_DATA.getBytes(StandardCharsets.UTF_8));
-        instancesInfo.setRelationName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesInfo.setRelationName(RELATION_NAME);
         instancesInfo.setNumInstances(BigInteger.TEN.intValue());
         instancesInfo.setNumAttributes(BigInteger.TEN.intValue());
         instancesInfo.setNumClasses(BigInteger.TEN.intValue());
-        instancesInfo.setClassName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        instancesInfo.setClassName(CLASS_NAME);
         return instancesInfo;
     }
 
@@ -107,8 +112,8 @@ public class TestHelperUtils {
      */
     public static ConfusionMatrixReport buildConfusionMatrixReport() {
         ConfusionMatrixReport confusionMatrix = new ConfusionMatrixReport();
-        confusionMatrix.setActualClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        confusionMatrix.setPredictedClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        confusionMatrix.setActualClass(ACTUAL_CLASS);
+        confusionMatrix.setPredictedClass(PREDICTED_CLASS);
         confusionMatrix.setNumInstances(BigInteger.TEN);
         return confusionMatrix;
     }
@@ -120,8 +125,8 @@ public class TestHelperUtils {
      */
     public static ConfusionMatrix buildConfusionMatrix() {
         ConfusionMatrix confusionMatrix = new ConfusionMatrix();
-        confusionMatrix.setActualClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        confusionMatrix.setPredictedClass(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        confusionMatrix.setActualClass(ACTUAL_CLASS);
+        confusionMatrix.setPredictedClass(PREDICTED_CLASS);
         confusionMatrix.setNumInstances(BigInteger.TEN.intValue());
         return confusionMatrix;
     }
@@ -133,7 +138,7 @@ public class TestHelperUtils {
      */
     public static ClassificationCostsReport buildClassificationCostsReport() {
         ClassificationCostsReport classificationCostsReport = new ClassificationCostsReport();
-        classificationCostsReport.setClassValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classificationCostsReport.setClassValue(CLASS_NAME);
         classificationCostsReport.setFalseNegativeRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setTrueNegativeRate(BigDecimal.valueOf(Math.random()));
         classificationCostsReport.setTruePositiveRate(BigDecimal.valueOf(Math.random()));
@@ -149,7 +154,7 @@ public class TestHelperUtils {
      */
     public static ClassificationCostsInfo buildClassificationCostsInfo() {
         ClassificationCostsInfo classificationCostsInfo = new ClassificationCostsInfo();
-        classificationCostsInfo.setClassValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classificationCostsInfo.setClassValue(CLASS_NAME);
         classificationCostsInfo.setFalseNegativeRate(BigDecimal.valueOf(Math.random()));
         classificationCostsInfo.setTrueNegativeRate(BigDecimal.valueOf(Math.random()));
         classificationCostsInfo.setTruePositiveRate(BigDecimal.valueOf(Math.random()));
@@ -250,9 +255,9 @@ public class TestHelperUtils {
      */
     public static ClassifierReport buildClassifierReport() {
         ClassifierReport classifierReport = new ClassifierReport();
-        classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        classifierReport.setClassifierDescription(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        classifierReport.setOptions(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierReport.setClassifierName(CLASSIFIER_NAME);
+        classifierReport.setClassifierDescription(CLASSIFIER_DESCRIPTION);
+        classifierReport.setOptions(OPTIONS);
         classifierReport.setInputOptionsMap(new InputOptionsMap());
         populateInputOptionsMap(classifierReport.getInputOptionsMap());
         return classifierReport;
@@ -265,7 +270,7 @@ public class TestHelperUtils {
      */
     public static EnsembleClassifierReport buildEnsembleClassifierReport() {
         EnsembleClassifierReport classifierReport = new EnsembleClassifierReport();
-        classifierReport.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierReport.setClassifierName(CLASSIFIER_NAME);
         classifierReport.setInputOptionsMap(new InputOptionsMap());
         populateInputOptionsMap(classifierReport.getInputOptionsMap());
         for (int i = 0; i < OPTIONS_SIZE; i++) {
@@ -283,8 +288,8 @@ public class TestHelperUtils {
     public static ClassifierOptionsInfo buildClassifierOptionsInfo(Map<String, String> inputOptionsMap,
                                                                    List<ClassifierOptionsInfo> classifierOptionsInfoList) {
         ClassifierOptionsInfo classifierOptionsInfo = new ClassifierOptionsInfo();
-        classifierOptionsInfo.setClassifierName(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-        classifierOptionsInfo.setClassifierDescription(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+        classifierOptionsInfo.setClassifierName(CLASSIFIER_NAME);
+        classifierOptionsInfo.setClassifierDescription(CLASSIFIER_DESCRIPTION);
         classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
         classifierOptionsInfo.setIndividualClassifiers(classifierOptionsInfoList);
         return classifierOptionsInfo;
@@ -376,8 +381,8 @@ public class TestHelperUtils {
     private static void populateInputOptionsMap(InputOptionsMap inputOptionsMap) {
         for (int i = 0; i < OPTIONS_SIZE; i++) {
             InputOptionsMap.Entry entry = new InputOptionsMap.Entry();
-            entry.setKey(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
-            entry.setValue(RandomStringUtils.random(RANDOM_STRING_SIZE, CHARS));
+            entry.setKey(String.valueOf(i));
+            entry.setValue(OPTION_VALUE);
             inputOptionsMap.getEntry().add(entry);
         }
     }
