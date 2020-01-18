@@ -15,6 +15,7 @@ import com.ers.service.EvaluationResultsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
@@ -42,16 +43,16 @@ import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
  * @author Roman Batygin
  */
 @RunWith(SpringRunner.class)
-@Import(WebServiceTestConfiguration.class)
+@Import({WebServiceTestConfiguration.class, EvaluationResultsEndpoint.class})
 public class EvaluationResultsEndpointTest {
 
     @Inject
     private ApplicationContext applicationContext;
     @Inject
     private Jaxb2Marshaller jaxb2Marshaller;
-    @Inject
+    @MockBean
     private EvaluationResultsService evaluationResultsService;
-    @Inject
+    @MockBean
     private ClassifierOptionsRequestService classifierOptionsRequestService;
 
     private Resource xsdSchema = new ClassPathResource("evaluation-results.xsd");
