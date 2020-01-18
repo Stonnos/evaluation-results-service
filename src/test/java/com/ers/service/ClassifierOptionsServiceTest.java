@@ -1,5 +1,6 @@
 package com.ers.service;
 
+import com.ers.AbstractJpaTest;
 import com.ers.TestHelperUtils;
 import com.ers.config.ServiceConfig;
 import com.ers.dto.ClassifierOptionsRequest;
@@ -15,16 +16,8 @@ import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.DigestUtils;
 
 import javax.inject.Inject;
@@ -38,14 +31,8 @@ import java.util.List;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
-@AutoConfigureDataJpa
-@EnableJpaRepositories(basePackageClasses = EvaluationResultsInfoRepository.class)
-@EntityScan(basePackageClasses = EvaluationResultsInfo.class)
-@EnableConfigurationProperties
-@TestPropertySource("classpath:application.properties")
 @Import({ClassifierOptionsService.class, ServiceConfig.class, EvaluationMethodMapperImpl.class})
-public class ClassifierOptionsServiceTest {
+public class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Inject
     private ClassifierOptionsInfoRepository classifierOptionsInfoRepository;
@@ -60,8 +47,8 @@ public class ClassifierOptionsServiceTest {
     @Inject
     private EvaluationMethodMapper evaluationMethodMapper;
 
-    @After
-    public void after() {
+    @Override
+    public void deleteAll() {
         evaluationResultsInfoRepository.deleteAll();
         classifierOptionsInfoRepository.deleteAll();
         instancesInfoRepository.deleteAll();

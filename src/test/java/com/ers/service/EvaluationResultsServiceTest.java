@@ -1,5 +1,6 @@
 package com.ers.service;
 
+import com.ers.AbstractJpaTest;
 import com.ers.TestHelperUtils;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
@@ -22,17 +23,8 @@ import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -45,18 +37,12 @@ import java.util.concurrent.Executors;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
-@AutoConfigureDataJpa
-@EnableJpaRepositories(basePackageClasses = EvaluationResultsInfoRepository.class)
-@EntityScan(basePackageClasses = EvaluationResultsInfo.class)
-@EnableConfigurationProperties
-@TestPropertySource("classpath:application.properties")
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
         StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
-public class EvaluationResultsServiceTest {
+public class EvaluationResultsServiceTest extends AbstractJpaTest {
 
     private static final int NUM_THREADS = 2;
 
@@ -67,8 +53,14 @@ public class EvaluationResultsServiceTest {
     @Inject
     private InstancesInfoRepository instancesInfoRepository;
 
-    @Before
+    @Override
     public void init() {
+        evaluationResultsInfoRepository.deleteAll();
+        instancesInfoRepository.deleteAll();
+    }
+
+    @Override
+    public void deleteAll() {
         evaluationResultsInfoRepository.deleteAll();
         instancesInfoRepository.deleteAll();
     }
@@ -217,14 +209,10 @@ public class EvaluationResultsServiceTest {
         Assertions.assertThat(response.getClassifierReport()).isNotNull();
         Assertions.assertThat(response.getEvaluationMethodReport()).isNotNull();
         Assertions.assertThat(response.getStatistics()).isNotNull();
-        Assertions.assertThat(response.getClassificationCosts()).hasSameSizeAs(evaluationResultsRequest.getClassificationCosts());
-        Assertions.assertThat(response.getConfusionMatrix()).hasSameSizeAs(evaluationResultsRequest.getConfusionMatrix());
+        Assertions.assertThat(response.getClassificationCosts()).hasSameSizeAs(
+                evaluationResultsRequest.getClassificationCosts());
+        Assertions.assertThat(response.getConfusionMatrix()).hasSameSizeAs(
+                evaluationResultsRequest.getConfusionMatrix());
         Assertions.assertThat(response.getInstances()).isNotNull();
-    }
-
-    @After
-    public void doAfter() {
-        evaluationResultsInfoRepository.deleteAll();
-        instancesInfoRepository.deleteAll();
     }
 }
