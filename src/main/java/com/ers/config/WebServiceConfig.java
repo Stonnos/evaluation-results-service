@@ -26,6 +26,7 @@ public class WebServiceConfig {
      * Wsdl config.
      */
     @Data
+    @ConfigurationProperties("web-service-config.wsdlConfig")
     public static class WsdlConfig {
 
         /**
