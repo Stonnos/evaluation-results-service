@@ -25,7 +25,7 @@ services:
       TZ: "Asia/Novosibirsk"
       SPRING_PROFILES_ACTIVE: "docker"
     ports:
-      - "8081:8080"
+      - "9443:9443"
     networks:
       - default
     depends_on:
