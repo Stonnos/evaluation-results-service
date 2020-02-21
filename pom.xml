@@ -31,7 +31,7 @@
         <inject.version>1</inject.version>
         <xmlschema.version>2.2.3</xmlschema.version>
         <jaxb2-maven-plugin.version>2.3</jaxb2-maven-plugin.version>
-        <jacoco-plugin.version>0.7.7.201606060606</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <spring-cloud-sleuth.version>2.1.5.RELEASE</spring-cloud-sleuth.version>
         <logstash-encoder.version>6.2</logstash-encoder.version>
         <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
