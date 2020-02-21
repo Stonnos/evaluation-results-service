@@ -31,5 +31,5 @@ jobs:
         - docker push $DOCKER_USERNAME/$DOCKER_REPOSITORY:$IMAGE_NAME;
 cache:
   directories:
-    - $HOME/.m2
+#    - $HOME/.m2
     - $HOME/.sonar/cache
