@@ -6,7 +6,7 @@ services:
     container_name: ers-db
     volumes:
       - ./scripts/postgresinit.sql:/docker-entrypoint-initdb.d/postgresinit.sql
-      - /home/ers-pgdata:/var/lib/postgresql/data
+      - ers-pgdata:/var/lib/postgresql/data
     ports:
       - "5434:5432"
     networks:
@@ -35,3 +35,7 @@ networks:
   default:
     name: app-network
     driver: bridge
+
+volumes:
+  ers-pgdata:
+    name: ers-pgdata
