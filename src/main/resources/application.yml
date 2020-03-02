@@ -29,3 +29,15 @@ web-service-config:
 
 service-config:
   resultSize: 5
+
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
