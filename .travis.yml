@@ -7,7 +7,8 @@ install: true
 addons:
   sonarcloud:
     organization: $ORGANIZATION_KEY
-    token: $SONAR_TOKEN
+    token:
+      secure: $SONAR_TOKEN
 
 stages:
   - name: test
