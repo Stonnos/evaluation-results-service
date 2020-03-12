@@ -1,8 +1,8 @@
-version: '3.5'
+version: "3.5"
 services:
 
   ers-db:
-    image: postgres:9.6.9
+    image: postgres:${POSTGRES_VERSION}
     container_name: ers-db
     volumes:
       - ./scripts/postgresinit.sql:/docker-entrypoint-initdb.d/postgresinit.sql
@@ -12,20 +12,20 @@ services:
     networks:
       - default
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      TZ: "Asia/Novosibirsk"
-      PGTZ: "Asia/Novosibirsk"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TIME_ZONE}
+      PGTZ: ${TIME_ZONE}
 
   evaluation-results-service:
     image: evaluation-results-service
     container_name: evaluation-results-service
-    command: ["/wait-for-it.sh", "ers-db:5432", "--timeout=45", "--", "java", "-jar", "evaluation-results-service.war"]
+    command: ["/wait-for-it.sh", "ers-db:5432", "--timeout=${DB_CONTAINER_WAIT_TIMEOUT}", "--", "java", "-jar", "evaluation-results-service.war"]
     environment:
-      TZ: "Asia/Novosibirsk"
+      TZ: ${TIME_ZONE}
       SPRING_PROFILES_ACTIVE: "docker"
     ports:
-      - "9443:9443"
+      - "8081:8080"
     networks:
       - default
     depends_on:

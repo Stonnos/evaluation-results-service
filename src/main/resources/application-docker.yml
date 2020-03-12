@@ -9,11 +9,3 @@ spring:
     hibernate:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
-
-server:
-  port: 9443
-  ssl:
-    enabled: true
-    keyStore: classpath:evaluation.jks
-    keyAlias: evaluation
-    keyStorePassword: evaluation
