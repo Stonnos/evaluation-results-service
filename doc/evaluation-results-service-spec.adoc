@@ -47,6 +47,7 @@ Evaluation results service представляет собой SOAP веб - с�
                         <evaluation:value>5</evaluation:value>
                     </evaluation:entry>
                 </evaluation:inputOptionsMap>
+                <evaluation:metaClassifier>false</evaluation:metaClassifier>
             </evaluation:classifierReport>
             <evaluation:evaluationMethodReport>
                 <evaluation:evaluationMethod>CROSS_VALIDATION</evaluation:evaluationMethod>
@@ -210,6 +211,12 @@ Evaluation results service представляет собой SOAP веб - с�
 |ClassifierReport.InputOptionsMap
 |-
 |Входные параметры классификатора в формате ключ/значение
+|
+|5
+|metaClassifier
+|boolean
+|-
+|Значение равно true, если классификатор является мета - классификатором (используется для алгоритмов семейства Stacking)
 |
 |===
 
@@ -537,6 +544,7 @@ Evaluation results service представляет собой SOAP веб - с�
                         <SOAP-ENV:value>200</SOAP-ENV:value>
                     </SOAP-ENV:entry>
                 </SOAP-ENV:inputOptionsMap>
+                <SOAP-ENV:metaClassifier>false</SOAP-ENV:metaClassifier>
             </SOAP-ENV:classifierReports>
             <SOAP-ENV:classifierReports>
                 <SOAP-ENV:classifierName>C45</SOAP-ENV:classifierName>
@@ -569,6 +577,7 @@ Evaluation results service представляет собой SOAP веб - с�
                         <SOAP-ENV:value>1</SOAP-ENV:value>
                     </SOAP-ENV:entry>
                 </SOAP-ENV:inputOptionsMap>
+                <SOAP-ENV:metaClassifier>false</SOAP-ENV:metaClassifier>
             </SOAP-ENV:classifierReports>
             <SOAP-ENV:status>SUCCESS</SOAP-ENV:status>
         </SOAP-ENV:classifierOptionsResponse>
@@ -680,6 +689,7 @@ Evaluation results service представляет собой SOAP веб - с�
                         <SOAP-ENV:value>1</SOAP-ENV:value>
                     </SOAP-ENV:entry>
                 </SOAP-ENV:inputOptionsMap>
+                <SOAP-ENV:metaClassifier>false</SOAP-ENV:metaClassifier>
             </SOAP-ENV:classifierReport>
             <SOAP-ENV:evaluationMethodReport>
                 <SOAP-ENV:evaluationMethod>CROSS_VALIDATION</SOAP-ENV:evaluationMethod>

@@ -7,4 +7,5 @@
     <include file="db/changelog/v0-init-schema.xml"/>
     <include file="db/changelog/v1-add-xml-data-column.xml"/>
     <include file="db/changelog/v2-drop-data-path-column.xml"/>
+    <include file="db/changelog/v3-add-meta-classifier-column.xml"/>
 </databaseChangeLog>
