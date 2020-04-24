@@ -2,22 +2,22 @@ package com.ers;
 
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Abstract class with JPA test configuration.
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @AutoConfigureDataJpa
 @EnableJpaRepositories(basePackageClasses = EvaluationResultsInfoRepository.class)
 @EntityScan(basePackageClasses = EvaluationResultsInfo.class)
@@ -25,18 +25,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @TestPropertySource("classpath:application.properties")
 public abstract class AbstractJpaTest {
 
-    @Before
-    public final void before() throws Exception {
+    @BeforeEach
+    public final void before() {
         deleteAll();
         init();
     }
 
-    @After
+    @AfterEach
     public final void after() {
         deleteAll();
     }
 
-    public void init() throws Exception {
+    public void init() {
     }
 
     public void deleteAll() {

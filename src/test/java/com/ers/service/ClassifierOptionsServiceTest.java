@@ -16,7 +16,7 @@ import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.DigestUtils;
 
@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for checking {@link ClassifierOptionsService} functionality.
@@ -54,11 +56,13 @@ public class ClassifierOptionsServiceTest extends AbstractJpaTest {
         instancesInfoRepository.deleteAll();
     }
 
-    @Test(expected = DataNotFoundException.class)
+    @Test
     public void testDataNotFoundException() {
-        ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
-        classifierOptionsService.findBestClassifierOptions(request);
+        assertThrows(DataNotFoundException.class, () -> {
+            ClassifierOptionsRequest request =
+                    TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
+            classifierOptionsService.findBestClassifierOptions(request);
+        });
     }
 
     @Test

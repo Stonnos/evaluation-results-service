@@ -5,10 +5,10 @@ import com.ers.dto.EvaluationResultsRequest;
 import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
         EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
