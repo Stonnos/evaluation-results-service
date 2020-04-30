@@ -1,5 +1,6 @@
 package com.ers.model;
 
+import com.ers.dto.EvaluationMethod;
 import com.ers.util.FieldSize;
 import lombok.Data;
 

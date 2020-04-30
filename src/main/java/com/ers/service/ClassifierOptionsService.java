@@ -4,18 +4,22 @@ import com.ers.config.ServiceConfig;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.exception.DataNotFoundException;
+import com.ers.filter.EvaluationResultsFilter;
 import com.ers.model.ClassifierOptionsInfo;
-import com.ers.repository.ClassifierOptionsInfoRepository;
+import com.ers.model.EvaluationResultsInfo;
+import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
-import com.ers.util.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implements service for searching the best classifier options.
@@ -28,7 +32,7 @@ import java.util.List;
 public class ClassifierOptionsService {
 
     private final InstancesInfoRepository instancesInfoRepository;
-    private final ClassifierOptionsInfoRepository classifierOptionsInfoRepository;
+    private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final ServiceConfig serviceConfig;
 
     /**
@@ -46,28 +50,14 @@ public class ClassifierOptionsService {
                     classifierOptionsRequest.getInstances().getRelationName()));
         } else {
             EvaluationMethodReport evaluationMethodReport = classifierOptionsRequest.getEvaluationMethodReport();
-            List<ClassifierOptionsInfo> classifierOptionsInfoList;
-            PageRequest pageRequest = PageRequest.of(0, serviceConfig.getResultSize());
-            switch (evaluationMethodReport.getEvaluationMethod()) {
-
-                case TRAINING_DATA:
-                    classifierOptionsInfoList =
-                            classifierOptionsInfoRepository.findTopClassifierOptions(instancesInfoId, pageRequest);
-                    break;
-
-                case CROSS_VALIDATION:
-                    classifierOptionsInfoList =
-                            classifierOptionsInfoRepository.findTopClassifierOptionsByCrossValidation(instancesInfoId,
-                                    Utils.toInteger(evaluationMethodReport.getNumFolds()),
-                                    Utils.toInteger(evaluationMethodReport.getNumTests()),
-                                    Utils.toInteger(evaluationMethodReport.getSeed()), pageRequest);
-                    break;
-
-                default:
-                    throw new IllegalArgumentException(String.format("Unexpected evaluation method: %s!",
-                            evaluationMethodReport.getEvaluationMethod()));
-            }
-            return classifierOptionsInfoList;
+            EvaluationResultsFilter filter = new EvaluationResultsFilter(instancesInfoId, evaluationMethodReport);
+            Sort sort = Sort.by(Sort.Order.desc("statistics.pctCorrect"), Sort.Order.desc("statistics.maxAucValue"),
+                    Sort.Order.asc("statistics.varianceError"));
+            PageRequest pageRequest = PageRequest.of(0, serviceConfig.getResultSize(), sort);
+            Page<EvaluationResultsInfo> evaluationResultsInfoPage =
+                    evaluationResultsInfoRepository.findAll(filter, pageRequest);
+            return evaluationResultsInfoPage.getContent().stream().map(
+                    EvaluationResultsInfo::getClassifierOptionsInfo).collect(Collectors.toList());
         }
     }
 }

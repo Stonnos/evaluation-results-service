@@ -3,13 +3,15 @@ package com.ers.repository;
 import com.ers.model.EvaluationResultsInfo;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
  * Repository to manage with {@link EvaluationResultsInfo} persistence entity.
  *
  * @author Roman Batygin
  */
-public interface EvaluationResultsInfoRepository extends JpaRepository<EvaluationResultsInfo, Long> {
+public interface EvaluationResultsInfoRepository
+        extends JpaRepository<EvaluationResultsInfo, Long>, JpaSpecificationExecutor<EvaluationResultsInfo> {
 
     /**
      * Checks existing of row with specified request id.

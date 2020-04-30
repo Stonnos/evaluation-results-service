@@ -1,8 +1,8 @@
 package com.ers.mapping;
 
 import com.ers.TestHelperUtils;
+import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationResultsRequest;
-import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @ExtendWith(SpringExtension.class)
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
-        EvaluationMethodMapperImpl.class, InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
+        InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
         RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsMapperTest {
 

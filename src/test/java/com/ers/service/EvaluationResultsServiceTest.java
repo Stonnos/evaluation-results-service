@@ -2,6 +2,7 @@ package com.ers.service;
 
 import com.ers.AbstractJpaTest;
 import com.ers.TestHelperUtils;
+import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsRequest;
@@ -13,12 +14,10 @@ import com.ers.mapping.ClassifierOptionsInfoMapperImpl;
 import com.ers.mapping.ClassifierReportFactory;
 import com.ers.mapping.ClassifierReportMapperImpl;
 import com.ers.mapping.ConfusionMatrixMapperImpl;
-import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.mapping.EvaluationResultsMapperImpl;
 import com.ers.mapping.InstancesMapperImpl;
 import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
-import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
@@ -38,8 +37,8 @@ import java.util.concurrent.Executors;
  * @author Roman Batygin
  */
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
-        ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
-        StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
+        ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class, InstancesMapperImpl.class,
+        RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsServiceTest extends AbstractJpaTest {

@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
  * @author Roman Batygin
  */
 @Mapper(uses = {ClassificationCostsReportMapper.class, ConfusionMatrixMapper.class,
-        StatisticsReportMapper.class, EvaluationMethodMapper.class, ClassifierReportMapper.class,
+        StatisticsReportMapper.class, ClassifierReportMapper.class,
         ClassifierOptionsInfoMapper.class, InstancesMapper.class}, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface EvaluationResultsMapper {
 

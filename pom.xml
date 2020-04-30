@@ -24,6 +24,7 @@
         <h2.version>1.4.199</h2.version>
         <lombok.version>1.18.4</lombok.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-processor-plugin.version>3.3.3</maven-processor-plugin.version>
         <assertj.core.version>3.13.1</assertj.core.version>
         <mockito.version>3.2.4</mockito.version>
         <org.apache.commons.lang3.version>3.7</org.apache.commons.lang3.version>
@@ -317,6 +318,36 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>${maven-processor-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <includes>
+                                <include>**/**/model/**/*</include>
+                            </includes>
+                            <processors>
+                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                            </processors>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>${hibernate.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
