@@ -8,8 +8,10 @@ import com.ers.dto.EvaluationMethod;
 import com.ers.exception.DataNotFoundException;
 import com.ers.model.ClassifierOptionsInfo;
 import com.ers.model.EvaluationResultsInfo;
+import com.ers.model.EvaluationResultsSortEntity;
 import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
+import com.ers.repository.EvaluationResultsSortRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
@@ -38,14 +40,39 @@ public class ClassifierOptionsServiceTest extends AbstractJpaTest {
     @Inject
     private EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     @Inject
+    private EvaluationResultsSortRepository evaluationResultsSortRepository;
+    @Inject
     private ClassifierOptionsService classifierOptionsService;
     @Inject
     private ServiceConfig serviceConfig;
 
     @Override
+    public void init() {
+        evaluationResultsSortRepository.save(
+                EvaluationResultsSortEntity.builder()
+                        .fieldName("statistics.pctCorrect")
+                        .ascending(false)
+                        .fieldOrder(0).build()
+        );
+        evaluationResultsSortRepository.save(
+                EvaluationResultsSortEntity.builder()
+                        .fieldName("statistics.maxAucValue")
+                        .ascending(false)
+                        .fieldOrder(1).build()
+        );
+        evaluationResultsSortRepository.save(
+                EvaluationResultsSortEntity.builder()
+                        .fieldName("statistics.varianceError")
+                        .ascending(true)
+                        .fieldOrder(2).build()
+        );
+    }
+
+    @Override
     public void deleteAll() {
         evaluationResultsInfoRepository.deleteAll();
         instancesInfoRepository.deleteAll();
+        evaluationResultsSortRepository.deleteAll();
     }
 
     @Test
