@@ -8,4 +8,5 @@
     <include file="db/changelog/v1-add-xml-data-column.xml"/>
     <include file="db/changelog/v2-drop-data-path-column.xml"/>
     <include file="db/changelog/v3-add-meta-classifier-column.xml"/>
+    <include file="db/changelog/v4-create-evaluation-results-sort-table.xml"/>
 </databaseChangeLog>

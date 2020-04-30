@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
@@ -34,6 +35,7 @@ import java.util.Set;
 @Table(name = "evaluation_results_info", indexes = @Index(columnList = "request_id", name = "request_id_index"))
 @NamedEntityGraph(name = "evaluationResults",
         attributeNodes = {
+                @NamedAttributeNode(value = "instances"),
                 @NamedAttributeNode(value = "classificationCosts"),
                 @NamedAttributeNode(value = "confusionMatrix")
         }
@@ -59,7 +61,7 @@ public class EvaluationResultsInfo {
     /**
      * Training data info
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instances_info_id")
     private InstancesInfo instances;
 
