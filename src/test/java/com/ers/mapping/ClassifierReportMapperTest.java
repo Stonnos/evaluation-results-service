@@ -36,11 +36,11 @@ public class ClassifierReportMapperTest {
                 classifierReport.getOptions());
         Assertions.assertThat(classifierOptionsInfo.getClassifierDescription()).isEqualTo(
                 classifierReport.getClassifierDescription());
-        //Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
-      //  Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
-      //  Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap().size()).isEqualTo(
-      //          classifierReport.getInputOptionsMap().getEntry().size());
-      //  Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers()).isNullOrEmpty();
+        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
+        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
+        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap().size()).isEqualTo(
+                classifierReport.getInputOptionsMap().getEntry().size());
+        Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers()).isNullOrEmpty();
     }
 
     @Test
@@ -63,6 +63,7 @@ public class ClassifierReportMapperTest {
         classifierReport.setClassifierDescription(StringUtils.repeat('Q', FieldSize.CLASSIFIER_DESCRIPTION_LENGTH + 1));
         ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
         Assertions.assertThat(classifierOptionsInfo.getClassifierDescription()).isNotNull();
-        Assertions.assertThat(classifierOptionsInfo.getClassifierDescription().length()).isEqualTo(FieldSize.CLASSIFIER_DESCRIPTION_LENGTH);
+        Assertions.assertThat(classifierOptionsInfo.getClassifierDescription().length()).isEqualTo(
+                FieldSize.CLASSIFIER_DESCRIPTION_LENGTH);
     }
 }
