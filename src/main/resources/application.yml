@@ -21,10 +21,6 @@ spring:
     change-log: classpath:db/liquibase-changelog.xml
 
 web-service-config:
-  wsdlConfig:
-    portTypeName: EvaluationResultsPort
-    locationUri: /ws
-    targetNamespace: http://schemas.xmlsoap.org/soap/envelope/
   xsdSchema: evaluation-results.xsd
 
 service-config:
