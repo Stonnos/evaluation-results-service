@@ -36,33 +36,26 @@ public class ClassifierOptionsRequestService {
         String requestId = UUID.randomUUID().toString();
         log.info("Received request [{}] for searching the best classifiers options.", requestId);
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        if (!Utils.validateClassifierOptionsRequest(classifierOptionsRequest)) {
-            responseStatus = ResponseStatus.INVALID_REQUEST_PARAMS;
-        } else {
-            try {
-                log.info(
-                        "Starting to find the best classifiers options with request id [{}] for data '{}' classification.",
-                        requestId, classifierOptionsRequest.getInstances().getRelationName());
-                List<ClassifierOptionsInfo> classifierOptionsInfoList =
-                        classifierOptionsService.findBestClassifierOptions(classifierOptionsRequest);
-                if (CollectionUtils.isEmpty(classifierOptionsInfoList)) {
-                    log.info("Best classifiers options not found for data '{}', request id [{}]",
-                            classifierOptionsRequest.getInstances().getRelationName(), requestId);
-                    responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
-                } else {
-                    log.info("{} best classifiers options has been found for data '{}', request id [{}]",
-                            classifierOptionsInfoList.size(), classifierOptionsRequest.getInstances().getRelationName(),
-                            requestId);
-                    return Utils.buildClassifierOptionsResponse(requestId,
-                            classifierOptionsInfoMapper.map(classifierOptionsInfoList), responseStatus);
-                }
-            } catch (DataNotFoundException ex) {
-                log.warn(ex.getMessage());
-                responseStatus = ResponseStatus.DATA_NOT_FOUND;
-            } catch (Exception ex) {
-                log.error(ex.getMessage());
-                responseStatus = ResponseStatus.ERROR;
+        try {
+            log.info(
+                    "Starting to find the best classifiers options with request id [{}] for data '{}' classification.",
+                    requestId, classifierOptionsRequest.getInstances().getRelationName());
+            List<ClassifierOptionsInfo> classifierOptionsInfoList =
+                    classifierOptionsService.findBestClassifierOptions(classifierOptionsRequest);
+            if (CollectionUtils.isEmpty(classifierOptionsInfoList)) {
+                log.info("Best classifiers options not found for data '{}', request id [{}]",
+                        classifierOptionsRequest.getInstances().getRelationName(), requestId);
+                responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
+            } else {
+                log.info("{} best classifiers options has been found for data '{}', request id [{}]",
+                        classifierOptionsInfoList.size(), classifierOptionsRequest.getInstances().getRelationName(),
+                        requestId);
+                return Utils.buildClassifierOptionsResponse(requestId,
+                        classifierOptionsInfoMapper.map(classifierOptionsInfoList), responseStatus);
             }
+        } catch (DataNotFoundException ex) {
+            log.warn(ex.getMessage());
+            responseStatus = ResponseStatus.DATA_NOT_FOUND;
         }
         return Utils.buildClassifierOptionsResponse(requestId, responseStatus);
     }

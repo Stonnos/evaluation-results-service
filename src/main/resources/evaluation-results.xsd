@@ -15,10 +15,7 @@
     <xsd:simpleType name="responseStatus">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="SUCCESS"/>
-            <xsd:enumeration value="INVALID_REQUEST_ID"/>
             <xsd:enumeration value="DUPLICATE_REQUEST_ID"/>
-            <xsd:enumeration value="ERROR"/>
-            <xsd:enumeration value="INVALID_REQUEST_PARAMS"/>
             <xsd:enumeration value="DATA_NOT_FOUND"/>
             <xsd:enumeration value="RESULTS_NOT_FOUND"/>
         </xsd:restriction>

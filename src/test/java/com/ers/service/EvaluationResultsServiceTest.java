@@ -102,25 +102,6 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testInvalidRequestId() {
-        EvaluationResultsRequest request = new EvaluationResultsRequest();
-        evaluationResultsService.saveEvaluationResults(request);
-        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
-    }
-
-    @Test
-    public void testInvalidRequestParams() {
-        EvaluationResultsRequest request = new EvaluationResultsRequest();
-        request.setRequestId(UUID.randomUUID().toString());
-        evaluationResultsService.saveEvaluationResults(request);
-        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_PARAMS);
-    }
-
-    @Test
     public void testDataCache() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         evaluationResultsService.saveEvaluationResults(request);
@@ -166,17 +147,6 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
         executorService.shutdownNow();
         Assertions.assertThat(evaluationResultsInfoRepository.count()).isEqualTo(2);
         Assertions.assertThat(instancesInfoRepository.count()).isOne();
-    }
-
-
-    @Test
-    public void testGetEvaluationResultsWithInvalidId() {
-        GetEvaluationResultsRequest request = TestHelperUtils.buildGetEvaluationResultsRequest(null);
-        GetEvaluationResultsResponse response =
-                evaluationResultsService.getEvaluationResultsResponse(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
     }
 
     @Test
