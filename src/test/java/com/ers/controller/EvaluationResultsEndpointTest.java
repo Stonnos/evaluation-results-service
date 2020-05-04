@@ -12,6 +12,7 @@ import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.service.ClassifierOptionsRequestService;
 import com.ers.service.EvaluationResultsService;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ws.test.server.MockWebServiceClient;
 import org.springframework.xml.transform.StringResult;
@@ -28,11 +30,13 @@ import org.springframework.xml.transform.StringSource;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.ws.test.server.RequestCreators.withPayload;
+import static org.springframework.ws.test.server.ResponseMatchers.clientOrSenderFault;
 import static org.springframework.ws.test.server.ResponseMatchers.noFault;
 import static org.springframework.ws.test.server.ResponseMatchers.payload;
 import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
@@ -43,8 +47,11 @@ import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
  * @author Roman Batygin
  */
 @ExtendWith(SpringExtension.class)
+@TestPropertySource("classpath:application.properties")
 @Import({WebServiceTestConfiguration.class, EvaluationResultsEndpoint.class})
 public class EvaluationResultsEndpointTest {
+
+    private static final int STRING_LENGTH = 256;
 
     @Inject
     private ApplicationContext applicationContext;
@@ -79,6 +86,78 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
+    public void testSaveEvaluationReportWithEmptyClassifierName() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getClassifierReport().setClassifierName(StringUtils.EMPTY);
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithLargeClassifierName() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getClassifierReport().setClassifierName(StringUtils.repeat('Q', STRING_LENGTH));
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyOptions() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getClassifierReport().setOptions(StringUtils.EMPTY);
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyXmlInstances() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getInstances().setXmlInstances(StringUtils.EMPTY);
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyClassName() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getInstances().setClassName(StringUtils.EMPTY);
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNegativePctCorrect() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getStatistics().setPctCorrect(BigDecimal.valueOf(-1L));
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithExceededPctCorrect() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getStatistics().setPctCorrect(BigDecimal.valueOf(101L));
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNegativePctIncorrect() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getStatistics().setPctIncorrect(BigDecimal.valueOf(-1L));
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithExceededPctIncorrect() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getStatistics().setPctIncorrect(BigDecimal.valueOf(101L));
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
     public void testGetEvaluationResultsReport() throws IOException {
         GetEvaluationResultsRequest getEvaluationResultsRequest =
                 TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
@@ -110,6 +189,11 @@ public class EvaluationResultsEndpointTest {
                 .andExpect(noFault())
                 .andExpect(payload(response))
                 .andExpect(validPayload(xsdSchema));
+    }
+
+    private void sendRequestTestWithFaultAsExpected(EvaluationResultsRequest evaluationResultsRequest) {
+        StringSource request = getPayload(evaluationResultsRequest);
+        mockClient.sendRequest(withPayload(request)).andExpect(clientOrSenderFault());
     }
 
     private StringSource getPayload(Object object) {
