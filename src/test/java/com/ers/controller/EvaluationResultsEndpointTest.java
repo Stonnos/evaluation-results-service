@@ -2,10 +2,8 @@ package com.ers.controller;
 
 import com.ers.TestHelperUtils;
 import com.ers.config.WebServiceTestConfiguration;
-import com.ers.dto.ClassificationCostsReport;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.ClassifierOptionsResponse;
-import com.ers.dto.ConfusionMatrixReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
@@ -60,6 +58,9 @@ public class EvaluationResultsEndpointTest {
     private static final int STRING_LENGTH = 256;
     private static final BigDecimal NEGATIVE_VALUE = BigDecimal.valueOf(-1L);
 
+    /**
+     * Required fields for tests
+     */
     private static final List<String> CLASSIFIER_FIELDS_NULL_TEST =
             ImmutableList.of("classifierName", "options");
     private static final List<String> INSTANCES_FIELDS_NULL_TEST =
@@ -69,22 +70,46 @@ public class EvaluationResultsEndpointTest {
             ImmutableList.of("evaluationMethod");
     private static final List<String> STATISTICS_FIELDS_NULL_TEST =
             ImmutableList.of("numTestInstances", "numCorrect", "numIncorrect", "pctCorrect", "pctIncorrect");
+    private static final List<String> CLASSIFICATION_COSTS_FIELDS_NULL_TEST =
+            ImmutableList.of("classValue", "truePositiveRate", "falsePositiveRate", "trueNegativeRate",
+                    "falseNegativeRate", "rocCurve");
+    private static final List<String> CONFUSION_MATRIX_FIELDS_NULL_TEST =
+            ImmutableList.of("actualClass", "predictedClass", "numInstances");
 
+    /**
+     * Not empty string fields for tests
+     */
     private static final List<String> CLASSIFIER_FIELDS_EMPTY_TEST =
             ImmutableList.of("classifierName", "options");
     private static final List<String> INSTANCES_FIELDS_EMPTY_TEST =
             ImmutableList.of("xmlInstances", "relationName", "className");
+    private static final List<String> CLASSIFICATION_COSTS_FIELDS_EMPTY_TEST =
+            ImmutableList.of("classValue");
+    private static final List<String> CONFUSION_MATRIX_FIELDS_EMPTY_TEST =
+            ImmutableList.of("actualClass", "predictedClass");
 
+    /**
+     * Not large string fields to tests
+     */
     private static final List<String> CLASSIFIER_FIELDS_LARGE_TEST =
             ImmutableList.of("classifierName", "classifierDescription");
     private static final List<String> INSTANCES_FIELDS_LARGE_TEST =
             ImmutableList.of("relationName", "className");
+    private static final List<String> CLASSIFICATION_COSTS_FIELDS_LARGE_TEST =
+            ImmutableList.of("classValue");
+    private static final List<String> CONFUSION_MATRIX_FIELDS_LARGE_TEST =
+            ImmutableList.of("actualClass", "predictedClass");
 
+    /**
+     * Decimal fields to tests
+     */
     private static final List<String> STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST =
             ImmutableList.of("pctCorrect", "pctIncorrect");
     private static final List<String> STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST =
             ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError",
                     "confidenceIntervalLowerBound", "confidenceIntervalUpperBound");
+    private static final List<String> CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST =
+            ImmutableList.of("truePositiveRate", "falsePositiveRate", "trueNegativeRate", "falseNegativeRate");
 
     @Inject
     private ApplicationContext applicationContext;
@@ -155,7 +180,7 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNotValidDecimalFields() {
+    public void testSaveEvaluationReportWithNotValidStatisticsDecimalFields() {
         internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
                 EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
@@ -184,19 +209,47 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullClassificationCostsRecord() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getClassificationCosts().add(new ClassificationCostsReport());
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithNullClassificationCostsRecordFields() {
+        internalTestNullFields(CLASSIFICATION_COSTS_FIELDS_NULL_TEST,
+                (request) -> request.getClassificationCosts().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullConfusionMatrixRecord() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getConfusionMatrix().add(new ConfusionMatrixReport());
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithNullConfusionMatrixRecordFields() {
+        internalTestNullFields(CONFUSION_MATRIX_FIELDS_NULL_TEST,
+                (request) -> request.getConfusionMatrix().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyClassificationCostsRecordFields() {
+        internalTestEmptyFields(CLASSIFICATION_COSTS_FIELDS_EMPTY_TEST,
+                (request) -> request.getClassificationCosts().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyConfusionMatrixRecordFields() {
+        internalTestEmptyFields(CONFUSION_MATRIX_FIELDS_EMPTY_TEST,
+                (request) -> request.getConfusionMatrix().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithLargeClassificationCostsRecordFields() {
+        internalTestLargeFields(CLASSIFICATION_COSTS_FIELDS_LARGE_TEST,
+                (request) -> request.getClassificationCosts().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithLargeConfusionMatrixRecordFields() {
+        internalTestLargeFields(CONFUSION_MATRIX_FIELDS_LARGE_TEST,
+                (request) -> request.getConfusionMatrix().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNotValidClassificationCostsRecordDecimalFields() {
+        internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
+                (request) -> request.getClassificationCosts().iterator().next(), NEGATIVE_VALUE);
+        internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
+                (request) -> request.getClassificationCosts().iterator().next(), BigDecimal.valueOf(1.01d));
     }
 
     @Test
