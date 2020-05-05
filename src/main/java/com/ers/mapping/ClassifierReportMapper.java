@@ -33,8 +33,6 @@ public abstract class ClassifierReportMapper {
      * @return classifier options info entity
      */
     @Mapping(target = "inputOptionsMap", ignore = true)
-    @Mapping(source = "classifierDescription", target = "classifierDescription",
-            qualifiedByName = "truncateClassifierDescription")
     public abstract ClassifierOptionsInfo map(ClassifierReport classifierReport);
 
     @AfterMapping
@@ -46,19 +44,6 @@ public abstract class ClassifierReportMapper {
                     Collectors.toMap(InputOptionsMap.Entry::getKey, InputOptionsMap.Entry::getValue));
             classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
         }
-    }
-
-    /**
-     * Truncate classifier description value if its length is greater than 255.
-     *
-     * @param classifierDescription - string value
-     * @return truncated string
-     */
-    @Named("truncateClassifierDescription")
-    protected String truncateClassifierDescription(String classifierDescription) {
-        return !StringUtils.isEmpty(classifierDescription) &&
-                classifierDescription.length() > FieldSize.CLASSIFIER_DESCRIPTION_LENGTH ?
-                classifierDescription.substring(0, FieldSize.CLASSIFIER_DESCRIPTION_LENGTH) : classifierDescription;
     }
 
     /**
