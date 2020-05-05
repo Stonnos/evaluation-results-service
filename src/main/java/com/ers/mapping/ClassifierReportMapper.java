@@ -4,13 +4,10 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.InputOptionsMap;
 import com.ers.model.ClassifierOptionsInfo;
-import com.ers.util.FieldSize;
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
