@@ -2,8 +2,10 @@ package com.ers.controller;
 
 import com.ers.TestHelperUtils;
 import com.ers.config.WebServiceTestConfiguration;
+import com.ers.dto.ClassificationCostsReport;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.ClassifierOptionsResponse;
+import com.ers.dto.ConfusionMatrixReport;
 import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
@@ -58,14 +60,26 @@ public class EvaluationResultsEndpointTest {
     private static final int STRING_LENGTH = 256;
     private static final BigDecimal NEGATIVE_VALUE = BigDecimal.valueOf(-1L);
 
+    private static final List<String> CLASSIFIER_FIELDS_NULL_TEST =
+            ImmutableList.of("classifierName", "options");
+    private static final List<String> INSTANCES_FIELDS_NULL_TEST =
+            ImmutableList.of("xmlInstances", "relationName", "numInstances", "numAttributes", "numClasses",
+                    "className");
+    private static final List<String> EVALUATION_METHOD_REPORT_FIELDS_NULL_TEST =
+            ImmutableList.of("evaluationMethod");
+    private static final List<String> STATISTICS_FIELDS_NULL_TEST =
+            ImmutableList.of("numTestInstances", "numCorrect", "numIncorrect", "pctCorrect", "pctIncorrect");
+
     private static final List<String> CLASSIFIER_FIELDS_EMPTY_TEST =
             ImmutableList.of("classifierName", "options");
     private static final List<String> INSTANCES_FIELDS_EMPTY_TEST =
             ImmutableList.of("xmlInstances", "relationName", "className");
+
     private static final List<String> CLASSIFIER_FIELDS_LARGE_TEST =
             ImmutableList.of("classifierName", "classifierDescription");
     private static final List<String> INSTANCES_FIELDS_LARGE_TEST =
             ImmutableList.of("relationName", "className");
+
     private static final List<String> STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST =
             ImmutableList.of("pctCorrect", "pctIncorrect");
     private static final List<String> STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST =
@@ -149,6 +163,43 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
+    public void testSaveEvaluationReportWithNullInstancesReportFields() {
+        internalTestNullFields(INSTANCES_FIELDS_NULL_TEST, EvaluationResultsRequest::getInstances);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullClassifierReportFields() {
+        internalTestNullFields(CLASSIFIER_FIELDS_NULL_TEST, EvaluationResultsRequest::getClassifierReport);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullEvaluationMethodReportFields() {
+        internalTestNullFields(EVALUATION_METHOD_REPORT_FIELDS_NULL_TEST,
+                EvaluationResultsRequest::getEvaluationMethodReport);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullStatisticsReportFields() {
+        internalTestNullFields(STATISTICS_FIELDS_NULL_TEST, EvaluationResultsRequest::getStatistics);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullClassificationCostsRecord() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getClassificationCosts().add(new ClassificationCostsReport());
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullConfusionMatrixRecord() {
+        EvaluationResultsRequest evaluationResultsRequest =
+                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+        evaluationResultsRequest.getConfusionMatrix().add(new ConfusionMatrixReport());
+        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    }
+
+    @Test
     public void testGetEvaluationResultsReport() throws IOException {
         GetEvaluationResultsRequest getEvaluationResultsRequest =
                 TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
@@ -196,6 +247,11 @@ public class EvaluationResultsEndpointTest {
     private <T> void internalTestEmptyFields(List<String> testFields,
                                              Function<EvaluationResultsRequest, T> targetFunction) {
         internalTestFieldsWithConstraints(testFields, targetFunction, StringUtils.EMPTY);
+    }
+
+    private <T> void internalTestNullFields(List<String> testFields,
+                                            Function<EvaluationResultsRequest, T> targetFunction) {
+        internalTestFieldsWithConstraints(testFields, targetFunction, null);
     }
 
     private <T> void internalTestLargeFields(List<String> testFields,
