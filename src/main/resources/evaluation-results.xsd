@@ -91,8 +91,20 @@
     <xsd:complexType name="evaluationMethodReport">
         <xsd:sequence>
             <xsd:element name="evaluationMethod" type="evaluation:evaluationMethod"/>
-            <xsd:element name="numFolds" type="xsd:integer" minOccurs="0"/>
-            <xsd:element name="numTests" type="xsd:integer" minOccurs="0"/>
+            <xsd:element name="numFolds" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="2"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="numTests" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="1"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
             <xsd:element name="seed" type="xsd:integer" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
@@ -114,9 +126,27 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="numInstances" type="xsd:integer"/>
-            <xsd:element name="numAttributes" type="xsd:integer"/>
-            <xsd:element name="numClasses" type="xsd:integer"/>
+            <xsd:element name="numInstances">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="2"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="numAttributes">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="2"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="numClasses">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="2"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
             <xsd:element name="className">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
@@ -130,9 +160,27 @@
 
     <xsd:complexType name="statisticsReport">
         <xsd:sequence>
-            <xsd:element name="numTestInstances" type="xsd:integer"/>
-            <xsd:element name="numCorrect" type="xsd:integer"/>
-            <xsd:element name="numIncorrect" type="xsd:integer"/>
+            <xsd:element name="numTestInstances">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="2"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="numCorrect">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="0"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
+            <xsd:element name="numIncorrect">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="0"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
             <xsd:element name="pctCorrect">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:decimal">
@@ -301,7 +349,13 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="numInstances" type="xsd:integer"/>
+            <xsd:element name="numInstances">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:integer">
+                        <xsd:minInclusive value="0"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
         </xsd:sequence>
     </xsd:complexType>
 

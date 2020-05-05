@@ -33,6 +33,7 @@ import org.springframework.xml.transform.StringSource;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -164,8 +165,61 @@ public class EvaluationResultsEndpointTest {
 
     @Test
     public void testSaveEvaluationReportWithInvalidRequestId() {
-        EvaluationResultsRequest evaluationResultsRequest = TestHelperUtils.buildEvaluationResultsReport("test-uuid");
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+        internalTestFieldsWithConstraints(Collections.singletonList("requestId"), Function.identity(), "test-uuid");
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumFolds() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numFolds"),
+                EvaluationResultsRequest::getEvaluationMethodReport, BigDecimal.ONE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumTests() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numTests"),
+                EvaluationResultsRequest::getEvaluationMethodReport, BigDecimal.ZERO.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumInstances() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numInstances"),
+                EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumAttributes() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numAttributes"),
+                EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumClasses() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numClasses"),
+                EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumTestInstances() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numTestInstances"),
+                EvaluationResultsRequest::getStatistics, BigDecimal.ONE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumCorrect() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numCorrect"),
+                EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidNumIncorrect() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numIncorrect"),
+                EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE.toBigInteger());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithInvalidConfusionMatrixNumInstances() {
+        internalTestFieldsWithConstraints(Collections.singletonList("numInstances"),
+                request -> request.getConfusionMatrix().iterator().next(), NEGATIVE_VALUE.toBigInteger());
     }
 
     @Test
