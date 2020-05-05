@@ -75,6 +75,8 @@ public class EvaluationResultsEndpointTest {
                     "falseNegativeRate", "rocCurve");
     private static final List<String> CONFUSION_MATRIX_FIELDS_NULL_TEST =
             ImmutableList.of("actualClass", "predictedClass", "numInstances");
+    private static final List<String> ROC_CURVE_FIELDS_NULL_TEST =
+            ImmutableList.of("aucValue", "specificity", "sensitivity", "thresholdValue");
 
     /**
      * Not empty string fields for tests
@@ -110,6 +112,8 @@ public class EvaluationResultsEndpointTest {
                     "confidenceIntervalLowerBound", "confidenceIntervalUpperBound");
     private static final List<String> CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST =
             ImmutableList.of("truePositiveRate", "falsePositiveRate", "trueNegativeRate", "falseNegativeRate");
+    private static final List<String> ROC_CURVE_FIELDS_BOUNDS_TEST =
+            ImmutableList.of("aucValue", "specificity", "sensitivity", "thresholdValue");
 
     @Inject
     private ApplicationContext applicationContext;
@@ -250,6 +254,21 @@ public class EvaluationResultsEndpointTest {
                 (request) -> request.getClassificationCosts().iterator().next(), NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
                 (request) -> request.getClassificationCosts().iterator().next(), BigDecimal.valueOf(1.01d));
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullRocCurveReportFields() {
+        internalTestNullFields(ROC_CURVE_FIELDS_NULL_TEST,
+                (request) -> request.getClassificationCosts().iterator().next().getRocCurve());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNotValidRocCurveReportDecimalFields() {
+        internalTestFieldsWithConstraints(ROC_CURVE_FIELDS_BOUNDS_TEST,
+                (request) -> request.getClassificationCosts().iterator().next().getRocCurve(), NEGATIVE_VALUE);
+        internalTestFieldsWithConstraints(ROC_CURVE_FIELDS_BOUNDS_TEST,
+                (request) -> request.getClassificationCosts().iterator().next().getRocCurve(),
+                BigDecimal.valueOf(1.01d));
     }
 
     @Test
