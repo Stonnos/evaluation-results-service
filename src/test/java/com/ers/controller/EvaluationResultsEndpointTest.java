@@ -61,6 +61,8 @@ public class EvaluationResultsEndpointTest {
     /**
      * Required fields for tests
      */
+    private static final List<String> EVALUATION_REQUEST_NULL_TEST =
+            ImmutableList.of("requestId", "instances", "classifierReport", "evaluationMethodReport", "statistics");
     private static final List<String> CLASSIFIER_FIELDS_NULL_TEST =
             ImmutableList.of("classifierName", "options");
     private static final List<String> INSTANCES_FIELDS_NULL_TEST =
@@ -153,6 +155,11 @@ public class EvaluationResultsEndpointTest {
         when(evaluationResultsService.saveEvaluationResults(any(EvaluationResultsRequest.class))).thenReturn(
                 evaluationResultsResponse);
         sendRequestTest(request, response);
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullFields() {
+        internalTestNullFields(EVALUATION_REQUEST_NULL_TEST, Function.identity());
     }
 
     @Test
