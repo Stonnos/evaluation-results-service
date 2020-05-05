@@ -40,6 +40,7 @@
         <docker.image.name>${project.artifactId}</docker.image.name>
         <liquibase.version>3.7.0</liquibase.version>
         <guava.version>22.0</guava.version>
+        <beanutils.version>1.9.4</beanutils.version>
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
         <sonar.coverage.exclusions>
             **/config/*,
@@ -111,6 +112,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${beanutils.version}</version>
         </dependency>
 
         <!-- Spring Boot -->

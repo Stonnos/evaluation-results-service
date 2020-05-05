@@ -12,6 +12,8 @@ import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.service.ClassifierOptionsRequestService;
 import com.ers.service.EvaluationResultsService;
+import com.google.common.collect.ImmutableList;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,9 @@ import org.springframework.xml.transform.StringSource;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -52,6 +56,21 @@ import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
 public class EvaluationResultsEndpointTest {
 
     private static final int STRING_LENGTH = 256;
+    private static final BigDecimal NEGATIVE_VALUE = BigDecimal.valueOf(-1L);
+
+    private static final List<String> CLASSIFIER_FIELDS_EMPTY_TEST =
+            ImmutableList.of("classifierName", "options");
+    private static final List<String> INSTANCES_FIELDS_EMPTY_TEST =
+            ImmutableList.of("xmlInstances", "relationName", "className");
+    private static final List<String> CLASSIFIER_FIELDS_LARGE_TEST =
+            ImmutableList.of("classifierName", "classifierDescription");
+    private static final List<String> INSTANCES_FIELDS_LARGE_TEST =
+            ImmutableList.of("relationName", "className");
+    private static final List<String> STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST =
+            ImmutableList.of("pctCorrect", "pctIncorrect");
+    private static final List<String> STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST =
+            ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError",
+                    "confidenceIntervalLowerBound", "confidenceIntervalUpperBound");
 
     @Inject
     private ApplicationContext applicationContext;
@@ -62,7 +81,9 @@ public class EvaluationResultsEndpointTest {
     @MockBean
     private ClassifierOptionsRequestService classifierOptionsRequestService;
 
-    private Resource xsdSchema = new ClassPathResource("evaluation-results.xsd");
+    private final Resource xsdSchema = new ClassPathResource("evaluation-results.xsd");
+
+    private final PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
 
     private MockWebServiceClient mockClient;
 
@@ -86,75 +107,45 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyClassifierName() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getClassifierReport().setClassifierName(StringUtils.EMPTY);
+    public void testSaveEvaluationReportWithInvalidRequestId() {
+        EvaluationResultsRequest evaluationResultsRequest = TestHelperUtils.buildEvaluationResultsReport("test-uuid");
         sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
     }
 
     @Test
-    public void testSaveEvaluationReportWithLargeClassifierName() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getClassifierReport().setClassifierName(StringUtils.repeat('Q', STRING_LENGTH));
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithEmptyClassifierReportFields() {
+        internalTestEmptyFields(CLASSIFIER_FIELDS_EMPTY_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyOptions() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getClassifierReport().setOptions(StringUtils.EMPTY);
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithEmptyInstancesReportFields() {
+        internalTestEmptyFields(INSTANCES_FIELDS_EMPTY_TEST, EvaluationResultsRequest::getInstances);
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyXmlInstances() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getInstances().setXmlInstances(StringUtils.EMPTY);
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithLargeClassifierReportFields() {
+        internalTestLargeFields(CLASSIFIER_FIELDS_LARGE_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyClassName() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getInstances().setClassName(StringUtils.EMPTY);
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithLargeInstancesReportFields() {
+        internalTestLargeFields(INSTANCES_FIELDS_LARGE_TEST, EvaluationResultsRequest::getInstances);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNegativePctCorrect() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getStatistics().setPctCorrect(BigDecimal.valueOf(-1L));
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithNotValidPercentageFields() {
+        internalTestFieldsWithConstraints(STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST,
+                EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE);
+        internalTestFieldsWithConstraints(STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST,
+                EvaluationResultsRequest::getStatistics, BigDecimal.valueOf(101L));
     }
 
     @Test
-    public void testSaveEvaluationReportWithExceededPctCorrect() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getStatistics().setPctCorrect(BigDecimal.valueOf(101L));
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
-    }
-
-    @Test
-    public void testSaveEvaluationReportWithNegativePctIncorrect() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getStatistics().setPctIncorrect(BigDecimal.valueOf(-1L));
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
-    }
-
-    @Test
-    public void testSaveEvaluationReportWithExceededPctIncorrect() {
-        EvaluationResultsRequest evaluationResultsRequest =
-                TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
-        evaluationResultsRequest.getStatistics().setPctIncorrect(BigDecimal.valueOf(101L));
-        sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+    public void testSaveEvaluationReportWithNotValidDecimalFields() {
+        internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
+                EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE);
+        internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
+                EvaluationResultsRequest::getStatistics, BigDecimal.valueOf(1.01d));
     }
 
     @Test
@@ -200,5 +191,31 @@ public class EvaluationResultsEndpointTest {
         StringResult stringResult = new StringResult();
         jaxb2Marshaller.marshal(object, stringResult);
         return new StringSource(stringResult.toString());
+    }
+
+    private <T> void internalTestEmptyFields(List<String> testFields,
+                                             Function<EvaluationResultsRequest, T> targetFunction) {
+        internalTestFieldsWithConstraints(testFields, targetFunction, StringUtils.EMPTY);
+    }
+
+    private <T> void internalTestLargeFields(List<String> testFields,
+                                             Function<EvaluationResultsRequest, T> targetFunction) {
+        internalTestFieldsWithConstraints(testFields, targetFunction, StringUtils.repeat('Q', STRING_LENGTH));
+    }
+
+    private <T> void internalTestFieldsWithConstraints(List<String> testFields,
+                                                       Function<EvaluationResultsRequest, T> targetFunction,
+                                                       Object value) {
+        for (String field : testFields) {
+            try {
+                EvaluationResultsRequest evaluationResultsRequest =
+                        TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
+                T target = targetFunction.apply(evaluationResultsRequest);
+                propertyUtilsBean.setProperty(target, field, value);
+                sendRequestTestWithFaultAsExpected(evaluationResultsRequest);
+            } catch (Exception ex) {
+                throw new IllegalStateException(ex);
+            }
+        }
     }
 }
