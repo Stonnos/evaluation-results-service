@@ -26,8 +26,22 @@
             <xsd:element maxOccurs="unbounded" minOccurs="0" name="entry">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="key" type="xsd:string"/>
-                        <xsd:element name="value" type="xsd:string"/>
+                        <xsd:element name="key">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                    <xsd:minLength value="1"/>
+                                    <xsd:maxLength value="255"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:element>
+                        <xsd:element name="value">
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string">
+                                    <xsd:minLength value="1"/>
+                                    <xsd:maxLength value="255"/>
+                                </xsd:restriction>
+                            </xsd:simpleType>
+                        </xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -51,7 +65,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="options" minOccurs="0">
+            <xsd:element name="options">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
                         <xsd:minLength value="1"/>
@@ -135,7 +149,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="meanAbsoluteError">
+            <xsd:element name="meanAbsoluteError" minOccurs="0">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:decimal">
                         <xsd:minInclusive value="0"/>
@@ -143,7 +157,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="rootMeanSquaredError">
+            <xsd:element name="rootMeanSquaredError" minOccurs="0">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:decimal">
                         <xsd:minInclusive value="0"/>
@@ -151,7 +165,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="maxAucValue">
+            <xsd:element name="maxAucValue" minOccurs="0">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:decimal">
                         <xsd:minInclusive value="0"/>
@@ -159,7 +173,7 @@
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="varianceError">
+            <xsd:element name="varianceError" minOccurs="0">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:decimal">
                         <xsd:minInclusive value="0"/>
