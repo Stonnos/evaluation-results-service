@@ -77,6 +77,8 @@ public class EvaluationResultsEndpointTest {
             ImmutableList.of("actualClass", "predictedClass", "numInstances");
     private static final List<String> ROC_CURVE_FIELDS_NULL_TEST =
             ImmutableList.of("aucValue", "specificity", "sensitivity", "thresholdValue");
+    private static final List<String> INPUT_OPTIONS_MAP_NULL_TEST =
+            ImmutableList.of("key", "value");
 
     /**
      * Not empty string fields for tests
@@ -89,6 +91,8 @@ public class EvaluationResultsEndpointTest {
             ImmutableList.of("classValue");
     private static final List<String> CONFUSION_MATRIX_FIELDS_EMPTY_TEST =
             ImmutableList.of("actualClass", "predictedClass");
+    private static final List<String> INPUT_OPTIONS_MAP_EMPTY_TEST =
+            ImmutableList.of("key", "value");
 
     /**
      * Not large string fields to tests
@@ -101,6 +105,8 @@ public class EvaluationResultsEndpointTest {
             ImmutableList.of("classValue");
     private static final List<String> CONFUSION_MATRIX_FIELDS_LARGE_TEST =
             ImmutableList.of("actualClass", "predictedClass");
+    private static final List<String> INPUT_OPTIONS_MAP_LARGE_TEST =
+            ImmutableList.of("key", "value");
 
     /**
      * Decimal fields to tests
@@ -269,6 +275,24 @@ public class EvaluationResultsEndpointTest {
         internalTestFieldsWithConstraints(ROC_CURVE_FIELDS_BOUNDS_TEST,
                 (request) -> request.getClassificationCosts().iterator().next().getRocCurve(),
                 BigDecimal.valueOf(1.01d));
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithNullInputOptionsMapFields() {
+        internalTestNullFields(INPUT_OPTIONS_MAP_NULL_TEST,
+                (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWithEmptyInputOptionsMapFields() {
+        internalTestEmptyFields(INPUT_OPTIONS_MAP_EMPTY_TEST,
+                (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
+    }
+
+    @Test
+    public void testSaveEvaluationReportWitLargeInputOptionsMapFields() {
+        internalTestLargeFields(INPUT_OPTIONS_MAP_LARGE_TEST,
+                (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
     }
 
     @Test
