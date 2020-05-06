@@ -10,14 +10,13 @@ import com.ers.mapping.ClassifierOptionsInfoMapper;
 import com.ers.mapping.ClassifierOptionsInfoMapperImpl;
 import com.ers.mapping.ClassifierReportFactory;
 import com.ers.model.ClassifierOptionsInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.when;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import({ClassifierReportFactory.class, ClassifierOptionsInfoMapperImpl.class})
 public class ClassifierOptionsRequestServiceTest {
 
@@ -42,37 +41,10 @@ public class ClassifierOptionsRequestServiceTest {
 
     private ClassifierOptionsRequestService classifierOptionsRequestService;
 
-    @Before
+    @BeforeEach
     public void init() {
         classifierOptionsRequestService =
                 new ClassifierOptionsRequestService(classifierOptionsService, classifierOptionsInfoMapper);
-    }
-
-    @Test
-    public void testNullInstancesReport() {
-        ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
-        request.setInstances(null);
-        ClassifierOptionsResponse response = classifierOptionsRequestService.findClassifierOptions(request);
-        assertResponse(response, ResponseStatus.INVALID_REQUEST_PARAMS);
-    }
-
-    @Test
-    public void testEmptyXmlInstances() {
-        ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
-        request.getInstances().setXmlInstances(StringUtils.EMPTY);
-        ClassifierOptionsResponse response = classifierOptionsRequestService.findClassifierOptions(request);
-        assertResponse(response, ResponseStatus.INVALID_REQUEST_PARAMS);
-    }
-
-    @Test
-    public void testNullEvaluationMethodReport() {
-        ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
-        request.setEvaluationMethodReport(null);
-        ClassifierOptionsResponse response = classifierOptionsRequestService.findClassifierOptions(request);
-        assertResponse(response, ResponseStatus.INVALID_REQUEST_PARAMS);
     }
 
     @Test
@@ -103,15 +75,6 @@ public class ClassifierOptionsRequestServiceTest {
         ClassifierOptionsResponse response = classifierOptionsRequestService.findClassifierOptions(request);
         assertResponse(response, ResponseStatus.SUCCESS);
         Assertions.assertThat(response.getClassifierReports()).hasSameSizeAs(expected);
-    }
-
-    @Test
-    public void testErrorStatus() {
-        ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
-        when(classifierOptionsService.findBestClassifierOptions(request)).thenThrow(new IllegalStateException());
-        ClassifierOptionsResponse response = classifierOptionsRequestService.findClassifierOptions(request);
-        assertResponse(response, ResponseStatus.ERROR);
     }
 
     private void assertResponse(ClassifierOptionsResponse response, ResponseStatus expected) {

@@ -2,6 +2,7 @@ package com.ers.service;
 
 import com.ers.AbstractJpaTest;
 import com.ers.TestHelperUtils;
+import com.ers.dto.EvaluationMethod;
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.dto.EvaluationResultsResponse;
 import com.ers.dto.GetEvaluationResultsRequest;
@@ -13,17 +14,15 @@ import com.ers.mapping.ClassifierOptionsInfoMapperImpl;
 import com.ers.mapping.ClassifierReportFactory;
 import com.ers.mapping.ClassifierReportMapperImpl;
 import com.ers.mapping.ConfusionMatrixMapperImpl;
-import com.ers.mapping.EvaluationMethodMapperImpl;
 import com.ers.mapping.EvaluationResultsMapperImpl;
 import com.ers.mapping.InstancesMapperImpl;
 import com.ers.mapping.RocCurveReportMapperImpl;
 import com.ers.mapping.StatisticsReportMapperImpl;
-import com.ers.model.EvaluationMethod;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
 import com.ers.repository.InstancesInfoRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
 
 import javax.inject.Inject;
@@ -38,8 +37,8 @@ import java.util.concurrent.Executors;
  * @author Roman Batygin
  */
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
-        ConfusionMatrixMapperImpl.class, EvaluationMethodMapperImpl.class,
-        StatisticsReportMapperImpl.class, InstancesMapperImpl.class, RocCurveReportMapperImpl.class,
+        ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class, InstancesMapperImpl.class,
+        RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class EvaluationResultsServiceTest extends AbstractJpaTest {
@@ -103,25 +102,6 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testInvalidRequestId() {
-        EvaluationResultsRequest request = new EvaluationResultsRequest();
-        evaluationResultsService.saveEvaluationResults(request);
-        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
-    }
-
-    @Test
-    public void testInvalidRequestParams() {
-        EvaluationResultsRequest request = new EvaluationResultsRequest();
-        request.setRequestId(UUID.randomUUID().toString());
-        evaluationResultsService.saveEvaluationResults(request);
-        EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_PARAMS);
-    }
-
-    @Test
     public void testDataCache() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         evaluationResultsService.saveEvaluationResults(request);
@@ -167,17 +147,6 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
         executorService.shutdownNow();
         Assertions.assertThat(evaluationResultsInfoRepository.count()).isEqualTo(2);
         Assertions.assertThat(instancesInfoRepository.count()).isOne();
-    }
-
-
-    @Test
-    public void testGetEvaluationResultsWithInvalidId() {
-        GetEvaluationResultsRequest request = TestHelperUtils.buildGetEvaluationResultsRequest(null);
-        GetEvaluationResultsResponse response =
-                evaluationResultsService.getEvaluationResultsResponse(request);
-        Assertions.assertThat(response).isNotNull();
-        Assertions.assertThat(response.getRequestId()).isEqualTo(request.getRequestId());
-        Assertions.assertThat(response.getStatus()).isEqualTo(ResponseStatus.INVALID_REQUEST_ID);
     }
 
     @Test

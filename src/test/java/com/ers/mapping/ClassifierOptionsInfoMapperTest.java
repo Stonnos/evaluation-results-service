@@ -5,10 +5,10 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.EnsembleClassifierReport;
 import com.ers.model.ClassifierOptionsInfo;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import({ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 public class ClassifierOptionsInfoMapperTest {
 

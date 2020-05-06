@@ -23,8 +23,6 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.ers.util.Utils.buildEvaluationResultsResponse;
-import static com.ers.util.Utils.hasValidRequestId;
-import static com.ers.util.Utils.validateEvaluationResultsRequest;
 
 /**
  * Implements service for saving evaluation results into database.
@@ -52,38 +50,25 @@ public class EvaluationResultsService {
      */
     public EvaluationResultsResponse saveEvaluationResults(EvaluationResultsRequest evaluationResultsRequest) {
         ResponseStatus responseStatus = ResponseStatus.SUCCESS;
-        if (!hasValidRequestId(evaluationResultsRequest)) {
-            log.error("Request id doesn't match UUID format!");
-            responseStatus = ResponseStatus.INVALID_REQUEST_ID;
-        } else if (!validateEvaluationResultsRequest(evaluationResultsRequest)) {
-            log.error("Required request params isn't specified!");
-            responseStatus = ResponseStatus.INVALID_REQUEST_PARAMS;
-        } else {
-            log.info("Starting to save evaluation results report with request id = {}.",
-                    evaluationResultsRequest.getRequestId());
-            cachedRequestIds.putIfAbsent(evaluationResultsRequest.getRequestId(), new Object());
-            synchronized (cachedRequestIds.get(evaluationResultsRequest.getRequestId())) {
-                if (evaluationResultsInfoRepository.existsByRequestId(evaluationResultsRequest.getRequestId())) {
-                    log.warn("Evaluation results with request id = {} is already exists!",
-                            evaluationResultsRequest.getRequestId());
-                    responseStatus = ResponseStatus.DUPLICATE_REQUEST_ID;
-                } else {
-                    try {
-                        EvaluationResultsInfo evaluationResultsInfo =
-                                evaluationResultsMapper.map(evaluationResultsRequest);
-                        populateAndSaveInstancesInfo(evaluationResultsRequest, evaluationResultsInfo);
-                        evaluationResultsInfo.setSaveDate(LocalDateTime.now());
-                        evaluationResultsInfoRepository.save(evaluationResultsInfo);
-                        log.info("Evaluation results report with request id = {} has been successfully saved.",
-                                evaluationResultsRequest.getRequestId());
-                    } catch (Exception ex) {
-                        log.error(ex.getMessage());
-                        responseStatus = ResponseStatus.ERROR;
-                    }
-                }
+        log.info("Starting to save evaluation results report with request id = {}.",
+                evaluationResultsRequest.getRequestId());
+        cachedRequestIds.putIfAbsent(evaluationResultsRequest.getRequestId(), new Object());
+        synchronized (cachedRequestIds.get(evaluationResultsRequest.getRequestId())) {
+            if (evaluationResultsInfoRepository.existsByRequestId(evaluationResultsRequest.getRequestId())) {
+                log.warn("Evaluation results with request id = {} is already exists!",
+                        evaluationResultsRequest.getRequestId());
+                responseStatus = ResponseStatus.DUPLICATE_REQUEST_ID;
+            } else {
+                EvaluationResultsInfo evaluationResultsInfo =
+                        evaluationResultsMapper.map(evaluationResultsRequest);
+                populateAndSaveInstancesInfo(evaluationResultsRequest, evaluationResultsInfo);
+                evaluationResultsInfo.setSaveDate(LocalDateTime.now());
+                evaluationResultsInfoRepository.save(evaluationResultsInfo);
+                log.info("Evaluation results report with request id = {} has been successfully saved.",
+                        evaluationResultsRequest.getRequestId());
             }
-            cachedRequestIds.remove(evaluationResultsRequest.getRequestId());
         }
+        cachedRequestIds.remove(evaluationResultsRequest.getRequestId());
         return Utils.buildResponse(evaluationResultsRequest.getRequestId(), responseStatus);
     }
 
@@ -97,26 +82,16 @@ public class EvaluationResultsService {
     public GetEvaluationResultsResponse getEvaluationResultsResponse(GetEvaluationResultsRequest request) {
         log.info("Starting to get evaluation results for request id [{}]", request.getRequestId());
         ResponseStatus responseStatus;
-        if (!hasValidRequestId(request)) {
-            log.error("Request id doesn't match UUID format!");
-            responseStatus = ResponseStatus.INVALID_REQUEST_ID;
+        EvaluationResultsInfo evaluationResultsInfo =
+                evaluationResultsInfoRepository.findByRequestId(request.getRequestId());
+        if (evaluationResultsInfo == null) {
+            log.info("Evaluation results not found for request id [{}]", request.getRequestId());
+            responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
         } else {
-            try {
-                EvaluationResultsInfo evaluationResultsInfo =
-                        evaluationResultsInfoRepository.findByRequestId(request.getRequestId());
-                if (evaluationResultsInfo == null) {
-                    log.info("Evaluation results not found for request id [{}]", request.getRequestId());
-                    responseStatus = ResponseStatus.RESULTS_NOT_FOUND;
-                } else {
-                    GetEvaluationResultsResponse response = evaluationResultsMapper.map(evaluationResultsInfo);
-                    response.setStatus(ResponseStatus.SUCCESS);
-                    log.info("Received evaluation results for request id [{}]", request.getRequestId());
-                    return response;
-                }
-            } catch (Exception ex) {
-                log.error(ex.getMessage());
-                responseStatus = ResponseStatus.ERROR;
-            }
+            GetEvaluationResultsResponse response = evaluationResultsMapper.map(evaluationResultsInfo);
+            response.setStatus(ResponseStatus.SUCCESS);
+            log.info("Received evaluation results for request id [{}]", request.getRequestId());
+            return response;
         }
         return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
     }

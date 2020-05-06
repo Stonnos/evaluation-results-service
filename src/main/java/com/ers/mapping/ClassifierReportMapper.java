@@ -4,13 +4,10 @@ import com.ers.dto.ClassifierReport;
 import com.ers.dto.EnsembleClassifierReport;
 import com.ers.dto.InputOptionsMap;
 import com.ers.model.ClassifierOptionsInfo;
-import com.ers.util.FieldSize;
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +30,6 @@ public abstract class ClassifierReportMapper {
      * @return classifier options info entity
      */
     @Mapping(target = "inputOptionsMap", ignore = true)
-    @Mapping(source = "classifierDescription", target = "classifierDescription",
-            qualifiedByName = "truncateClassifierDescription")
     public abstract ClassifierOptionsInfo map(ClassifierReport classifierReport);
 
     @AfterMapping
@@ -46,19 +41,6 @@ public abstract class ClassifierReportMapper {
                     Collectors.toMap(InputOptionsMap.Entry::getKey, InputOptionsMap.Entry::getValue));
             classifierOptionsInfo.setInputOptionsMap(inputOptionsMap);
         }
-    }
-
-    /**
-     * Truncate classifier description value if its length is greater than 255.
-     *
-     * @param classifierDescription - string value
-     * @return truncated string
-     */
-    @Named("truncateClassifierDescription")
-    protected String truncateClassifierDescription(String classifierDescription) {
-        return !StringUtils.isEmpty(classifierDescription) &&
-                classifierDescription.length() > FieldSize.CLASSIFIER_DESCRIPTION_LENGTH ?
-                classifierDescription.substring(0, FieldSize.CLASSIFIER_DESCRIPTION_LENGTH) : classifierDescription;
     }
 
     /**

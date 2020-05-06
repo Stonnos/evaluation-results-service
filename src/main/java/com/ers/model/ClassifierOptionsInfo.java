@@ -50,6 +50,12 @@ public class ClassifierOptionsInfo {
     private String classifierDescription;
 
     /**
+     * Is meta classifier (used for stacking algorithms)?
+     */
+    @Column(name = "meta_classifier")
+    private boolean metaClassifier;
+
+    /**
      * Classifier input options map
      */
     @ElementCollection(fetch = FetchType.EAGER)

@@ -4,13 +4,11 @@ import com.ers.TestHelperUtils;
 import com.ers.dto.ClassifierReport;
 import com.ers.dto.EnsembleClassifierReport;
 import com.ers.model.ClassifierOptionsInfo;
-import com.ers.util.FieldSize;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.inject.Inject;
 
@@ -19,7 +17,7 @@ import javax.inject.Inject;
  *
  * @author Roman Batygin
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import(ClassifierReportMapperImpl.class)
 public class ClassifierReportMapperTest {
 
@@ -55,14 +53,5 @@ public class ClassifierReportMapperTest {
                 classifierReport.getInputOptionsMap().getEntry().size());
         Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers().size()).isEqualTo
                 (classifierOptionsInfo.getIndividualClassifiers().size());
-    }
-
-    @Test
-    public void testMapClassifierDescription() {
-        ClassifierReport classifierReport = TestHelperUtils.buildClassifierReport();
-        classifierReport.setClassifierDescription(StringUtils.repeat('Q', FieldSize.CLASSIFIER_DESCRIPTION_LENGTH + 1));
-        ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
-        Assertions.assertThat(classifierOptionsInfo.getClassifierDescription()).isNotNull();
-        Assertions.assertThat(classifierOptionsInfo.getClassifierDescription().length()).isEqualTo(FieldSize.CLASSIFIER_DESCRIPTION_LENGTH);
     }
 }

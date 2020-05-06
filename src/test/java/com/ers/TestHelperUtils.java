@@ -330,7 +330,7 @@ public class TestHelperUtils {
      */
     public static EvaluationResultsInfo createEvaluationResultsInfo(InstancesInfo instancesInfo,
                                                                     ClassifierOptionsInfo classifierOptionsInfo,
-                                                                    com.ers.model.EvaluationMethod evaluationMethod,
+                                                                    EvaluationMethod evaluationMethod,
                                                                     BigDecimal pctCorrect,
                                                                     BigDecimal maxAucValue,
                                                                     BigDecimal varianceError) {

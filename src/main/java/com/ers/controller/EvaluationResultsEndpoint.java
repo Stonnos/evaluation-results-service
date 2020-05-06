@@ -15,6 +15,8 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import static com.ers.config.WebServiceConfiguration.TARGET_NAMESPACE;
+
 /**
  * Evaluation results service endpoint.
  *
@@ -25,7 +27,6 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 @RequiredArgsConstructor
 public class EvaluationResultsEndpoint {
 
-    private static final String NAMESPACE_URI = "http://schemas.xmlsoap.org/soap/envelope/";
     private static final String EVALUATION_RESULTS_REQUEST_LOCAL_PART = "evaluationResultsRequest";
     private static final String CLASSIFIER_OPTIONS_REQUEST_LOCAL_PART = "classifierOptionsRequest";
     private static final String GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART = "getEvaluationResultsRequest";
@@ -39,7 +40,7 @@ public class EvaluationResultsEndpoint {
      * @param evaluationResultsRequest - evaluation result request
      * @return evaluation results response
      */
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = EVALUATION_RESULTS_REQUEST_LOCAL_PART)
+    @PayloadRoot(namespace = TARGET_NAMESPACE, localPart = EVALUATION_RESULTS_REQUEST_LOCAL_PART)
     @ResponsePayload
     public EvaluationResultsResponse save(@RequestPayload EvaluationResultsRequest evaluationResultsRequest) {
         return evaluationResultsService.saveEvaluationResults(evaluationResultsRequest);
@@ -51,7 +52,7 @@ public class EvaluationResultsEndpoint {
      * @param request - get evaluation result request
      * @return evaluation results response
      */
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART)
+    @PayloadRoot(namespace = TARGET_NAMESPACE, localPart = GET_EVALUATION_RESULTS_REQUEST_LOCAL_PART)
     @ResponsePayload
     public GetEvaluationResultsResponse getEvaluationResultsResponse(
             @RequestPayload GetEvaluationResultsRequest request) {
@@ -64,7 +65,7 @@ public class EvaluationResultsEndpoint {
      * @param classifierOptionsRequest - classifier options request
      * @return classifier options response
      */
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = CLASSIFIER_OPTIONS_REQUEST_LOCAL_PART)
+    @PayloadRoot(namespace = TARGET_NAMESPACE, localPart = CLASSIFIER_OPTIONS_REQUEST_LOCAL_PART)
     @ResponsePayload
     public ClassifierOptionsResponse findClassifierOptions(
             @RequestPayload ClassifierOptionsRequest classifierOptionsRequest) {
