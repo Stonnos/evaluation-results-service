@@ -19,13 +19,13 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import(ClassifierReportMapperImpl.class)
-public class ClassifierReportMapperTest {
+class ClassifierReportMapperTest {
 
     @Inject
     private ClassifierReportMapper classifierReportMapper;
 
     @Test
-    public void testMapClassifierReport() {
+    void testMapClassifierReport() {
         ClassifierReport classifierReport = TestHelperUtils.buildClassifierReport();
         ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
         Assertions.assertThat(classifierOptionsInfo.getClassifierName()).isEqualTo(
@@ -36,22 +36,22 @@ public class ClassifierReportMapperTest {
                 classifierReport.getClassifierDescription());
         Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
         Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
-        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap().size()).isEqualTo(
-                classifierReport.getInputOptionsMap().getEntry().size());
+        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).hasSameSizeAs(
+                classifierReport.getInputOptionsMap().getEntry());
         Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers()).isNullOrEmpty();
     }
 
     @Test
-    public void testMapEnsembleClassifierReport() {
+    void testMapEnsembleClassifierReport() {
         EnsembleClassifierReport classifierReport = TestHelperUtils.buildEnsembleClassifierReport();
         ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
         Assertions.assertThat(classifierOptionsInfo.getClassifierName()).isEqualTo(
                 classifierReport.getClassifierName());
         Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
         Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).isNotNull();
-        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap().size()).isEqualTo(
-                classifierReport.getInputOptionsMap().getEntry().size());
-        Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers().size()).isEqualTo
-                (classifierOptionsInfo.getIndividualClassifiers().size());
+        Assertions.assertThat(classifierOptionsInfo.getInputOptionsMap()).hasSameSizeAs(
+                classifierReport.getInputOptionsMap().getEntry());
+        Assertions.assertThat(classifierOptionsInfo.getIndividualClassifiers()).hasSameSizeAs(
+                (classifierOptionsInfo.getIndividualClassifiers()));
     }
 }

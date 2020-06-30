@@ -18,13 +18,13 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import(ConfusionMatrixMapperImpl.class)
-public class ConfusionMatrixMapperTest {
+class ConfusionMatrixMapperTest {
 
     @Inject
     private ConfusionMatrixMapper confusionMatrixMapper;
 
     @Test
-    public void testMapConfusionMatrixReport() {
+    void testMapConfusionMatrixReport() {
         ConfusionMatrixReport report = TestHelperUtils.buildConfusionMatrixReport();
         ConfusionMatrix confusionMatrix = confusionMatrixMapper.map(report);
         Assertions.assertThat(confusionMatrix.getActualClass()).isEqualTo(report.getActualClass());
@@ -34,7 +34,7 @@ public class ConfusionMatrixMapperTest {
     }
 
     @Test
-    public void testMapConfusionMatrix() {
+    void testMapConfusionMatrix() {
         ConfusionMatrix confusionMatrix = TestHelperUtils.buildConfusionMatrix();
         ConfusionMatrixReport confusionMatrixReport = confusionMatrixMapper.map(confusionMatrix);
         Assertions.assertThat(confusionMatrixReport.getActualClass()).isEqualTo(confusionMatrix.getActualClass());

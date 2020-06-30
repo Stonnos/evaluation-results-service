@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(SpringExtension.class)
 @Import({ClassifierReportFactory.class, ClassifierOptionsInfoMapperImpl.class})
-public class ClassifierOptionsRequestServiceTest {
+class ClassifierOptionsRequestServiceTest {
 
     @Inject
     private ClassifierOptionsInfoMapper classifierOptionsInfoMapper;
@@ -42,13 +42,13 @@ public class ClassifierOptionsRequestServiceTest {
     private ClassifierOptionsRequestService classifierOptionsRequestService;
 
     @BeforeEach
-    public void init() {
+    void init() {
         classifierOptionsRequestService =
                 new ClassifierOptionsRequestService(classifierOptionsService, classifierOptionsInfoMapper);
     }
 
     @Test
-    public void testResultsNotFoundStatus() {
+    void testResultsNotFoundStatus() {
         ClassifierOptionsRequest request =
                 TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
         when(classifierOptionsService.findBestClassifierOptions(request)).thenReturn(Collections.emptyList());
@@ -57,7 +57,7 @@ public class ClassifierOptionsRequestServiceTest {
     }
 
     @Test
-    public void testDataNotFoundStatus() {
+    void testDataNotFoundStatus() {
         ClassifierOptionsRequest request =
                 TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
         when(classifierOptionsService.findBestClassifierOptions(request)).thenThrow(
@@ -67,7 +67,7 @@ public class ClassifierOptionsRequestServiceTest {
     }
 
     @Test
-    public void testSuccessStatus() {
+    void testSuccessStatus() {
         ClassifierOptionsRequest request =
                 TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
         List<ClassifierOptionsInfo> expected = Collections.singletonList(TestHelperUtils.buildClassifierOptionsInfo());

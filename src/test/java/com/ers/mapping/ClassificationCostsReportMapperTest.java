@@ -20,13 +20,13 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import({ClassificationCostsReportMapperImpl.class, RocCurveReportMapperImpl.class})
-public class ClassificationCostsReportMapperTest {
+class ClassificationCostsReportMapperTest {
 
     @Inject
     private ClassificationCostsReportMapper costsReportMapper;
 
     @Test
-    public void testMapClassificationCostsReport() {
+    void testMapClassificationCostsReport() {
         ClassificationCostsReport costsReport = TestHelperUtils.buildClassificationCostsReport();
         ClassificationCostsInfo classificationCostsInfo = costsReportMapper.map(costsReport);
         Assertions.assertThat(classificationCostsInfo.getClassValue()).isEqualTo(costsReport.getClassValue());
@@ -47,7 +47,7 @@ public class ClassificationCostsReportMapperTest {
     }
 
     @Test
-    public void testMapClassificationCostsInfo() {
+    void testMapClassificationCostsInfo() {
         ClassificationCostsInfo classificationCostsInfo = TestHelperUtils.buildClassificationCostsInfo();
         ClassificationCostsReport costsReport = costsReportMapper.map(classificationCostsInfo);
         Assertions.assertThat(costsReport.getClassValue()).isEqualTo(classificationCostsInfo.getClassValue());

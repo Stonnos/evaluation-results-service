@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Roman Batygin
  */
 @Import({ClassifierOptionsService.class, ServiceConfig.class})
-public class ClassifierOptionsServiceTest extends AbstractJpaTest {
+class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Inject
     private InstancesInfoRepository instancesInfoRepository;
@@ -76,21 +76,21 @@ public class ClassifierOptionsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testDataNotFoundException() {
+    void testDataNotFoundException() {
+        ClassifierOptionsRequest request =
+                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
         assertThrows(DataNotFoundException.class, () -> {
-            ClassifierOptionsRequest request =
-                    TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
             classifierOptionsService.findBestClassifierOptions(request);
         });
     }
 
     @Test
-    public void testClassifierOptionsSearchingWithTrainingDataEvaluationMethod() {
+    void testClassifierOptionsSearchingWithTrainingDataEvaluationMethod() {
         testClassifierOptionsSearching(EvaluationMethod.TRAINING_DATA);
     }
 
     @Test
-    public void testClassifierOptionsSearchingWithCrossValidation() {
+    void testClassifierOptionsSearchingWithCrossValidation() {
         testClassifierOptionsSearching(EvaluationMethod.CROSS_VALIDATION);
     }
 

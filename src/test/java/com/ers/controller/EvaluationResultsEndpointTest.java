@@ -54,7 +54,7 @@ import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application.properties")
 @Import({WebServiceTestConfiguration.class, EvaluationResultsEndpoint.class})
-public class EvaluationResultsEndpointTest {
+class EvaluationResultsEndpointTest {
 
     private static final int STRING_LENGTH = 256;
     private static final BigDecimal NEGATIVE_VALUE = BigDecimal.valueOf(-1L);
@@ -140,12 +140,12 @@ public class EvaluationResultsEndpointTest {
     private MockWebServiceClient mockClient;
 
     @BeforeEach
-    public void init() {
+    void init() {
         mockClient = MockWebServiceClient.createClient(applicationContext);
     }
 
     @Test
-    public void testSaveEvaluationReport() throws IOException {
+    void testSaveEvaluationReport() throws IOException {
         EvaluationResultsRequest evaluationResultsRequest =
                 TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         StringSource request = getPayload(evaluationResultsRequest);
@@ -159,91 +159,91 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullFields() {
+    void testSaveEvaluationReportWithNullFields() {
         internalTestNullFields(EVALUATION_REQUEST_NULL_TEST, Function.identity());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidRequestId() {
+    void testSaveEvaluationReportWithInvalidRequestId() {
         internalTestFieldsWithConstraints(Collections.singletonList("requestId"), Function.identity(), "test-uuid");
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumFolds() {
+    void testSaveEvaluationReportWithInvalidNumFolds() {
         internalTestFieldsWithConstraints(Collections.singletonList("numFolds"),
                 EvaluationResultsRequest::getEvaluationMethodReport, BigDecimal.ONE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumTests() {
+    void testSaveEvaluationReportWithInvalidNumTests() {
         internalTestFieldsWithConstraints(Collections.singletonList("numTests"),
                 EvaluationResultsRequest::getEvaluationMethodReport, BigDecimal.ZERO.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumInstances() {
+    void testSaveEvaluationReportWithInvalidNumInstances() {
         internalTestFieldsWithConstraints(Collections.singletonList("numInstances"),
                 EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumAttributes() {
+    void testSaveEvaluationReportWithInvalidNumAttributes() {
         internalTestFieldsWithConstraints(Collections.singletonList("numAttributes"),
                 EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumClasses() {
+    void testSaveEvaluationReportWithInvalidNumClasses() {
         internalTestFieldsWithConstraints(Collections.singletonList("numClasses"),
                 EvaluationResultsRequest::getInstances, BigDecimal.ONE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumTestInstances() {
+    void testSaveEvaluationReportWithInvalidNumTestInstances() {
         internalTestFieldsWithConstraints(Collections.singletonList("numTestInstances"),
                 EvaluationResultsRequest::getStatistics, BigDecimal.ONE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumCorrect() {
+    void testSaveEvaluationReportWithInvalidNumCorrect() {
         internalTestFieldsWithConstraints(Collections.singletonList("numCorrect"),
                 EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidNumIncorrect() {
+    void testSaveEvaluationReportWithInvalidNumIncorrect() {
         internalTestFieldsWithConstraints(Collections.singletonList("numIncorrect"),
                 EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithInvalidConfusionMatrixNumInstances() {
+    void testSaveEvaluationReportWithInvalidConfusionMatrixNumInstances() {
         internalTestFieldsWithConstraints(Collections.singletonList("numInstances"),
                 request -> request.getConfusionMatrix().iterator().next(), NEGATIVE_VALUE.toBigInteger());
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyClassifierReportFields() {
+    void testSaveEvaluationReportWithEmptyClassifierReportFields() {
         internalTestEmptyFields(CLASSIFIER_FIELDS_EMPTY_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyInstancesReportFields() {
+    void testSaveEvaluationReportWithEmptyInstancesReportFields() {
         internalTestEmptyFields(INSTANCES_FIELDS_EMPTY_TEST, EvaluationResultsRequest::getInstances);
     }
 
     @Test
-    public void testSaveEvaluationReportWithLargeClassifierReportFields() {
+    void testSaveEvaluationReportWithLargeClassifierReportFields() {
         internalTestLargeFields(CLASSIFIER_FIELDS_LARGE_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithLargeInstancesReportFields() {
+    void testSaveEvaluationReportWithLargeInstancesReportFields() {
         internalTestLargeFields(INSTANCES_FIELDS_LARGE_TEST, EvaluationResultsRequest::getInstances);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNotValidPercentageFields() {
+    void testSaveEvaluationReportWithNotValidPercentageFields() {
         internalTestFieldsWithConstraints(STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST,
                 EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST,
@@ -251,7 +251,7 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNotValidStatisticsDecimalFields() {
+    void testSaveEvaluationReportWithNotValidStatisticsDecimalFields() {
         internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
                 EvaluationResultsRequest::getStatistics, NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST,
@@ -259,64 +259,64 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullInstancesReportFields() {
+    void testSaveEvaluationReportWithNullInstancesReportFields() {
         internalTestNullFields(INSTANCES_FIELDS_NULL_TEST, EvaluationResultsRequest::getInstances);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullClassifierReportFields() {
+    void testSaveEvaluationReportWithNullClassifierReportFields() {
         internalTestNullFields(CLASSIFIER_FIELDS_NULL_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullEvaluationMethodReportFields() {
+    void testSaveEvaluationReportWithNullEvaluationMethodReportFields() {
         internalTestNullFields(EVALUATION_METHOD_REPORT_FIELDS_NULL_TEST,
                 EvaluationResultsRequest::getEvaluationMethodReport);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullStatisticsReportFields() {
+    void testSaveEvaluationReportWithNullStatisticsReportFields() {
         internalTestNullFields(STATISTICS_FIELDS_NULL_TEST, EvaluationResultsRequest::getStatistics);
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullClassificationCostsRecordFields() {
+    void testSaveEvaluationReportWithNullClassificationCostsRecordFields() {
         internalTestNullFields(CLASSIFICATION_COSTS_FIELDS_NULL_TEST,
                 (request) -> request.getClassificationCosts().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullConfusionMatrixRecordFields() {
+    void testSaveEvaluationReportWithNullConfusionMatrixRecordFields() {
         internalTestNullFields(CONFUSION_MATRIX_FIELDS_NULL_TEST,
                 (request) -> request.getConfusionMatrix().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyClassificationCostsRecordFields() {
+    void testSaveEvaluationReportWithEmptyClassificationCostsRecordFields() {
         internalTestEmptyFields(CLASSIFICATION_COSTS_FIELDS_EMPTY_TEST,
                 (request) -> request.getClassificationCosts().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyConfusionMatrixRecordFields() {
+    void testSaveEvaluationReportWithEmptyConfusionMatrixRecordFields() {
         internalTestEmptyFields(CONFUSION_MATRIX_FIELDS_EMPTY_TEST,
                 (request) -> request.getConfusionMatrix().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithLargeClassificationCostsRecordFields() {
+    void testSaveEvaluationReportWithLargeClassificationCostsRecordFields() {
         internalTestLargeFields(CLASSIFICATION_COSTS_FIELDS_LARGE_TEST,
                 (request) -> request.getClassificationCosts().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithLargeConfusionMatrixRecordFields() {
+    void testSaveEvaluationReportWithLargeConfusionMatrixRecordFields() {
         internalTestLargeFields(CONFUSION_MATRIX_FIELDS_LARGE_TEST,
                 (request) -> request.getConfusionMatrix().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithNotValidClassificationCostsRecordDecimalFields() {
+    void testSaveEvaluationReportWithNotValidClassificationCostsRecordDecimalFields() {
         internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
                 (request) -> request.getClassificationCosts().iterator().next(), NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
@@ -324,13 +324,13 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullRocCurveReportFields() {
+    void testSaveEvaluationReportWithNullRocCurveReportFields() {
         internalTestNullFields(ROC_CURVE_FIELDS_NULL_TEST,
                 (request) -> request.getClassificationCosts().iterator().next().getRocCurve());
     }
 
     @Test
-    public void testSaveEvaluationReportWithNotValidRocCurveReportDecimalFields() {
+    void testSaveEvaluationReportWithNotValidRocCurveReportDecimalFields() {
         internalTestFieldsWithConstraints(ROC_CURVE_FIELDS_BOUNDS_TEST,
                 (request) -> request.getClassificationCosts().iterator().next().getRocCurve(), NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(ROC_CURVE_FIELDS_BOUNDS_TEST,
@@ -339,25 +339,25 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullInputOptionsMapFields() {
+    void testSaveEvaluationReportWithNullInputOptionsMapFields() {
         internalTestNullFields(INPUT_OPTIONS_MAP_NULL_TEST,
                 (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWithEmptyInputOptionsMapFields() {
+    void testSaveEvaluationReportWithEmptyInputOptionsMapFields() {
         internalTestEmptyFields(INPUT_OPTIONS_MAP_EMPTY_TEST,
                 (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
     }
 
     @Test
-    public void testSaveEvaluationReportWitLargeInputOptionsMapFields() {
+    void testSaveEvaluationReportWitLargeInputOptionsMapFields() {
         internalTestLargeFields(INPUT_OPTIONS_MAP_LARGE_TEST,
                 (request) -> request.getClassifierReport().getInputOptionsMap().getEntry().iterator().next());
     }
 
     @Test
-    public void testGetEvaluationResultsReport() throws IOException {
+    void testGetEvaluationResultsReport() throws IOException {
         GetEvaluationResultsRequest getEvaluationResultsRequest =
                 TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
         StringSource request = getPayload(getEvaluationResultsRequest);
@@ -370,7 +370,7 @@ public class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testFindClassifierOptions() throws IOException {
+    void testFindClassifierOptions() throws IOException {
         ClassifierOptionsRequest classifierOptionsRequest =
                 TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
         StringSource request = getPayload(classifierOptionsRequest);
