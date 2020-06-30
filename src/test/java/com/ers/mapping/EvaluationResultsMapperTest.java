@@ -23,13 +23,13 @@ import java.util.UUID;
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class,
         InstancesMapperImpl.class, ClassifierReportMapperImpl.class,
         RocCurveReportMapperImpl.class, ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
-public class EvaluationResultsMapperTest {
+class EvaluationResultsMapperTest {
 
     @Inject
     private EvaluationResultsMapper evaluationResultsMapper;
 
     @Test
-    public void testMapEvaluationResultsReport() {
+    void testMapEvaluationResultsReport() {
         EvaluationResultsRequest resultsRequest =
                 TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         EvaluationResultsInfo evaluationResultsInfo = evaluationResultsMapper.map(resultsRequest);

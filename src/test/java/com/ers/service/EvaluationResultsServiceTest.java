@@ -41,7 +41,7 @@ import java.util.concurrent.Executors;
         RocCurveReportMapperImpl.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
-public class EvaluationResultsServiceTest extends AbstractJpaTest {
+class EvaluationResultsServiceTest extends AbstractJpaTest {
 
     private static final int NUM_THREADS = 2;
 
@@ -65,7 +65,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testSaveEvaluationResultsReport() {
+    void testSaveEvaluationResultsReport() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
         Assertions.assertThat(response).isNotNull();
@@ -93,7 +93,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testExistingReport() {
+    void testExistingReport() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         evaluationResultsService.saveEvaluationResults(request);
         EvaluationResultsResponse response = evaluationResultsService.saveEvaluationResults(request);
@@ -102,7 +102,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testDataCache() {
+    void testDataCache() {
         EvaluationResultsRequest request = TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         evaluationResultsService.saveEvaluationResults(request);
         request.setRequestId(UUID.randomUUID().toString());
@@ -113,7 +113,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testDuplicateRequestIdInMultiThreadEnvironment() throws Exception {
+    void testDuplicateRequestIdInMultiThreadEnvironment() throws Exception {
         final String requestId = UUID.randomUUID().toString();
         final CountDownLatch finishedLatch = new CountDownLatch(NUM_THREADS);
         ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
@@ -130,7 +130,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testDataCacheIdInMultiThreadEnvironment() throws Exception {
+    void testDataCacheIdInMultiThreadEnvironment() throws Exception {
         final CountDownLatch finishedLatch = new CountDownLatch(NUM_THREADS);
         ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
         final InstancesReport instancesReport = TestHelperUtils.buildInstancesReport();
@@ -150,7 +150,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testGetEvaluationResultsNotFound() {
+    void testGetEvaluationResultsNotFound() {
         GetEvaluationResultsRequest request =
                 TestHelperUtils.buildGetEvaluationResultsRequest(UUID.randomUUID().toString());
         GetEvaluationResultsResponse response =
@@ -161,7 +161,7 @@ public class EvaluationResultsServiceTest extends AbstractJpaTest {
     }
 
     @Test
-    public void testGetEvaluationResults() {
+    void testGetEvaluationResults() {
         EvaluationResultsRequest evaluationResultsRequest =
                 TestHelperUtils.buildEvaluationResultsReport(UUID.randomUUID().toString());
         EvaluationResultsResponse evaluationResultsResponse =

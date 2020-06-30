@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @ExtendWith(SpringExtension.class)
 @Import({ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
-public class ClassifierOptionsInfoMapperTest {
+class ClassifierOptionsInfoMapperTest {
 
     private static final Map<String, String> INPUT_OPTIONS_MAP = Collections.singletonMap("D", "22");
 
@@ -31,7 +31,7 @@ public class ClassifierOptionsInfoMapperTest {
     private ClassifierOptionsInfoMapper classifierOptionsInfoMapper;
 
     @Test
-    public void testClassifierOptionsInfoWithoutClassifiers() {
+    void testClassifierOptionsInfoWithoutClassifiers() {
         ClassifierOptionsInfo classifierOptionsInfo =
                 TestHelperUtils.buildClassifierOptionsInfo(INPUT_OPTIONS_MAP,
                         Collections.emptyList());
@@ -45,7 +45,7 @@ public class ClassifierOptionsInfoMapperTest {
     }
 
     @Test
-    public void testClassifierOptionsInfoWithClassifiers() {
+    void testClassifierOptionsInfoWithClassifiers() {
         List<ClassifierOptionsInfo> classifierOptionsInfoList =
                 Arrays.asList(TestHelperUtils.buildClassifierOptionsInfo(INPUT_OPTIONS_MAP, Collections.emptyList()),
                         TestHelperUtils.buildClassifierOptionsInfo(INPUT_OPTIONS_MAP, Collections.emptyList()));

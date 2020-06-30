@@ -19,7 +19,7 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import(ClassifierReportMapperImpl.class)
-public class ClassifierReportMapperTest {
+class ClassifierReportMapperTest {
 
     @Inject
     private ClassifierReportMapper classifierReportMapper;
@@ -42,7 +42,7 @@ public class ClassifierReportMapperTest {
     }
 
     @Test
-    public void testMapEnsembleClassifierReport() {
+    void testMapEnsembleClassifierReport() {
         EnsembleClassifierReport classifierReport = TestHelperUtils.buildEnsembleClassifierReport();
         ClassifierOptionsInfo classifierOptionsInfo = classifierReportMapper.map(classifierReport);
         Assertions.assertThat(classifierOptionsInfo.getClassifierName()).isEqualTo(

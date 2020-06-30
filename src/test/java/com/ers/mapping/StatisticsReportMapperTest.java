@@ -18,13 +18,13 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import(StatisticsReportMapperImpl.class)
-public class StatisticsReportMapperTest {
+class StatisticsReportMapperTest {
 
     @Inject
     private StatisticsReportMapper statisticsReportMapper;
 
     @Test
-    public void testStatisticsReportMap() {
+    void testStatisticsReportMap() {
         StatisticsReport report = TestHelperUtils.buildStatisticsReport();
         StatisticsInfo statisticsInfo = statisticsReportMapper.map(report);
         Assertions.assertThat(statisticsInfo.getNumTestInstances()).isEqualTo(report.getNumTestInstances().intValue());
@@ -43,7 +43,7 @@ public class StatisticsReportMapperTest {
     }
 
     @Test
-    public void testMapStatisticsInfo() {
+    void testMapStatisticsInfo() {
         StatisticsInfo statisticsInfo = TestHelperUtils.buildStatisticsInfo();
         StatisticsReport statisticsReport = statisticsReportMapper.map(statisticsInfo);
         Assertions.assertThat(statisticsReport.getNumTestInstances().intValue()).isEqualTo(

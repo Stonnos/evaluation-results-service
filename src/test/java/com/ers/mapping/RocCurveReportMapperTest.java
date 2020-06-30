@@ -18,13 +18,13 @@ import javax.inject.Inject;
  */
 @ExtendWith(SpringExtension.class)
 @Import(RocCurveReportMapperImpl.class)
-public class RocCurveReportMapperTest {
+class RocCurveReportMapperTest {
 
     @Inject
     private RocCurveReportMapper rocCurveReportMapper;
 
     @Test
-    public void testRocCurveReportMap() {
+    void testRocCurveReportMap() {
         RocCurveReport rocCurveReport = TestHelperUtils.buildRocCurveReport();
         RocCurveInfo rocCurveInfo = rocCurveReportMapper.map(rocCurveReport);
         Assertions.assertThat(rocCurveInfo.getAucValue()).isEqualTo(rocCurveReport.getAucValue());
@@ -34,7 +34,7 @@ public class RocCurveReportMapperTest {
     }
 
     @Test
-    public void testRocCurveInfoMap() {
+    void testRocCurveInfoMap() {
         RocCurveInfo rocCurveInfo = TestHelperUtils.buildRocCurveInfo();
         RocCurveReport rocCurveReport = rocCurveReportMapper.map(rocCurveInfo);
         Assertions.assertThat(rocCurveReport.getAucValue()).isEqualTo(rocCurveInfo.getAucValue());
