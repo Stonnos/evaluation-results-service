@@ -264,7 +264,7 @@ class EvaluationResultsEndpointTest {
     }
 
     @Test
-    public void testSaveEvaluationReportWithNullClassifierReportFields() {
+    void testSaveEvaluationReportWithNullClassifierReportFields() {
         internalTestNullFields(CLASSIFIER_FIELDS_NULL_TEST, EvaluationResultsRequest::getClassifierReport);
     }
 

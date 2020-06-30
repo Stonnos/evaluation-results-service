@@ -77,9 +77,9 @@ class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Test
     void testDataNotFoundException() {
+        ClassifierOptionsRequest request =
+                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
         assertThrows(DataNotFoundException.class, () -> {
-            ClassifierOptionsRequest request =
-                    TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
             classifierOptionsService.findBestClassifierOptions(request);
         });
     }
