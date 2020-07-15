@@ -22,12 +22,23 @@ Evaluation results service v1.4
 Настройки для проекта находятся в файле application.yml. Ниже приведены основные параметры:
 1) spring.datasource - настройки БД для хранения информации
 2) web-service-config - настройки конфигурации веб - сервиса
-    * web-service-config.wsdlConfig.portTypeName - список операций, которые могут быть выполнены с сообщениями
-    * web-service-config.wsdlConfig.locationUri - url веб - сервиса
-    * web-service-config.wsdlConfig.targetNamespace - целевое пространство имен схемы
-    * web-service-config.wsdlConfig.xsdSchema: путь к xsd схеме
+    * web-service-config.xsdSchema: путь к xsd схеме
 3) service-config - основные настройки модуля
     * service-config.resultSize - число наилучших конфигураций классификаторов
+
+Бизнес метрики приложения
+----------------------------------------
+* ers.operation.save-evaluation-results.timed.seconds.max - Макс. время выполнения операции сохранения результатов классификации
+* ers.operation.save-evaluation-results.timed.seconds.count - Общее число операций сохранения результатов классификации
+* ers.operation.save-evaluation-results.timed.seconds.sum - Суммарное время для операций сохранения результатов классификации
+* ers.operation.get-evaluation-results.timed.seconds.max - Макс. время выполнения операции получения результатов классификации
+* ers.operation.get-evaluation-results.timed.seconds.count - Общее число операций получения результатов классификации
+* ers.operation.get-evaluation-results.timed.seconds.sum - Суммарное время для операций получения результатов классификации
+* ers.operation.get-optimal-classifier-options.timed.seconds.max - Макс. время выполнения операции поиска оптимальных конфигураций классификаторов
+* ers.operation.get-optimal-classifier-options.seconds.count - Общее число операций поиска оптимальных конфигураций классификаторов
+* ers.operation.get-optimal-classifier-options.timed.seconds.sum - Суммарное время для операций поиска оптимальных конфигураций классификаторов
+
+Метрики приложения доступны по адресу http://[service.host]:[service.port]/actuator/prometheus
 
 Инструкция по развертыванию
 ----------------------------------------

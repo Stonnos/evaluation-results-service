@@ -13,6 +13,7 @@ import com.ers.dto.ResponseStatus;
 import com.ers.service.ClassifierOptionsRequestService;
 import com.ers.service.EvaluationResultsService;
 import com.google.common.collect.ImmutableList;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -117,8 +118,7 @@ class EvaluationResultsEndpointTest {
     private static final List<String> STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST =
             ImmutableList.of("pctCorrect", "pctIncorrect");
     private static final List<String> STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST =
-            ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError",
-                    "confidenceIntervalLowerBound", "confidenceIntervalUpperBound");
+            ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError");
     private static final List<String> CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST =
             ImmutableList.of("truePositiveRate", "falsePositiveRate", "trueNegativeRate", "falseNegativeRate");
     private static final List<String> ROC_CURVE_FIELDS_BOUNDS_TEST =
@@ -132,6 +132,8 @@ class EvaluationResultsEndpointTest {
     private EvaluationResultsService evaluationResultsService;
     @MockBean
     private ClassifierOptionsRequestService classifierOptionsRequestService;
+    @MockBean
+    private MeterRegistry meterRegistry;
 
     private final Resource xsdSchema = new ClassPathResource("evaluation-results.xsd");
 
