@@ -13,6 +13,7 @@ import com.ers.dto.ResponseStatus;
 import com.ers.service.ClassifierOptionsRequestService;
 import com.ers.service.EvaluationResultsService;
 import com.google.common.collect.ImmutableList;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -132,6 +133,8 @@ class EvaluationResultsEndpointTest {
     private EvaluationResultsService evaluationResultsService;
     @MockBean
     private ClassifierOptionsRequestService classifierOptionsRequestService;
+    @MockBean
+    private MeterRegistry meterRegistry;
 
     private final Resource xsdSchema = new ClassPathResource("evaluation-results.xsd");
 
