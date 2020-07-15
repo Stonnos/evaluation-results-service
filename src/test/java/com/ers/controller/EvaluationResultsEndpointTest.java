@@ -118,8 +118,7 @@ class EvaluationResultsEndpointTest {
     private static final List<String> STATISTICS_PERCENTAGE_FIELDS_BOUNDS_TEST =
             ImmutableList.of("pctCorrect", "pctIncorrect");
     private static final List<String> STATISTICS_DECIMAL_FIELDS_BOUNDS_TEST =
-            ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError",
-                    "confidenceIntervalLowerBound", "confidenceIntervalUpperBound");
+            ImmutableList.of("meanAbsoluteError", "rootMeanSquaredError", "maxAucValue", "varianceError");
     private static final List<String> CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST =
             ImmutableList.of("truePositiveRate", "falsePositiveRate", "trueNegativeRate", "falseNegativeRate");
     private static final List<String> ROC_CURVE_FIELDS_BOUNDS_TEST =
