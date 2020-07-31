@@ -23,6 +23,7 @@
         <postresql.version>42.2.6</postresql.version>
         <h2.version>1.4.199</h2.version>
         <lombok.version>1.18.12</lombok.version>
+        <mockito.version>3.2.4</mockito.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-processor-plugin.version>3.3.3</maven-processor-plugin.version>
         <assertj.core.version>3.13.1</assertj.core.version>
@@ -192,6 +193,14 @@
         <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 
