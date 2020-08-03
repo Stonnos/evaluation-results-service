@@ -35,7 +35,7 @@
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <spring-cloud-sleuth.version>2.1.5.RELEASE</spring-cloud-sleuth.version>
         <logstash-encoder.version>6.2</logstash-encoder.version>
-        <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
+        <docker-maven-plugin.version>1.4.13</docker-maven-plugin.version>
         <docker.image.name>${project.artifactId}</docker.image.name>
         <liquibase.version>3.7.0</liquibase.version>
         <guava.version>29.0-jre</guava.version>
