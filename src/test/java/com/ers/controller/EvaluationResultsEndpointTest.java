@@ -76,11 +76,9 @@ class EvaluationResultsEndpointTest {
             ImmutableList.of("numTestInstances", "numCorrect", "numIncorrect", "pctCorrect", "pctIncorrect");
     private static final List<String> CLASSIFICATION_COSTS_FIELDS_NULL_TEST =
             ImmutableList.of("classValue", "truePositiveRate", "falsePositiveRate", "trueNegativeRate",
-                    "falseNegativeRate", "rocCurve");
+                    "falseNegativeRate");
     private static final List<String> CONFUSION_MATRIX_FIELDS_NULL_TEST =
             ImmutableList.of("actualClass", "predictedClass", "numInstances");
-    private static final List<String> ROC_CURVE_FIELDS_NULL_TEST =
-            ImmutableList.of("aucValue", "specificity", "sensitivity", "thresholdValue");
     private static final List<String> INPUT_OPTIONS_MAP_NULL_TEST =
             ImmutableList.of("key", "value");
 
@@ -323,12 +321,6 @@ class EvaluationResultsEndpointTest {
                 (request) -> request.getClassificationCosts().iterator().next(), NEGATIVE_VALUE);
         internalTestFieldsWithConstraints(CLASSIFICATION_COSTS_FIELDS_BOUNDS_TEST,
                 (request) -> request.getClassificationCosts().iterator().next(), BigDecimal.valueOf(1.01d));
-    }
-
-    @Test
-    void testSaveEvaluationReportWithNullRocCurveReportFields() {
-        internalTestNullFields(ROC_CURVE_FIELDS_NULL_TEST,
-                (request) -> request.getClassificationCosts().iterator().next().getRocCurve());
     }
 
     @Test
