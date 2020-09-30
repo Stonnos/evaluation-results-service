@@ -23,7 +23,7 @@ spring:
 web-service-config:
   xsdSchema: evaluation-results.xsd
 
-service-config:
+ers:
   resultSize: 5
 
 management:

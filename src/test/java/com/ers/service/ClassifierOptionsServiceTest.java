@@ -2,7 +2,7 @@ package com.ers.service;
 
 import com.ers.AbstractJpaTest;
 import com.ers.TestHelperUtils;
-import com.ers.config.ServiceConfig;
+import com.ers.config.ErsConfig;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethod;
 import com.ers.exception.DataNotFoundException;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @author Roman Batygin
  */
-@Import({ClassifierOptionsService.class, ServiceConfig.class})
+@Import({ClassifierOptionsService.class, ErsConfig.class})
 class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Inject
@@ -44,7 +44,7 @@ class ClassifierOptionsServiceTest extends AbstractJpaTest {
     @Inject
     private ClassifierOptionsService classifierOptionsService;
     @Inject
-    private ServiceConfig serviceConfig;
+    private ErsConfig ersConfig;
 
     @Override
     public void init() {
@@ -149,7 +149,7 @@ class ClassifierOptionsServiceTest extends AbstractJpaTest {
         List<ClassifierOptionsInfo> classifierOptionsInfoList =
                 classifierOptionsService.findBestClassifierOptions(request);
         Assertions.assertThat(classifierOptionsInfoList).isNotEmpty();
-        Assertions.assertThat(classifierOptionsInfoList.size()).isEqualTo(serviceConfig.getResultSize());
+        Assertions.assertThat(classifierOptionsInfoList.size()).isEqualTo(ersConfig.getResultSize());
         Assertions.assertThat(classifierOptionsInfoList.get(0).getClassifierName()).isEqualTo
                 (classifierOptionsInfo7.getClassifierName());
         Assertions.assertThat(classifierOptionsInfoList.get(1).getClassifierName()).isEqualTo

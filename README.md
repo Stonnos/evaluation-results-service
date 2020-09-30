@@ -23,8 +23,8 @@ Evaluation results service v1.4
 1) spring.datasource - настройки БД для хранения информации
 2) web-service-config - настройки конфигурации веб - сервиса
     * web-service-config.xsdSchema: путь к xsd схеме
-3) service-config - основные настройки модуля
-    * service-config.resultSize - число наилучших конфигураций классификаторов
+3) ers - основные настройки модуля
+    * ers.resultSize - число наилучших конфигураций классификаторов
 
 Бизнес метрики приложения
 ----------------------------------------

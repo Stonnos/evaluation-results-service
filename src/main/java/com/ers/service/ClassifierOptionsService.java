@@ -1,6 +1,6 @@
 package com.ers.service;
 
-import com.ers.config.ServiceConfig;
+import com.ers.config.ErsConfig;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethodReport;
 import com.ers.exception.DataNotFoundException;
@@ -37,7 +37,7 @@ public class ClassifierOptionsService {
     private final InstancesInfoRepository instancesInfoRepository;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final EvaluationResultsSortRepository evaluationResultsSortRepository;
-    private final ServiceConfig serviceConfig;
+    private final ErsConfig ersConfig;
 
     /**
      * Finds the best classifiers options.
@@ -55,7 +55,7 @@ public class ClassifierOptionsService {
         } else {
             EvaluationMethodReport evaluationMethodReport = classifierOptionsRequest.getEvaluationMethodReport();
             EvaluationResultsFilter filter = new EvaluationResultsFilter(instancesInfoId, evaluationMethodReport);
-            PageRequest pageRequest = PageRequest.of(0, serviceConfig.getResultSize(), buildSort());
+            PageRequest pageRequest = PageRequest.of(0, ersConfig.getResultSize(), buildSort());
             Page<EvaluationResultsInfo> evaluationResultsInfoPage =
                     evaluationResultsInfoRepository.findAll(filter, pageRequest);
             return evaluationResultsInfoPage.getContent().stream().map(
