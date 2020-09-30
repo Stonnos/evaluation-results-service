@@ -25,7 +25,7 @@ import java.util.List;
  */
 @EnableWs
 @Configuration
-@EnableConfigurationProperties({ErsConfig.class, WebServiceConfig.class})
+@EnableConfigurationProperties(WebServiceConfig.class)
 @RequiredArgsConstructor
 public class WebServiceConfiguration extends WsConfigurerAdapter {
 
