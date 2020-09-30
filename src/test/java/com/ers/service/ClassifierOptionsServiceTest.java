@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @author Roman Batygin
  */
-@Import({ClassifierOptionsService.class, ErsConfig.class})
+@Import({ClassifierOptionsService.class, ErsConfig.class, SortFieldService.class})
 class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Inject

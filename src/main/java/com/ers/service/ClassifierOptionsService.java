@@ -7,9 +7,7 @@ import com.ers.exception.DataNotFoundException;
 import com.ers.filter.EvaluationResultsFilter;
 import com.ers.model.ClassifierOptionsInfo;
 import com.ers.model.EvaluationResultsInfo;
-import com.ers.model.EvaluationResultsSortEntity;
 import com.ers.repository.EvaluationResultsInfoRepository;
-import com.ers.repository.EvaluationResultsSortRepository;
 import com.ers.repository.InstancesInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -36,8 +33,8 @@ public class ClassifierOptionsService {
 
     private final InstancesInfoRepository instancesInfoRepository;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
-    private final EvaluationResultsSortRepository evaluationResultsSortRepository;
     private final ErsConfig ersConfig;
+    private final SortFieldService sortFieldService;
 
     /**
      * Finds the best classifiers options.
@@ -55,24 +52,12 @@ public class ClassifierOptionsService {
         } else {
             EvaluationMethodReport evaluationMethodReport = classifierOptionsRequest.getEvaluationMethodReport();
             EvaluationResultsFilter filter = new EvaluationResultsFilter(instancesInfoId, evaluationMethodReport);
-            PageRequest pageRequest = PageRequest.of(0, ersConfig.getResultSize(), buildSort());
+            Sort sort = sortFieldService.getEvaluationResultsSort();
+            PageRequest pageRequest = PageRequest.of(0, ersConfig.getResultSize(), sort);
             Page<EvaluationResultsInfo> evaluationResultsInfoPage =
                     evaluationResultsInfoRepository.findAll(filter, pageRequest);
             return evaluationResultsInfoPage.getContent().stream().map(
                     EvaluationResultsInfo::getClassifierOptionsInfo).collect(Collectors.toList());
         }
-    }
-
-    private Sort buildSort() {
-        List<EvaluationResultsSortEntity> evaluationResultsSortEntityList =
-                evaluationResultsSortRepository.findByOrderByFieldOrder();
-        if (CollectionUtils.isEmpty(evaluationResultsSortEntityList)) {
-            throw new IllegalStateException("Expected at least one evaluation results sort fields!");
-        }
-        Sort.Order[] orders = evaluationResultsSortEntityList.stream().map(evaluationResultsSortEntity ->
-                evaluationResultsSortEntity.isAscending() ? Sort.Order.asc(evaluationResultsSortEntity.getFieldName()) :
-                        Sort.Order.desc(evaluationResultsSortEntity.getFieldName())
-        ).toArray(Sort.Order[]::new);
-        return Sort.by(orders);
     }
 }
