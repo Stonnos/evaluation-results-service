@@ -16,6 +16,10 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  cache:
+    cache-names: evaluation-results-sort-fields
+    caffeine:
+      spec: maximumSize=10, expireAfterWrite=36000s
   liquibase:
     contexts: schema,data
     change-log: classpath:db/liquibase-changelog.xml
@@ -23,7 +27,7 @@ spring:
 web-service-config:
   xsdSchema: evaluation-results.xsd
 
-service-config:
+ers:
   resultSize: 5
 
 management:

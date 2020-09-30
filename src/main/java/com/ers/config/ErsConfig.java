@@ -4,13 +4,13 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Application config.
+ * Ers config.
  *
  * @author Roman Batygin
  */
 @Data
-@ConfigurationProperties("service-config")
-public class ServiceConfig {
+@ConfigurationProperties("ers")
+public class ErsConfig {
 
     /**
      * The best results size
