@@ -14,6 +14,7 @@ import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.dto.RocCurveReport;
+import com.ers.dto.SortField;
 import com.ers.dto.StatisticsReport;
 import com.ers.model.ClassificationCostsInfo;
 import com.ers.model.ClassifierOptionsInfo;
@@ -52,6 +53,7 @@ public class TestHelperUtils {
     private static final String CLASSIFIER_DESCRIPTION = "description";
     private static final String OPTIONS = "options";
     private static final String OPTION_VALUE = "option-value";
+    private static final String STATISTICS_PCT_CORRECT = "statistics.pctCorrect";
 
     /**
      * Creates evaluation results report.
@@ -314,6 +316,9 @@ public class TestHelperUtils {
         ClassifierOptionsRequest request = new ClassifierOptionsRequest();
         request.setInstances(buildInstancesReport());
         request.setEvaluationMethodReport(buildEvaluationMethodReport(evaluationMethod));
+        SortField sortField = new SortField();
+        sortField.setFieldName(STATISTICS_PCT_CORRECT);
+        request.getSortFields().add(sortField);
         return request;
     }
 
