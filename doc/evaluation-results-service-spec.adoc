@@ -569,18 +569,18 @@ Evaluation results service представляет собой SOAP веб - с�
                 <evaluation:numFolds>10</evaluation:numFolds>
                 <evaluation:numTests>10</evaluation:numTests>
             </evaluation:evaluationMethodReport>
-            <evaluation:sortField>
+            <evaluation:sortFields>
                 <evaluation:fieldName>statistics.pctCorrect</evaluation:fieldName>
                 <evaluation:direction>DESC</evaluation:direction>
-            </evaluation:sortField>
-            <evaluation:sortField>
+            </evaluation:sortFields>
+            <evaluation:sortFields>
                 <evaluation:fieldName>statistics.maxAucValue</evaluation:fieldName>
                 <evaluation:direction>DESC</evaluation:direction>
-            </evaluation:sortField>
-            <evaluation:sortField>
+            </evaluation:sortFields>
+            <evaluation:sortFields>
                 <evaluation:fieldName>statistics.varianceError</evaluation:fieldName>
                 <evaluation:direction>ASC</evaluation:direction>
-            </evaluation:sortField>
+            </evaluation:sortFields>
         </evaluation:classifierOptionsRequest>
     </soapenv:Body>
 </soapenv:Envelope>
