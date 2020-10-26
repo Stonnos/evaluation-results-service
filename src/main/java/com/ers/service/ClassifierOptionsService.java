@@ -3,6 +3,7 @@ package com.ers.service;
 import com.ers.config.ErsConfig;
 import com.ers.dto.ClassifierOptionsRequest;
 import com.ers.dto.EvaluationMethodReport;
+import com.ers.dto.SortDirection;
 import com.ers.exception.DataNotFoundException;
 import com.ers.filter.EvaluationResultsFilter;
 import com.ers.model.ClassifierOptionsInfo;
@@ -34,7 +35,6 @@ public class ClassifierOptionsService {
     private final InstancesInfoRepository instancesInfoRepository;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
     private final ErsConfig ersConfig;
-    private final SortFieldService sortFieldService;
 
     /**
      * Finds the best classifiers options.
@@ -52,12 +52,20 @@ public class ClassifierOptionsService {
         } else {
             EvaluationMethodReport evaluationMethodReport = classifierOptionsRequest.getEvaluationMethodReport();
             EvaluationResultsFilter filter = new EvaluationResultsFilter(instancesInfoId, evaluationMethodReport);
-            Sort sort = sortFieldService.getEvaluationResultsSort();
+            Sort sort = buildSort(classifierOptionsRequest);
             PageRequest pageRequest = PageRequest.of(0, ersConfig.getResultSize(), sort);
             Page<EvaluationResultsInfo> evaluationResultsInfoPage =
                     evaluationResultsInfoRepository.findAll(filter, pageRequest);
             return evaluationResultsInfoPage.getContent().stream().map(
                     EvaluationResultsInfo::getClassifierOptionsInfo).collect(Collectors.toList());
         }
+    }
+
+    private Sort buildSort(ClassifierOptionsRequest classifierOptionsRequest) {
+        Sort.Order[] orders = classifierOptionsRequest.getSortFields().stream().map(
+                sortField -> SortDirection.DESC.equals(sortField.getDirection()) ?
+                        Sort.Order.desc(sortField.getFieldName()) : Sort.Order.asc(sortField.getFieldName())
+        ).toArray(Sort.Order[]::new);
+        return Sort.by(orders);
     }
 }
