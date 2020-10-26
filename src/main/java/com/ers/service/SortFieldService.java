@@ -26,12 +26,12 @@ public class SortFieldService {
     private final EvaluationResultsSortRepository evaluationResultsSortRepository;
 
     /**
-     * Gets evaluation results sort fields.
+     * Gets default evaluation results sort fields.
      *
      * @return evaluation results sort fields
      */
     @Cacheable(EVALUATION_RESULTS_SORT_FIELDS)
-    public Sort getEvaluationResultsSort() {
+    public Sort getEvaluationResultsDefaultSort() {
         List<EvaluationResultsSortEntity> evaluationResultsSortEntityList =
                 evaluationResultsSortRepository.findByOrderByFieldOrder();
         if (CollectionUtils.isEmpty(evaluationResultsSortEntityList)) {

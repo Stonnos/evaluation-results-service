@@ -14,6 +14,8 @@ import com.ers.dto.InputOptionsMap;
 import com.ers.dto.InstancesReport;
 import com.ers.dto.ResponseStatus;
 import com.ers.dto.RocCurveReport;
+import com.ers.dto.SortDirection;
+import com.ers.dto.SortField;
 import com.ers.dto.StatisticsReport;
 import com.ers.model.ClassificationCostsInfo;
 import com.ers.model.ClassifierOptionsInfo;
@@ -52,6 +54,9 @@ public class TestHelperUtils {
     private static final String CLASSIFIER_DESCRIPTION = "description";
     private static final String OPTIONS = "options";
     private static final String OPTION_VALUE = "option-value";
+    private static final String STATISTICS_PCT_CORRECT = "statistics.pctCorrect";
+    private static final String STATISTICS_MAX_AUC_VALUE = "statistics.maxAucValue";
+    private static final String STATISTICS_VARIANCE_ERROR = "statistics.varianceError";
 
     /**
      * Creates evaluation results report.
@@ -314,7 +319,24 @@ public class TestHelperUtils {
         ClassifierOptionsRequest request = new ClassifierOptionsRequest();
         request.setInstances(buildInstancesReport());
         request.setEvaluationMethodReport(buildEvaluationMethodReport(evaluationMethod));
+        request.getSortFields().add(createSortField(STATISTICS_PCT_CORRECT, SortDirection.DESC));
+        request.getSortFields().add(createSortField(STATISTICS_MAX_AUC_VALUE, SortDirection.DESC));
+        request.getSortFields().add(createSortField(STATISTICS_VARIANCE_ERROR, SortDirection.ASC));
         return request;
+    }
+
+    /**
+     * Creates sort field.
+     *
+     * @param fieldName - field name
+     * @param direction - sort direction
+     * @return sort field object
+     */
+    public static SortField createSortField(String fieldName, SortDirection direction) {
+        SortField sortField = new SortField();
+        sortField.setFieldName(fieldName);
+        sortField.setDirection(direction);
+        return sortField;
     }
 
     /**

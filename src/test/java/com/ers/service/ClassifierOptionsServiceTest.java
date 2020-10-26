@@ -86,17 +86,33 @@ class ClassifierOptionsServiceTest extends AbstractJpaTest {
 
     @Test
     void testClassifierOptionsSearchingWithTrainingDataEvaluationMethod() {
-        testClassifierOptionsSearching(EvaluationMethod.TRAINING_DATA);
+        testClassifierOptionsSearching(TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA));
     }
 
     @Test
     void testClassifierOptionsSearchingWithCrossValidation() {
-        testClassifierOptionsSearching(EvaluationMethod.CROSS_VALIDATION);
+        testClassifierOptionsSearching(
+                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION));
     }
 
-    private void testClassifierOptionsSearching(EvaluationMethod evaluationMethod) {
+    @Test
+    void testClassifierOptionsSearchingWithTrainingDataEvaluationMethodAndDefaultSortFields() {
         ClassifierOptionsRequest request =
-                TestHelperUtils.createClassifierOptionsRequest(evaluationMethod);
+                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.TRAINING_DATA);
+        request.getSortFields().clear();
+        testClassifierOptionsSearching(request);
+    }
+
+    @Test
+    void testClassifierOptionsSearchingWithCrossValidationAndDefaultSortFields() {
+        ClassifierOptionsRequest request =
+                TestHelperUtils.createClassifierOptionsRequest(EvaluationMethod.CROSS_VALIDATION);
+        request.getSortFields().clear();
+        testClassifierOptionsSearching(request);
+    }
+
+    private void testClassifierOptionsSearching(ClassifierOptionsRequest request) {
+        EvaluationMethod evaluationMethod = request.getEvaluationMethodReport().getEvaluationMethod();
         InstancesInfo instancesInfo = new InstancesInfo();
         instancesInfo.setDataMd5Hash(
                 DigestUtils.md5DigestAsHex(request.getInstances().getXmlInstances().getBytes(StandardCharsets.UTF_8)));
