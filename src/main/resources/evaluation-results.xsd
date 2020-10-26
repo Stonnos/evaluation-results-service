@@ -403,7 +403,7 @@
             <xsd:sequence>
                 <xsd:element name="instances" type="evaluation:instancesReport"/>
                 <xsd:element name="evaluationMethodReport" type="evaluation:evaluationMethodReport"/>
-                <xsd:element maxOccurs="unbounded" name="sortFields"
+                <xsd:element maxOccurs="unbounded" minOccurs="0" name="sortFields"
                              type="evaluation:sortField"/>
             </xsd:sequence>
         </xsd:complexType>
