@@ -21,6 +21,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -129,6 +130,7 @@ public class EvaluationResultsInfo {
      */
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "evaluation_results_info_id", nullable = false)
+    @OrderBy("classValue")
     private Set<ClassificationCostsInfo> classificationCosts;
 
     /**
