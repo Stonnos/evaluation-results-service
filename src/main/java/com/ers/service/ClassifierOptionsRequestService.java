@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+ * Service for handling classifier options requests.
+ *
  * @author Roman Batygin
  */
 @Slf4j
