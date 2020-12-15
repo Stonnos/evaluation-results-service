@@ -6,7 +6,7 @@
 
     <groupId>evaluation-results-service</groupId>
     <artifactId>evaluation-results-service</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -17,28 +17,28 @@
     <packaging>war</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <logback.version>1.2.3</logback.version>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
         <postresql.version>42.2.6</postresql.version>
         <h2.version>1.4.199</h2.version>
-        <lombok.version>1.18.4</lombok.version>
+        <lombok.version>1.18.12</lombok.version>
+        <mockito.version>3.2.4</mockito.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-processor-plugin.version>3.3.3</maven-processor-plugin.version>
         <assertj.core.version>3.13.1</assertj.core.version>
-        <mockito.version>3.2.4</mockito.version>
         <org.apache.commons.lang3.version>3.7</org.apache.commons.lang3.version>
-        <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <inject.version>1</inject.version>
-        <xmlschema.version>2.2.3</xmlschema.version>
-        <jaxb2-maven-plugin.version>2.3</jaxb2-maven-plugin.version>
+        <xmlschema.version>2.2.5</xmlschema.version>
+        <jaxb2-maven-plugin.version>2.5.0</jaxb2-maven-plugin.version>
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <spring-cloud-sleuth.version>2.1.5.RELEASE</spring-cloud-sleuth.version>
         <logstash-encoder.version>6.2</logstash-encoder.version>
-        <docker-maven-plugin.version>1.4.3</docker-maven-plugin.version>
+        <docker-maven-plugin.version>1.4.13</docker-maven-plugin.version>
         <docker.image.name>${project.artifactId}</docker.image.name>
         <liquibase.version>3.7.0</liquibase.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>30.0-jre</guava.version>
         <beanutils.version>1.9.4</beanutils.version>
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
         <sonar.coverage.exclusions>
@@ -205,19 +205,19 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <scope>test</scope>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.core.version}</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <scope>test</scope>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.core.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -227,10 +227,9 @@
             <version>${org.apache.commons.lang3.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
+            <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
 

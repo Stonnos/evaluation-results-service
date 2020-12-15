@@ -1,4 +1,4 @@
-Evaluation results service v1.4
+Evaluation results service v1.5
 ========================================
 
 Описание
@@ -11,7 +11,7 @@ Evaluation results service v1.4
 
 Необходимый софт
 ----------------------------------------
-* jdk 1.8
+* Openjdk 1.11
 * maven >= 3.3.9
 * База данных PostgreSQL для хранения информации.
 * Tomcat >= 8
