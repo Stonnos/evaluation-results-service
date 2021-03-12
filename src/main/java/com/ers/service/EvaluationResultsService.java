@@ -6,19 +6,15 @@ import com.ers.dto.GetEvaluationResultsRequest;
 import com.ers.dto.GetEvaluationResultsResponse;
 import com.ers.dto.ResponseStatus;
 import com.ers.mapping.EvaluationResultsMapper;
-import com.ers.mapping.InstancesMapper;
 import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.repository.EvaluationResultsInfoRepository;
-import com.ers.repository.InstancesInfoRepository;
 import com.ers.util.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
