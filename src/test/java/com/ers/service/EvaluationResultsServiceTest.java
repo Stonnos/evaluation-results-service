@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
  */
 @Import({EvaluationResultsMapperImpl.class, ClassificationCostsReportMapperImpl.class,
         ConfusionMatrixMapperImpl.class, StatisticsReportMapperImpl.class, InstancesMapperImpl.class,
-        RocCurveReportMapperImpl.class,
+        RocCurveReportMapperImpl.class, InstancesService.class,
         EvaluationResultsService.class, ClassifierReportMapperImpl.class,
         ClassifierOptionsInfoMapperImpl.class, ClassifierReportFactory.class})
 class EvaluationResultsServiceTest extends AbstractJpaTest {
