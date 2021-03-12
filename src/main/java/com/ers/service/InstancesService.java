@@ -2,7 +2,6 @@ package com.ers.service;
 
 import com.ers.dto.EvaluationResultsRequest;
 import com.ers.mapping.InstancesMapper;
-import com.ers.model.EvaluationResultsInfo;
 import com.ers.model.InstancesInfo;
 import com.ers.repository.InstancesInfoRepository;
 import lombok.RequiredArgsConstructor;
