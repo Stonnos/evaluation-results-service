@@ -34,13 +34,11 @@ import static com.ers.util.Utils.buildEvaluationResultsResponse;
 @RequiredArgsConstructor
 public class EvaluationResultsService {
 
+    private final InstancesService instancesService;
     private final EvaluationResultsMapper evaluationResultsMapper;
-    private final InstancesMapper instancesMapper;
     private final EvaluationResultsInfoRepository evaluationResultsInfoRepository;
-    private final InstancesInfoRepository instancesInfoRepository;
 
     private ConcurrentHashMap<String, Object> cachedRequestIds = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Object> cachedDataMd5Hashes = new ConcurrentHashMap<>();
 
     /**
      * Saves evaluation results report into database.
@@ -59,9 +57,10 @@ public class EvaluationResultsService {
                         evaluationResultsRequest.getRequestId());
                 responseStatus = ResponseStatus.DUPLICATE_REQUEST_ID;
             } else {
+                InstancesInfo instancesInfo = instancesService.getOrSaveInstancesInfo(evaluationResultsRequest);
                 EvaluationResultsInfo evaluationResultsInfo =
                         evaluationResultsMapper.map(evaluationResultsRequest);
-                populateAndSaveInstancesInfo(evaluationResultsRequest, evaluationResultsInfo);
+                evaluationResultsInfo.setInstances(instancesInfo);
                 evaluationResultsInfo.setSaveDate(LocalDateTime.now());
                 evaluationResultsInfoRepository.save(evaluationResultsInfo);
                 log.info("Evaluation results report with request id = {} has been successfully saved.",
@@ -94,28 +93,5 @@ public class EvaluationResultsService {
             return response;
         }
         return buildEvaluationResultsResponse(request.getRequestId(), responseStatus);
-    }
-
-    private void populateAndSaveInstancesInfo(EvaluationResultsRequest evaluationResultsRequest,
-                                              EvaluationResultsInfo evaluationResultsInfo) {
-        String xmlData = evaluationResultsRequest.getInstances().getXmlInstances();
-        byte[] xmlDataBytes = xmlData.getBytes(StandardCharsets.UTF_8);
-        String md5Hash = DigestUtils.md5DigestAsHex(xmlDataBytes);
-        cachedDataMd5Hashes.putIfAbsent(md5Hash, new Object());
-        synchronized (cachedDataMd5Hashes.get(md5Hash)) {
-            InstancesInfo instancesInfo;
-            Long instancesInfoId = instancesInfoRepository.findIdByDataMd5Hash(md5Hash);
-            if (instancesInfoId != null) {
-                instancesInfo = new InstancesInfo();
-                instancesInfo.setId(instancesInfoId);
-            } else {
-                instancesInfo = instancesMapper.map(evaluationResultsRequest.getInstances());
-                instancesInfo.setXmlData(xmlDataBytes);
-                instancesInfo.setDataMd5Hash(md5Hash);
-                instancesInfoRepository.save(instancesInfo);
-            }
-            evaluationResultsInfo.setInstances(instancesInfo);
-        }
-        cachedDataMd5Hashes.remove(md5Hash);
     }
 }
