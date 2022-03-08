@@ -37,7 +37,7 @@
         <logstash-encoder.version>6.2</logstash-encoder.version>
         <docker-maven-plugin.version>1.4.13</docker-maven-plugin.version>
         <docker.image.name>${project.artifactId}</docker.image.name>
-        <liquibase.version>3.7.0</liquibase.version>
+        <liquibase.version>4.8.0</liquibase.version>
         <guava.version>30.0-jre</guava.version>
         <beanutils.version>1.9.4</beanutils.version>
         <jacoco.minCoverage>0.70</jacoco.minCoverage>
